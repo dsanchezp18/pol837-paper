@@ -1,0 +1,11 @@
+---
+title: "Research Paper One-Pager"
+subtitle: "POL837 Issues in Comparative Politics"
+author: "Daniel Sánchez Pazmiño"
+date: "2024-02-01"
+date-format: "MMMM YYYY"
+format: docx
+reference-doc: "apa_format_reference_doc.docx"
+--- 
+
+# Research Question 
