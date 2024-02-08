@@ -6,6 +6,17 @@ date: "2024-02-01"
 date-format: "MMMM YYYY"
 format: docx
 reference-doc: "apa_format_reference_doc.docx"
+bibliography: "one_pager_bibliography.bib"
+csl: "apa_one_pager.csl"
+suppress-bibliography: true
 --- 
 
-# Research Question 
+### Research Question
+
+Does varying temperature affect how voting-age population perceive politician performance in Ecuador?
+
+### Academic Sources 
+
+1. Performance models/Retrospective voting
+
+[@healy_retrospective_2013]
