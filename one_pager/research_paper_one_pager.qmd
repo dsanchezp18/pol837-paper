@@ -13,10 +13,68 @@ suppress-bibliography: true
 
 ### Research Question
 
-Does varying temperature affect how voting-age population perceive politician performance in Ecuador?
+Does varying daily temperature affect how voting-age population perceive politician performance in Ecuador?
 
 ### Academic Sources 
 
 1. Performance models/Retrospective voting
 
-[@healy_retrospective_2013]
+[@healy_retrospective_2013] 
+
+2. Attribution errors and the influence of emotion
+
+[@bower_mood_1981]
+
+[@schwarz_mood_1983]
+
+[@bartels_democracy_2016]
+
+[@healy_irrelevant_2010]
+
+[@healy_random_2010]
+
+3. Presidential approval literature
+
+[@berlemann_economic_2014]
+
+[@newman_rally_2010]
+
+[@donovan_motivated_2020]
+
+[@clarke_economic_1995]
+
+[@jung_determinants_2020]
+
+4. Weather and political outcomes
+
+[@bassi_weather_2019]
+
+[@liao_extreme_2022]
+
+5. Other relevant literature
+
+[@quijano-ruiz_assessing_2023]
+
+[@barrington-leigh_impact_2017]
+
+[@deller_effect_2022]
+
+[@klusak_rising_2023]
+
+[@lucas_does_2013]
+
+### Data
+
+1. Public opinion data from the [AmericasBarometer survey](https://www.vanderbilt.edu/lapop/) from the Latin American Public Opinion Project (LAPOP) for Ecuador. I intend to use eight waves of data (2008-2023), each with about 1,500 respondents. The survey rounds include the day of the interview, which will allow me to join this data with the temperature data.
+
+2. [Global daily grided temperature](https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html) from the U.S. government National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). I will use the daily temperature data for Ecuador, available 1979-2024. An algorithm is needed to extract the temperature from the NetCDF files, which was developed by Alonso Quijano-Ruiz and freely available on [GitHub](https://github.com/aquijanoruiz/Weather_HealthPerception/blob/main/code/weather_draft.R). 
+
+### Identification Strategy
+
+### References
+
+[@the_americasbarometer_by_the_lapop_lab_americasbarometer_nodate]
+
+[@national_oceanic_and_atmospheric_administration_noaa_physical_sciences_laboratory_psl_cpc_2024]
+
+
