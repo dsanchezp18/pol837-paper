@@ -1,80 +1,70 @@
 ---
 title: "Research Paper One-Pager"
-subtitle: "POL837 Issues in Comparative Politics"
 author: "Daniel Sánchez Pazmiño"
-date: "2024-02-01"
-date-format: "MMMM YYYY"
 format: docx
 reference-doc: "apa_format_reference_doc.docx"
 bibliography: "one_pager_bibliography.bib"
 csl: "apa_one_pager.csl"
 suppress-bibliography: true
 --- 
-
 ### Research Question
 
 Does varying daily temperature affect how voting-age population perceive politician performance in Ecuador?
 
 ### Academic Sources 
 
-1. Performance models/Retrospective voting
-
-[@healy_retrospective_2013] 
-
-2. Attribution errors and the influence of emotion
+1. Retrospective voting, attribution errors and the influence of emotion
 
 [@bower_mood_1981]
 
 [@schwarz_mood_1983]
 
-[@bartels_democracy_2016]
+[@achen_democracy_2017]
 
 [@healy_irrelevant_2010]
 
 [@healy_random_2010]
 
-3. Presidential approval literature
+2. Presidential approval literature
 
 [@berlemann_economic_2014]
 
-[@newman_rally_2010]
-
 [@donovan_motivated_2020]
-
-[@clarke_economic_1995]
 
 [@jung_determinants_2020]
 
-4. Weather and political outcomes
+3. Weather and political outcomes
 
 [@bassi_weather_2019]
 
 [@liao_extreme_2022]
 
-5. Other relevant literature
+4. Other relevant literature
 
 [@quijano-ruiz_assessing_2023]
 
-[@barrington-leigh_impact_2017]
-
 [@deller_effect_2022]
-
-[@klusak_rising_2023]
 
 [@lucas_does_2013]
 
 ### Data
 
-1. Public opinion data from the [AmericasBarometer survey](https://www.vanderbilt.edu/lapop/) from the Latin American Public Opinion Project (LAPOP) for Ecuador. I intend to use eight waves of data (2008-2023), each with about 1,500 respondents. The survey rounds include the day of the interview, which will allow me to join this data with the temperature data.
-
-2. [Global daily grided temperature](https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html) from the U.S. government National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). I will use the daily temperature data for Ecuador, available 1979-2024. An algorithm is needed to extract the temperature from the NetCDF files, which was developed by Alonso Quijano-Ruiz and freely available on [GitHub](https://github.com/aquijanoruiz/Weather_HealthPerception/blob/main/code/weather_draft.R). 
-
-### Identification Strategy
-
-### References
+- Public opinion data from the [AmericasBarometer survey](https://www.vanderbilt.edu/lapop/) from the Latin American Public Opinion Project (LAPOP) for Ecuador. I intend to use eight waves of data (2008-2023), each with about 1,500 respondents. The survey rounds include the day of the interview, which will allow me to join this data with the temperature data.
 
 [@the_americasbarometer_by_the_lapop_lab_americasbarometer_nodate]
 
+If the need arises, the [Latinobarómetro](https://www.latinobarometro.org/) survey is also available, but the AmericasBarometer is more scientifically rigorous. 
+
+- [Global daily grided temperature](https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html) from the U.S. government National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). I will use the daily temperature data for Ecuador, available 1979-2024. An algorithm is needed to extract the temperature from the NetCDF files, which was developed by Alonso Quijano-Ruiz and freely available on [GitHub](https://github.com/aquijanoruiz/Weather_HealthPerception/blob/main/code/weather_draft.R). 
+
 [@national_oceanic_and_atmospheric_administration_noaa_physical_sciences_laboratory_psl_cpc_2024]
 
+### Empirical Strategy
 
+I will estimate the impact of transient daily temperature changes on perceptions of politican performance, as measured by the survey, using pooled cross-sectional models, as follows:
+
+$$ y_{it} = \beta_0 + \tau_t + \theta_j + \delta \text{temp} + \mathbb{X'}_{it} \beta + u_{it} $$
+
+where $y_{it}$ is the political performance variable, $\text{temp}$ is daily temperature, $\mathbb{X'}_{it}$ is a vector of relevant time and individual-varying controls (as indicated by the literature), and $u_{it}$ is the error term. $\tau_t$ and $\theta_j$ are vectors of time and region fixed effects, respectively, which control for time-varying and region-invariant unobserved heterogeneity for $t$ time periods and $j$ regions.
+
+The identifying assumption is that changes in daily temperature are random. This ensures the unbiased estimation of its coefficient, $\delta$, and thus, the causal effect of temperature on perceived political performance. Time and region fixed effects control for regional weather patterns as well as medium term trends in weather. In different specifications, I can include fixed effects at different aggregations (region, canton/municipality and parish are available)^[I could include individual fixed effects, but since this is not panel data, it might overspecify the model.], as well as lagged temperature and other robustness checks.
