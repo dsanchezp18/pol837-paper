@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Weather_HealthPerception"
+		},
+		{
+			"path": "../ecuador-temperature-noaa"
+		}
+	],
+	"settings": {}
+}
