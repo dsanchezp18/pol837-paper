@@ -63,7 +63,7 @@ If the need arises, the [Latinobarómetro](https://www.latinobarometro.org/) sur
 
 I will estimate the impact of transient daily temperature changes on perceptions of politican performance, as measured by the survey, using pooled cross-sectional models, as follows:
 
-$$ y_{it} = \beta_0 + \tau_t + \theta_j + \delta \text{temp} + \mathbb{X'}_{it} \beta + u_{it} $$
+$$ y_{it} = \beta_0 + \tau_t + \theta_j + \delta \text{temp}_{it} + \mathbb{X'}_{it} \beta + u_{it} $$
 
 where $y_{it}$ is the political performance variable, $\text{temp}$ is daily temperature, $\mathbb{X'}_{it}$ is a vector of relevant time and individual-varying controls (as indicated by the literature), and $u_{it}$ is the error term. $\tau_t$ and $\theta_j$ are vectors of time and region fixed effects, respectively, which control for time-varying and region-invariant unobserved heterogeneity for $t$ time periods and $j$ regions.
 
