@@ -11,6 +11,7 @@
 # Load libraries
 
 library(dplyr)
+library(ggplot2)
 library(haven)
 library(lubridate)
 
@@ -28,7 +29,9 @@ ecu_ab <-
     ecu_ab_raw %>% 
     mutate(year = zap_labels(year),
            wave = zap_labels(wave),
-           pais = as_factor(pais))
+           pais = as_factor(pais),
+           fecha = if_else(fecha == "NR", NA_character_, fecha),
+           municipality = if_else(year %in% 2004:2006, as_factor(canton), as_factor(municipio)))
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
@@ -36,4 +39,6 @@ ecu_ab <-
 
 ecu_ab_2008_2023 <- 
     ecu_ab %>% 
-    filter(year >= 2008)
+    filter(year >= 2008)  %>% 
+    mutate(interview_date = parse_date_time(fecha, order = "dby"))
+
