@@ -1,0 +1,5 @@
+# Ignored files for git
+
+# Data files which are too large to be stored in GitHub
+
+data/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav
