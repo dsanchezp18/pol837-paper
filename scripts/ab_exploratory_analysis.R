@@ -17,7 +17,7 @@ library(haven)
 
 # Raw Merged Ecuador file (2004-2023)
 
-ecu_ab_raw <- read_sav("data/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
+ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
 
 # Cleaned Ecuador file (2008-2023)
 
