@@ -25,7 +25,7 @@ min_temperature_df <- read_csv("https://raw.githubusercontent.com/laboratoriolid
 
 # 2. Maximum temperature
 
-max_temperature_df <- read_csv("https://raw.githubusercontent.com/laboratoriolide/ecuador-temperature-noaa/main/data/weather/processed/min_temperature.csv",
+max_temperature_df <- read_csv("https://raw.githubusercontent.com/laboratoriolide/ecuador-temperature-noaa/main/data/weather/processed/max_temperature.csv",
                                 show_col_types = FALSE)
 
 # 3. Precipitation
