@@ -25,7 +25,5 @@ max_temperature_df <- read_csv("data/weather/max_temperature.csv",
 precipitation_df <- read_csv("data/weather/precipitation.csv",
                                 show_col_types = FALSE)
 
-# 
-
 # Exploratory Analysis -----------------------------------------------------
 
