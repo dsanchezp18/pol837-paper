@@ -6,7 +6,7 @@ This is the repository for the research paper for Simon Fraser University's POL8
 
 - The AmericasBarometer Survey (subscriber files) regional dataset for Ecuador. Free access datasets available at https://www.vanderbilt.edu/lapop/raw-data.php.
 
-    - Raw data is not provided in this repository, as per the Latin American Public Opinion Project's [terms and conditons](http://datasets.americasbarometer.org/database/agreement.html). Subscribers can access the data in the provided link above, and the replication files in this repository can be used to reproduce the analysis. 
+    - Raw data is not provided in this repository, as per the Latin American Public Opinion Project's [terms and conditons](http://datasets.americasbarometer.org/database/agreement.html). Subscribers can access the data in the provided link above, and the replication files in this repository can be used to reproduce the analysis by downloading the files and placing them in the `data/americas_barometer` directory.
     
     - Free access data sources require extra processing to match the format of the subscriber files. Please see this [GitHub repository](https://github.com/dsanchezp18/hbc-prelim) for replication code on how to process the free access data to match the subscriber files. 
     
