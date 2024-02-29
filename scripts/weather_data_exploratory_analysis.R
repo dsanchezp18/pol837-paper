@@ -16,14 +16,18 @@ library(ggplot2)
 
 # Load the data
 
-min_temperature_df <- read_csv("data/weather/min_temperature.csv",
-                               show_col_types = FALSE)
+temperature_df <- read_csv("data/weather/temperature_processed.csv",
+                           show_col_types = FALSE)
 
-max_temperature_df <- read_csv("data/weather/max_temperature.csv",
-                                 show_col_types = FALSE)
-
-precipitation_df <- read_csv("data/weather/precipitation.csv",
-                                show_col_types = FALSE)
+precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
+                             show_col_types = FALSE)
 
 # Exploratory Analysis -----------------------------------------------------
 
+# Get a yearly average of the avg temperature for Quito 
+
+quito_avg_temp <- 
+  temperature_df %>% 
+  filter(canton_name == "QUITO") %>% 
+  group_by(year) %>% 
+  summarise(avg_temp = mean(avg_temp))

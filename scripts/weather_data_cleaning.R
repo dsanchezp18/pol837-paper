@@ -40,7 +40,7 @@ temperature_df <-
   left_join(max_temperature_df  %>% select(canton_id, date, max_temp = value), by = c("date", "canton_id"))  %>% 
   left_join(ecuador_cantons_df, by = "canton_id")  %>%
   mutate(spread_temp = max_temp - min_temp,
-         avg_temp = spread_temp/2) %>% 
+         avg_temp = rowMeans(select(., min_temp, max_temp))) %>% 
   relocate(canton_name, prov, .after = canton_id) 
 
 # Create a precipitation dataframe
@@ -53,6 +53,6 @@ precipitation_df <-
 
 # Export the data ---------------------------------------------------------
 
-write_csv(temperature_df, "data/weather/temperature_processed.csv")
+write_csv(temperature_df, "data/weather/temperature_processed.csv") # ignored in github due to size
 
 write_csv(precipitation_df, "data/weather/precipitation_processed.csv")
