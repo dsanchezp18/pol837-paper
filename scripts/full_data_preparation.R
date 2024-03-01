@@ -68,7 +68,7 @@ numbers <- 1:9
 
 unique_cantons_ab <- 
     ecu_ab %>%
-    mutate(canton_name_clean = str_to_lower(canton_name_ab) %>% str_remove_all("cantón") %>% str_remove_all(numbers) %>% str_trim()) %>% 
+    mutate(canton_name_clean = str_to_lower(canton_name_ab) %>% str_remove_all("cantón") %>% str_trim()) %>% 
     select(canton_id_ab, canton_name_ab, canton_name_clean) %>% 
     distinct(canton_name_clean, .keep_all = T) %>% 
     arrange(canton_name_clean)
