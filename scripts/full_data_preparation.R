@@ -15,6 +15,7 @@ library(dplyr)
 library(ggplot2)
 library(haven)
 library(lubridate)
+library(stringr)
 
 # Load AmericasBarometer (AB) data
 
@@ -31,7 +32,7 @@ temperature_df <- read_csv("data/weather/temperature_processed.csv",
 
 precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
                              show_col_types = FALSE)
-                             
+
 
 # AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
@@ -43,7 +44,17 @@ ecu_ab <-
            wave = zap_labels(wave),
            pais = as_factor(pais),
            fecha = if_else(fecha == "NR", NA_character_, fecha),
-           canton = if_else(year %in% 2004:2006, as_factor(canton), as_factor(municipio)))
+           canton_id_ab = case_when(
+               year %in% 2004:2008 ~ as.character(canton),
+               year == 2010 ~ as.character(municipio10),
+               year %in% c(2012,2014, 2016, 2019, 2023) ~ as.character(municipio),
+               year == 2021 ~ as.character(municipio1t)),
+           canton_name_ab = case_when(
+               year %in% 2004:2008 ~ as_factor(canton),
+               year == 2010 ~ as_factor(municipio10),
+               year %in% c(2012,2014, 2016, 2019, 2023) ~ as_factor(municipio),
+               year == 2021 ~ as_factor(municipio1t))
+        )
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
@@ -54,3 +65,9 @@ ecu_ab_2008_2023 <-
     filter(year >= 2008)  %>% 
     mutate(interview_date = parse_date_time(fecha, order = "dby"))
 
+# Joining the AB with the weather data ------------------------------------------------------------
+
+joined_ab_weather <- 
+    ecu_ab_2008_2023 %>% 
+    left_join(temperature_df, by = c("year", "canton")) %>% 
+    left_join(precipitation_df, by = c("year", "canton"))

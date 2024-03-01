@@ -140,3 +140,40 @@ ecu_ab_raw %>%
   group_by(year)  %>% 
   summarise(n = n())  %>%
   ungroup()
+
+# Filter only for 2021 ----------------------------------------------------
+
+ecu_ab_2021_raw <- 
+  ecu_ab_raw %>% 
+  filter(year == 2021)
+
+# Look for missing values in municipality variables 
+
+ecu_ab_2021_raw %>%
+  summarise(missing_canton = sum(is.na(canton)),
+            missing_municipio = sum(is.na(municipio)),
+            missing_municipio04 = sum(is.na(municipio04)),
+            missing_municipio06 = sum(is.na(municipio06)),
+            missing_municipio08 = sum(is.na(municipio08)),
+            missing_municipio10 = sum(is.na(municipio10)),
+            missing_municipio1t = sum(is.na(municipio1t)))
+
+# Look at estratopri, estratosec, upm, paroq, ur, ur1new, tamano, clusters missing 
+
+ecu_ab_2021_raw %>%
+  select(estratopri, estratosec, upm, paroq, ur, ur1new, tamano, cluster) %>%
+  summarise(missing_estratopri = sum(is.na(estratopri)),
+            missing_estratosec = sum(is.na(estratosec)),
+            missing_upm = sum(is.na(upm)),
+            missing_paroq = sum(is.na(paroq)),
+            missing_ur = sum(is.na(ur)),
+            missing_ur1new = sum(is.na(ur1new)),
+            missing_tamano = sum(is.na(tamano)),
+            missing_cluster = sum(is.na(cluster)))
+
+# Group by UPM, apply labels and see counts 
+
+ecu_ab_2021_raw %>%
+  group_by(upm) %>%
+  summarise(n = n()) %>%
+  ungroup()
