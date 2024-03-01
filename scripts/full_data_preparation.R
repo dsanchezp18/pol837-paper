@@ -22,7 +22,18 @@ library(lubridate)
 
 ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
 
-# Data Cleaning (full file 2004-2023) ------------------------------------------------------------
+# Temperature data 
+
+temperature_df <- read_csv("data/weather/temperature_processed.csv",
+                           show_col_types = FALSE)
+
+# Precipitation data
+
+precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
+                             show_col_types = FALSE)
+                             
+
+# AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
 # Apply or remove the labels for relevant variables
 

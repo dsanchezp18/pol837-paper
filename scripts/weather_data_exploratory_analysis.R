@@ -41,7 +41,7 @@ quito_avg_precip <-
   precipitation_df %>% 
   filter(canton_name == "QUITO") %>% 
   group_by(year) %>% 
-  summarise(avg_precip = mean(value))
+  summarise(avg_precip = mean(precipitation))
 
 # Plot the yearly average of temperature for Quito
 
@@ -75,7 +75,7 @@ guayaquil_avg_precip <-
   precipitation_df %>% 
   filter(canton_name == "GUAYAQUIL") %>% 
   group_by(year) %>% 
-  summarise(avg_precip = mean(value))
+  summarise(avg_precip = mean(precipitation))
 
 # Plot the yearly average of temperature for Guayaquil
 
@@ -107,7 +107,7 @@ ecuador_avg_temp <-
 ecuador_avg_precip <- 
   precipitation_df %>% 
   group_by(year) %>% 
-  summarise(avg_precip = mean(value, na.rm = T))
+  summarise(avg_precip = mean(precipitation, na.rm = T))
 
 ## Monthly Data ------------------------------------------------
 
@@ -123,7 +123,7 @@ ecuador_avg_temp_monthly <-
 ecuador_avg_precip_monthly <- 
   precipitation_df %>% 
   group_by(month = month(date)) %>% 
-  summarise(avg_precip = mean(value, na.rm = T))
+  summarise(avg_precip = mean(precipitation, na.rm = T))
 
 ## Daily averages ------------------------------------------------
 
@@ -139,7 +139,7 @@ ecuador_avg_temp_weekday <-
 ecuador_avg_precip_weekday <- 
   precipitation_df %>% 
   group_by(weekday = day(date)) %>% 
-  summarise(avg_precip = mean(value, na.rm = T))
+  summarise(avg_precip = mean(precipitation, na.rm = T))
 
 # Gey a daily average by day of the year of the avg temperature for Ecuador
 
@@ -153,7 +153,7 @@ ecuador_avg_temp_day <-
 ecuador_avg_precip_day <- 
   precipitation_df %>% 
   group_by(day = yday(date)) %>% 
-  summarise(avg_precip = mean(value, na.rm = T))
+  summarise(avg_precip = mean(precipitation, na.rm = T))
 
 # Plot of the daily averages by day of the year for Ecuador (coord_polar)
 

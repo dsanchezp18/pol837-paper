@@ -48,6 +48,7 @@ temperature_df <-
 precipitation_df <- 
   precipitation_raw %>% 
   relocate(year, .after = canton_id) %>%
+  rename(precipitation = value) %>%
   left_join(ecuador_cantons_df, by = "canton_id")  %>%
   relocate(canton_name, prov, .after = canton_id)
 
