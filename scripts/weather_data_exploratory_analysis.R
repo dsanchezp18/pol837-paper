@@ -13,6 +13,7 @@
 library(dplyr)
 library(readr)
 library(ggplot2)
+library(lubridate)
 
 # Load the data
 
@@ -107,3 +108,83 @@ ecuador_avg_precip <-
   precipitation_df %>% 
   group_by(year) %>% 
   summarise(avg_precip = mean(value, na.rm = T))
+
+## Monthly Data ------------------------------------------------
+
+# Get a monthly average of the avg temperature for Ecuador (seasonality across the years)
+
+ecuador_avg_temp_monthly <- 
+  temperature_df %>% 
+  group_by(month = month(date, label = T)) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T))
+
+# Get a monthly average of the precipitation for Ecuador (seasonality across the years)
+
+ecuador_avg_precip_monthly <- 
+  precipitation_df %>% 
+  group_by(month = month(date)) %>% 
+  summarise(avg_precip = mean(value, na.rm = T))
+
+## Daily averages ------------------------------------------------
+
+# Get a daily average by day of the week of the avg temperature for Ecuador
+
+ecuador_avg_temp_weekday <- 
+  temperature_df %>% 
+  group_by(weekday = day(date)) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T))
+
+# Get a daily average by day of the week of the precipitation for Ecuador
+
+ecuador_avg_precip_weekday <- 
+  precipitation_df %>% 
+  group_by(weekday = day(date)) %>% 
+  summarise(avg_precip = mean(value, na.rm = T))
+
+# Gey a daily average by day of the year of the avg temperature for Ecuador
+
+ecuador_avg_temp_day <- 
+  temperature_df %>% 
+  group_by(day = yday(date)) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T))
+
+# Get a daily average by day of the year of the precipitation for Ecuador
+
+ecuador_avg_precip_day <- 
+  precipitation_df %>% 
+  group_by(day = yday(date)) %>% 
+  summarise(avg_precip = mean(value, na.rm = T))
+
+# Plot of the daily averages by day of the year for Ecuador (coord_polar)
+
+ggplot(ecuador_avg_temp_day, aes(x = day, y = avg_temp)) +
+  geom_line() +
+  labs(title = "Daily Average Temperature by Day of the Year for Ecuador",
+       x = "Day of the Year",
+       y = "Average Temperature (C)")
+
+# Plot of the monthly averages for Ecuador (coord_polar)
+
+ecuador_avg_temp_monthly %>% 
+  ggplot(aes(x = as.factor(month), y = avg_temp-19.5, group = as.factor(month))) +
+  geom_col() +
+  labs(title = "Monthly Average Temperature for Ecuador",
+       x = "Month",
+       y = "Average Temperature (C)")  + 
+  coord_polar()
+
+## Do the same chart, but only for Quito
+
+quito_avg_temp_monthly <- 
+  temperature_df %>% 
+  filter(canton_name == "QUITO") %>% 
+  group_by(month = month(date, label = T)) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T))
+
+quito_avg_temp_monthly %>%
+  ggplot(aes(x = as.factor(month), y = avg_temp-12, group = as.factor(month))) +
+  geom_col() +
+  labs(title = "Monthly Average Temperature for Quito",
+       x = "Month",
+       y = "Average Temperature (C)")  + 
+  coord_polar()

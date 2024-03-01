@@ -4,7 +4,8 @@
 # Daniel Sanchez
 # Spring 2024 
 
-# This script performs data cleaning on the AmericasBarometer data.
+# This script joins the AmericasBarometer data with the daily weather data from the National Oceanic and Atmospheric Administration (NOAA) for Ecuador.
+# Other preparation done accordingly. 
 
 # Preliminaries -----------------------------------------------------------
 
@@ -31,7 +32,7 @@ ecu_ab <-
            wave = zap_labels(wave),
            pais = as_factor(pais),
            fecha = if_else(fecha == "NR", NA_character_, fecha),
-           municipality = if_else(year %in% 2004:2006, as_factor(canton), as_factor(municipio)))
+           canton = if_else(year %in% 2004:2006, as_factor(canton), as_factor(municipio)))
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 

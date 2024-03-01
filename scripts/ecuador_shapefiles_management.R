@@ -4,7 +4,7 @@
 # Daniel Sanchez
 # Spring 2024 
 
-# This script downloads and processes canton identifiers and metadata for Ecuador.
+# This script downloads and processes shapefiles for cantons and other geographies in Ecuador.
 # Source: INEC (https://www.ecuadorencifras.gob.ec/documentos/web-inec/Geografia_Estadistica/Micrositio_geoportal/index.html)
 
 # Preliminaries ----------------------------------------------------------------
@@ -50,6 +50,18 @@ ecuador_cantons <-
   select(canton_id = dpa_canton, canton_name = dpa_descan, prov = dpa_despro) %>% 
   distinct(canton_id, .keep_all = T)
 
-# Export the canton metadata ----------------------------------------------------
+# Extracting province identifiers and names -------------------------------------
+
+# Read the shapefile for provinces
+
+ecuador_provinces <- 
+  st_read("data/other/SHP/nxprovincias.shp")  %>% 
+  st_simplify(preserveTopology = T, dTolerance = 100)  %>% 
+  as_tibble()  %>% 
+  clean_names()  %>%
+  select(prov_id = dpa_provin, prov_name = dpa_despro) %>% 
+  distinct(prov_id, .keep_all = T)
+
+# Export metadata ----------------------------------------------------
 
 write_csv(ecuador_cantons, "data/other/ecuador_cantons.csv")
