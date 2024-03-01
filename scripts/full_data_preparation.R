@@ -33,6 +33,10 @@ temperature_df <- read_csv("data/weather/temperature_processed.csv",
 precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
                              show_col_types = FALSE)
 
+# Cantons data
+
+ecuador_cantons_df <- read_csv("data/other/ecuador_cantons.csv",
+                               show_col_types = FALSE)
 
 # AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
@@ -55,6 +59,19 @@ ecu_ab <-
                year %in% c(2012,2014, 2016, 2019, 2023) ~ as_factor(municipio),
                year == 2021 ~ as_factor(municipio1t))
         )
+
+# Canton matching ------------------------------------------------------------
+
+# Extract unique canton names from the AB data
+
+numbers <- 1:9
+
+unique_cantons_ab <- 
+    ecu_ab %>%
+    mutate(canton_name_clean = str_to_lower(canton_name_ab) %>% str_remove_all("cantón") %>% str_remove_all(numbers) %>% str_trim()) %>% 
+    select(canton_id_ab, canton_name_ab, canton_name_clean) %>% 
+    distinct(canton_name_clean, .keep_all = T) %>% 
+    arrange(canton_name_clean)
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
