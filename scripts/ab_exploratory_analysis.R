@@ -141,6 +141,128 @@ ecu_ab_raw %>%
   summarise(n = n())  %>%
   ungroup()
 
+# Look at year 2004 ----------------------------------------------------
+
+# Look at the canton variables for 2004
+
+ecu_ab_raw %>%
+  filter(year == 2004) %>%
+  select(canton, municipio, municipio04, municipio06, municipio08, municipio10, municipio1t) %>%
+  glimpse()
+
+# Count missing values for each variable
+
+ecu_ab_raw %>%
+  filter(year == 2004) %>%
+  summarise(missing_canton = sum(is.na(canton)),
+            missing_municipio = sum(is.na(municipio)),
+            missing_municipio04 = sum(is.na(municipio04)),
+            missing_municipio06 = sum(is.na(municipio06)),
+            missing_municipio08 = sum(is.na(municipio08)),
+            missing_municipio10 = sum(is.na(municipio10)),
+            missing_municipio1t = sum(is.na(municipio1t)))
+
+# Look at the unique values for each variable
+
+ecu_2004_cases <-
+  ecu_ab_raw %>%
+  filter(year == 2004) %>%
+  select(canton) %>%
+  distinct(.keep_all = T) %>% 
+  mutate(canton_name = as_factor(canton))
+
+# Look at 2006 ----------------------------------------------------
+
+# Look at the canton variables for 2006
+
+ecu_ab_raw %>%
+  filter(year == 2006) %>%
+  select(canton, municipio, municipio04, municipio06, municipio08, municipio10, municipio1t) %>%
+  glimpse()
+
+# Count missing values for each variable
+
+ecu_ab_raw %>%
+  filter(year == 2006) %>%
+  summarise(missing_canton = sum(is.na(canton)),
+            missing_municipio = sum(is.na(municipio)),
+            missing_municipio04 = sum(is.na(municipio04)),
+            missing_municipio06 = sum(is.na(municipio06)),
+            missing_municipio08 = sum(is.na(municipio08)),
+            missing_municipio10 = sum(is.na(municipio10)),
+            missing_municipio1t = sum(is.na(municipio1t)))
+
+# Look at the unique values for each variable
+
+ecu_2006_cases <-
+  ecu_ab_raw %>%
+  filter(year == 2006) %>%
+  select(canton) %>%
+  distinct(.keep_all = T) %>% 
+  mutate(canton_name = as_factor(canton))
+
+# Look at 2008 ----------------------------------------------------
+
+# Look at the canton variables for 2008
+
+ecu_ab_raw %>%
+  filter(year == 2008) %>%
+  select(canton, municipio, municipio04, municipio06, municipio08, municipio10, municipio1t) %>%
+  glimpse()
+
+# Count missing values for each variable
+
+ecu_ab_raw %>%
+  filter(year == 2008) %>%
+  summarise(missing_canton = sum(is.na(canton)),
+            missing_municipio = sum(is.na(municipio)),
+            missing_municipio04 = sum(is.na(municipio04)),
+            missing_municipio06 = sum(is.na(municipio06)),
+            missing_municipio08 = sum(is.na(municipio08)),
+            missing_municipio10 = sum(is.na(municipio10)),
+            missing_municipio1t = sum(is.na(municipio1t)))
+
+# Look at the unique values for each variable
+
+ecu_2008_cases <-
+  ecu_ab_raw %>%
+  filter(year == 2008) %>%
+  select(canton) %>%
+  distinct(.keep_all = T) %>% 
+  mutate(canton_name = as_factor(canton))
+
+# Look at 2010 ----------------------------------------------------
+
+# Look at the canton variables for 2010
+
+ecu_ab_raw %>%
+  filter(year == 2010) %>%
+  select(canton, municipio, municipio04, municipio06, municipio08, municipio10, municipio1t) %>%
+  glimpse()
+
+# Count missing values for each variable
+
+ecu_ab_raw %>%
+  filter(year == 2010) %>%
+  summarise(missing_canton = sum(is.na(canton)),
+            missing_municipio = sum(is.na(municipio)),
+            missing_municipio04 = sum(is.na(municipio04)),
+            missing_municipio06 = sum(is.na(municipio06)),
+            missing_municipio08 = sum(is.na(municipio08)),
+            missing_municipio10 = sum(is.na(municipio10)),
+            missing_municipio1t = sum(is.na(municipio1t)))
+
+# Look at the unique values for each variable
+
+ecu_2010_cases <-
+  ecu_ab_raw %>%
+  filter(year == 2010) %>%
+  select(municipio10) %>%
+  distinct(.keep_all = T) %>% 
+  mutate(canton_name = as_factor(municipio10))
+
+# 2010 has missing value labels for municipio10. 
+
 # Filter only for 2021 ----------------------------------------------------
 
 ecu_ab_2021_raw <- 

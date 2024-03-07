@@ -23,24 +23,10 @@ library(stringr)
 
 ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
 
-# Temperature data 
-
-temperature_df <- read_csv("data/weather/temperature_processed.csv",
-                           show_col_types = FALSE)
-
-# Precipitation data
-
-precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
-                             show_col_types = FALSE)
-
-# Cantons data
-
-ecuador_cantons_df <- read_csv("data/other/ecuador_cantons.csv",
-                               show_col_types = FALSE)
-
 # AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
 # Apply or remove the labels for relevant variables
+# Create clean cantons names and ids to join to weather data later
 
 ecu_ab <-
     ecu_ab_raw %>% 
@@ -57,18 +43,18 @@ ecu_ab <-
                year %in% 2004:2008 ~ as_factor(canton),
                year == 2010 ~ as_factor(municipio10),
                year %in% c(2012,2014, 2016, 2019, 2023) ~ as_factor(municipio),
-               year == 2021 ~ as_factor(municipio1t))
-        )
+               year == 2021 ~ as_factor(municipio1t)),
+            canton_name_clean = str_to_lower(canton_name_ab) %>% 
+                                str_replace_all("cantón","") %>%
+                                str_remove("^[346]\\s*") %>%  
+                                str_trim())
 
 # Canton matching ------------------------------------------------------------
 
 # Extract unique canton names from the AB data
 
-numbers <- 1:9
-
 unique_cantons_ab <- 
     ecu_ab %>%
-    mutate(canton_name_clean = str_to_lower(canton_name_ab) %>% str_remove_all("cantón") %>% str_trim()) %>% 
     select(canton_id_ab, canton_name_ab, canton_name_clean) %>% 
     distinct(canton_name_clean, .keep_all = T) %>% 
     arrange(canton_name_clean)
