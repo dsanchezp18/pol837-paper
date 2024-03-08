@@ -9,7 +9,6 @@
 # Preliminaries -----------------------------------------------------------
 
 # Load libraries
-
 library(dplyr)
 library(haven)
 
@@ -18,6 +17,10 @@ library(haven)
 # Raw Merged Ecuador file (2004-2023)
 
 ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
+
+# 2010 file for Ecuador
+
+ecu_ab_2010 <- read_sav("data/americas_barometer/1707311029Ecuador_LAPOP_AmericasBarometer 2010 data set  approved v3.sav")
 
 # Cleaned Ecuador file (2008-2023)
 
@@ -167,7 +170,7 @@ ecu_ab_raw %>%
 ecu_2004_cases <-
   ecu_ab_raw %>%
   filter(year == 2004) %>%
-  select(canton) %>%
+  transmute(canton =  as_factor(canton)) %>%
   distinct(.keep_all = T) %>% 
   mutate(canton_name = as_factor(canton))
 
@@ -252,6 +255,12 @@ ecu_ab_raw %>%
             missing_municipio10 = sum(is.na(municipio10)),
             missing_municipio1t = sum(is.na(municipio1t)))
 
+# Count cases for the 2010 year
+
+ecu_ab_raw %>%
+  filter(year == 2010) %>%
+  summarise(n = n())
+
 # Look at the unique values for each variable
 
 ecu_2010_cases <-
@@ -261,7 +270,15 @@ ecu_2010_cases <-
   distinct(.keep_all = T) %>% 
   mutate(canton_name = as_factor(municipio10))
 
-# 2010 has missing value labels for municipio10. 
+# 2010 has missing value labels for municipio10.
+
+# Left join with the 2010 file to get the correct labels
+
+joined_ab_2010 <-
+  ecu_ab_raw %>%
+  filter(year == 2010) %>% 
+  select(idnum, municipio10) %>%
+  left_join(ecu_ab_2010 %>% select(idnum, municipio), by = "idnum")
 
 # Filter only for 2021 ----------------------------------------------------
 

@@ -14,8 +14,10 @@
 library(dplyr)
 library(ggplot2)
 library(haven)
+library(readr)
 library(lubridate)
 library(stringr)
+library(fuzzyjoin)
 
 # Load AmericasBarometer (AB) data
 
@@ -23,13 +25,41 @@ library(stringr)
 
 ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav")
 
+# 2010 file for Ecuador
+
+ecu_ab_2010_raw <- read_sav("data/americas_barometer/1707311029Ecuador_LAPOP_AmericasBarometer 2010 data set  approved v3.sav")
+
+# Weather data
+
+min_temperature_df <- read_csv("data/weather/min_temperature.csv",
+                               show_col_types = FALSE)
+
+max_temperature_df <- read_csv("data/weather/max_temperature.csv",
+                                 show_col_types = FALSE)
+
+precipitation_raw <- read_csv("data/weather/precipitation.csv",
+                              show_col_types = FALSE)
+
+# Cantons data, clean to match with AB canton names
+
+ecuador_cantons_df <- 
+    read_csv("data/other/ecuador_cantons.csv",
+              show_col_types = FALSE) %>% 
+    mutate(canton_name_clean = str_to_lower(canton_name) %>% 
+                               str_replace_all("cantón","") %>% 
+                               str_remove("^[346]\\s*") %>%  
+                               str_trim()) %>% 
+    arrange(canton_name_clean)
+
 # AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
 # Apply or remove the labels for relevant variables
+# Join the 2010 file with the main file to get 2010 canton names
 # Create clean cantons names and ids to join to weather data later
 
 ecu_ab <-
     ecu_ab_raw %>% 
+    left_join(ecu_ab_2010_raw %>% select(idnum, municipio2010 = municipio), by = "idnum") %>%
     mutate(year = zap_labels(year),
            wave = zap_labels(wave),
            pais = as_factor(pais),
@@ -41,7 +71,7 @@ ecu_ab <-
                year == 2021 ~ as.character(municipio1t)),
            canton_name_ab = case_when(
                year %in% 2004:2008 ~ as_factor(canton),
-               year == 2010 ~ as_factor(municipio10),
+               year == 2010 ~ as_factor(municipio2010),
                year %in% c(2012,2014, 2016, 2019, 2023) ~ as_factor(municipio),
                year == 2021 ~ as_factor(municipio1t)),
             canton_name_clean = str_to_lower(canton_name_ab) %>% 
@@ -49,7 +79,7 @@ ecu_ab <-
                                 str_remove("^[346]\\s*") %>%  
                                 str_trim())
 
-# Canton matching ------------------------------------------------------------
+# Canton name matching ------------------------------------------------------------
 
 # Extract unique canton names from the AB data
 
@@ -58,6 +88,20 @@ unique_cantons_ab <-
     select(canton_id_ab, canton_name_ab, canton_name_clean) %>% 
     distinct(canton_name_clean, .keep_all = T) %>% 
     arrange(canton_name_clean)
+
+# Match unique canton names from the AB data with the canton names from the cantons data
+# Use the Jaro-Winkler method to match the names (string distance matching)
+
+matched_ab_cantons <- 
+    unique_cantons_ab %>% 
+    stringdist_left_join(ecuador_cantons_df, 
+                         by = "canton_name_clean", 
+                         method = "jw", 
+                         max_dist = 0.1, 
+                         distance_col = "string_distance") %>% 
+    rename("canton_name_clean_ab" = canton_name_clean.x,
+           "canton_name_clean_dpa" = canton_name_clean.y) %>% 
+    arrange(desc(string_distance))
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
