@@ -48,14 +48,18 @@ ecuador_cantons_df <-
     mutate(canton_name_clean = str_to_lower(canton_name) %>% 
                                str_replace_all("cantón","") %>% 
                                str_remove("^[346]\\s*") %>%  
-                               str_trim()) %>% 
-    arrange(canton_name_clean)
+                               str_trim(),
+           province_name_clean = str_to_lower(prov) %>% 
+                                 str_remove("^[346]\\s*") %>%  
+                                 str_trim()) %>% 
+    arrange(canton_name_clean, province_name_clean)
 
 # AB Data Cleaning (full file 2004-2023) ------------------------------------------------------------
 
 # Apply or remove the labels for relevant variables
 # Join the 2010 file with the main file to get 2010 canton names
 # Create clean cantons names and ids to join to weather data later
+# Also do the provinces, will need them for doing a canton-province join due to cantons having the same name in different provinces
 
 ecu_ab <-
     ecu_ab_raw %>% 
@@ -76,32 +80,52 @@ ecu_ab <-
                year == 2021 ~ as_factor(municipio1t)),
             canton_name_clean = str_to_lower(canton_name_ab) %>% 
                                 str_replace_all("cantón","") %>%
+                                str_replace_all("distrito metropolitano de","") %>%
                                 str_remove("^[346]\\s*") %>%  
-                                str_trim())
+                                str_trim(),
+            province_id_ab = if_else(year == 2021, as.character(prov1t), as.character(prov)),
+            province_name_ab = if_else(year == 2021, as_factor(prov1t), as_factor(prov)),
+            province_name_clean = str_to_lower(province_name_ab) %>% 
+                                  str_trim())
 
 # Canton name matching ------------------------------------------------------------
 
-# Extract unique canton names from the AB data
+# Extract unique canton-province combinations from the AB data
 
 unique_cantons_ab <- 
     ecu_ab %>%
-    select(canton_id_ab, canton_name_ab, canton_name_clean) %>% 
-    distinct(canton_name_clean, .keep_all = T) %>% 
+    select(canton_id_ab, canton_name_clean, province_name_clean) %>% 
+    distinct(canton_name_clean, province_name_clean, .keep_all = T) %>% 
     arrange(canton_name_clean)
 
 # Match unique canton names from the AB data with the canton names from the cantons data
-# Use the Jaro-Winkler method to match the names (string distance matching)
+# Use the JW method to match the names (string distance matching)
 
 matched_ab_cantons <- 
     unique_cantons_ab %>% 
-    stringdist_left_join(ecuador_cantons_df, 
-                         by = "canton_name_clean", 
-                         method = "jw", 
-                         max_dist = 0.1, 
-                         distance_col = "string_distance") %>% 
-    rename("canton_name_clean_ab" = canton_name_clean.x,
-           "canton_name_clean_dpa" = canton_name_clean.y) %>% 
-    arrange(desc(string_distance))
+    stringdist_left_join(ecuador_cantons_df %>% select(canton_id, canton_name_clean_dpa = canton_name_clean, province_name_dpa = province_name_clean, canton_name), 
+                         by = c("canton_name_clean" = "canton_name_clean_dpa"), 
+                         method = "jw",
+                         max_dist = 0.1,
+                         distance_col = "string_distance_cantons") %>% 
+    arrange(desc(string_distance_cantons))
+
+# Most are good matches, but some are not. 
+
+# Join the matched canton names with the AB data ------------------------------------------------------------
+
+# Join based on province and canton names
+
+ecu_ab_with_cantons <- 
+    ecu_ab %>% 
+    left_join(matched_ab_cantons %>% select(canton_name_clean_dpa, province_name_dpa, canton_id, canton_name), 
+              by = c("canton_name_clean" = "canton_name_clean_dpa", "province_name_clean" = "province_name_dpa")) 
+
+# Count missing values for canton names (matched) per year
+
+ecu_ab_with_cantons %>% 
+    group_by(year) %>% 
+    summarise(missing_canton = sum(is.na(canton_name)))
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 

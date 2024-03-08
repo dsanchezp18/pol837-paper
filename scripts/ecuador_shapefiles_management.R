@@ -38,18 +38,6 @@ unzip("data/other/ecuador_dpa_shapefile.zip", exdir = "data/other")
 
 file.remove("data/other/ecuador_dpa_shapefile.zip")
 
-# Extracting canton identifiers and names ---------------------------------------
-
-# Read the shapefile for cantons 
-
-ecuador_cantons <- 
-  st_read("data/other/SHP/nxcantones.shp")  %>% 
-  st_simplify(preserveTopology = T, dTolerance = 100)  %>% 
-  as_tibble()  %>% 
-  clean_names()  %>%
-  select(canton_id = dpa_canton, canton_name = dpa_descan, prov = dpa_despro) %>% 
-  distinct(canton_id, .keep_all = T)
-
 # Extracting province identifiers and names -------------------------------------
 
 # Read the shapefile for provinces
@@ -61,6 +49,19 @@ ecuador_provinces <-
   clean_names()  %>%
   select(prov_id = dpa_provin, prov_name = dpa_despro) %>% 
   distinct(prov_id, .keep_all = T)
+
+# Extracting canton identifiers and names ---------------------------------------
+
+# Read the shapefile for cantons, join with province names and get identifier for provinces
+
+ecuador_cantons <- 
+  st_read("data/other/SHP/nxcantones.shp")  %>% 
+  st_simplify(preserveTopology = T, dTolerance = 100)  %>% 
+  as_tibble()  %>% 
+  clean_names()  %>%
+  select(canton_id = dpa_canton, canton_name = dpa_descan, prov = dpa_despro) %>% 
+  distinct(canton_id, .keep_all = T) %>% 
+  left_join(ecuador_provinces, by = c("prov" = "prov_name"))
 
 # Export metadata ----------------------------------------------------
 

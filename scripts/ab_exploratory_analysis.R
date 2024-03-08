@@ -204,6 +204,13 @@ ecu_2006_cases <-
   distinct(.keep_all = T) %>% 
   mutate(canton_name = as_factor(canton))
 
+# Look at province missing values by year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_canton = sum(is.na(prov))) %>%
+  ungroup()
+
 # Look at 2008 ----------------------------------------------------
 
 # Look at the canton variables for 2008
