@@ -146,6 +146,19 @@ ecu_ab_raw %>%
 
 # Look at year 2004 ----------------------------------------------------
 
+# Get 2004 only from the total
+
+ecu_ab_2004_raw <- 
+  ecu_ab_raw %>% 
+  filter(year == 2004)
+
+# Get unique values, both labels and canton names, for 2004
+
+ecu_ab_2004_raw %>% 
+  transmute(canton, canton_name = as_factor(canton)) %>% 
+  distinct() %>% 
+  arrange(canton)
+
 # Look at the canton variables for 2004
 
 ecu_ab_raw %>%

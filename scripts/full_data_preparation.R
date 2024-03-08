@@ -95,37 +95,69 @@ ecu_ab <-
 unique_cantons_ab <- 
     ecu_ab %>%
     select(canton_id_ab, canton_name_clean, province_name_clean) %>% 
-    distinct(canton_name_clean, province_name_clean, .keep_all = T) %>% 
+    distinct(canton_id_ab, .keep_all = T) %>% 
     arrange(canton_name_clean)
+
+## Fuzzy matching of canton names ------------------------------------------------------------
 
 # Match unique canton names from the AB data with the canton names from the cantons data
 # Use the JW method to match the names (string distance matching)
 
-matched_ab_cantons <- 
+fuzzy_matches <- 
     unique_cantons_ab %>% 
-    stringdist_left_join(ecuador_cantons_df %>% select(canton_id, canton_name_clean_dpa = canton_name_clean, province_name_dpa = province_name_clean, canton_name), 
+    stringdist_left_join(ecuador_cantons_df %>% select(canton_id, canton_name_clean_dpa = canton_name_clean, province_name_dpa = prov), 
                          by = c("canton_name_clean" = "canton_name_clean_dpa"), 
                          method = "jw",
-                         max_dist = 0.1,
-                         distance_col = "string_distance_cantons") %>% 
+                         max_dist = 0.101,
+                         distance_col = "string_distance_cantons") %>%
     arrange(desc(string_distance_cantons))
 
-# Most are good matches, but some are not. 
+# Most are good matches, but some are not, filter out those that I manually checked that are not good matches
+# 913902 and 901302: bolivar, manabi
+# 
+correct_fuzzy_matches <-
+    fuzzy_matches %>% 
+    filter(!(canton_id_ab %in% c(913902, 901302)), !is.na(canton_id)) %>% 
+    select(canton_id_ab, canton_id)
+
+# Manual matching ------------------------------------------------------------
+
+# Get all NA matches and manually match them
+
+non_matches <- 
+    fuzzy_matches %>% 
+    filter(is.na(canton_id)) %>% 
+    select(canton_id_ab, canton_name_clean, province_name_clean)
+
+# Construct a manual matching table for the canton names that were not matched correctly
+
+manual_matches <- 
+    tibble(canton_id_ab = c(913902, 901302, 900036, 918902, 901802, 900205,900030, 900137,919907,900081,909907, 900907,900083,90907, 909908,900908,
+                            900084, 900177,900144, 900115, 91401, 917903, 900185, 900008, 900116,900147, 900148, 900209, 900106, 900011, 90106, 900049,900210,91001,923901,
+                            902301,92301, 90100, 914906, 900168, 900015, 900035, 909919, 900919, 900158, 909920),
+           canton_id = c(1302, 1302, 602,1802,1802,1802,402, 1302,1907,923,907,907,907,907, 908, 908, 908, 2201, 1307, 1108, 1401, 1703, 1703, 104, 1116, 1318, 1310, 1807,106, 106, 106, 504, 1808, 
+                         1001, 2301, 2301, 2301, 922, 1406, 1406,109, 401, 919, 919, 1316, 920)
+    ) %>% 
+    mutate_all(as.character)
+
+# Combine the correct fuzzy matches with the manual matches
+
+ab_cantons_to_dpa_cantons <- 
+    correct_fuzzy_matches %>% 
+    bind_rows(manual_matches)
 
 # Join the matched canton names with the AB data ------------------------------------------------------------
-
 # Join based on province and canton names
 
 ecu_ab_with_cantons <- 
     ecu_ab %>% 
-    left_join(matched_ab_cantons %>% select(canton_name_clean_dpa, province_name_dpa, canton_id, canton_name), 
-              by = c("canton_name_clean" = "canton_name_clean_dpa", "province_name_clean" = "province_name_dpa")) 
+    left_join(ab_cantons_to_dpa_cantons, by = "canton_id_ab")
 
 # Count missing values for canton names (matched) per year
 
 ecu_ab_with_cantons %>% 
     group_by(year) %>% 
-    summarise(missing_canton = sum(is.na(canton_name)))
+    summarise(missing_canton = sum(is.na(canton_id)))
 
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
