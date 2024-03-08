@@ -189,3 +189,7 @@ df <-
     left_join(min_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
     left_join(max_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
     left_join(precipitation_df, by = c("interview_date" = "date", "canton_id"))
+
+# Export the final data ------------------------------------------------------------
+
+write_csv(df, "data/full_df.csv")
