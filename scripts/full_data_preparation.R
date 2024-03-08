@@ -32,13 +32,22 @@ ecu_ab_2010_raw <- read_sav("data/americas_barometer/1707311029Ecuador_LAPOP_Ame
 # Weather data
 
 min_temperature_df <- read_csv("data/weather/min_temperature.csv",
-                               show_col_types = FALSE)
+                               show_col_types = FALSE) %>% 
+                      select(canton_id,
+                             date, 
+                             min_temperature = value)
 
 max_temperature_df <- read_csv("data/weather/max_temperature.csv",
-                                 show_col_types = FALSE)
+                                show_col_types = FALSE) %>%
+                        select(canton_id,
+                               date, 
+                               max_temperature = value)                   
 
-precipitation_raw <- read_csv("data/weather/precipitation.csv",
-                              show_col_types = FALSE)
+precipitation_df <- read_csv("data/weather/precipitation.csv",
+                              show_col_types = FALSE) %>% 
+                        select(canton_id,
+                               date, 
+                               precipitation = value)
 
 # Cantons data, clean to match with AB canton names
 
@@ -162,15 +171,21 @@ ecu_ab_with_cantons %>%
 # Data cleaning (2008-2023) ------------------------------------------------------------
 
 # Select only 2008-2023 and clean the data
+# Create a date variable from the fecha variable
 
 ecu_ab_2008_2023 <- 
-    ecu_ab %>% 
+    ecu_ab_with_cantons %>% 
     filter(year >= 2008)  %>% 
     mutate(interview_date = parse_date_time(fecha, order = "dby"))
 
-# Joining the AB with the weather data ------------------------------------------------------------
+# Canton and weather data ------------------------------------------------------------
 
-joined_ab_weather <- 
-    ecu_ab_2008_2023 %>% 
-    left_join(temperature_df, by = c("year", "canton")) %>% 
-    left_join(precipitation_df, by = c("year", "canton"))
+# Join the AB data with the canton data to get the canton names and ids
+# Also join with the weather data, by day and canton, to get daily temperatures and precipitation
+
+df <- 
+    ecu_ab_2008_2023 %>%
+    left_join(ecuador_cantons_df %>% select(canton_id, canton_dpa = canton_name, province_dpa = prov, prov_id), by = "canton_id") %>% 
+    left_join(min_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
+    left_join(max_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
+    left_join(precipitation_df, by = c("interview_date" = "date", "canton_id"))
