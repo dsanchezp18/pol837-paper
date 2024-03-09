@@ -12,6 +12,7 @@
 
 library(readr)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(patchwork)
 library(lubridate)
@@ -19,6 +20,30 @@ library(lubridate)
 # Load the full dataset
 
 load("data/full_df.RData")
+
+# Load weather data on its own
+
+temperature_min <- read_csv("data/weather/min_temperature.csv")
+
+temperature_max <- read_csv("data/weather/max_temperature.csv")
+
+precipitation <- read_csv("data/weather/precipitation.csv")
+
+cantons_df <- read_csv("data/other/ecuador_cantons.csv")
+
+# Quick data preparation for the weather data --------------------------------
+
+temperature_df <- 
+  temperature_min %>% 
+  rename(min_temperature = value) %>%
+  left_join(temperature_max %>% select(date, canton_id, max_temperature = value), by = c("date", "canton_id")) %>% 
+  mutate(avg_temp = (min_temperature + max_temperature) / 2) %>% 
+  left_join(cantons_df, by = "canton_id")
+
+precipitation_df <- 
+  precipitation %>% 
+  rename(precipitation = value) %>% 
+  left_join(cantons_df, by = "canton_id")
 
 # Survey responses --------------------------------------------------------
 
@@ -77,3 +102,57 @@ ggsave("figures/interview_dates_barchart.png",
         height = 10,
         units = "cm", 
         dpi = 800)
+
+# Temperature visualization --------------------------------------------------
+
+# Get the overall sd for the temperatures
+
+temperature_sd <- 
+  temperature_df %>% 
+  summarise(sd_avg_temp = sd(avg_temp, na.rm = T),
+            sd_min_temp = sd(min_temperature, na.rm = T),
+            sd_max_temp = sd(max_temperature, na.rm = T)) %>% 
+  data.frame()
+  
+# Monthly mean temperatures, all country (Polar coordinates)
+
+ecuador_monthly_mean_temps <-
+  temperature_df %>% 
+  group_by(month = month(date, label = T)) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T),
+            min_temp = mean(min_temperature, na.rm = T),
+            max_temp = mean(max_temperature, na.rm = T),
+            sd_avg_temp = sd(avg_temp, na.rm = T),
+            sd_min_temp = sd(min_temperature, na.rm = T),
+            sd_max_temp = sd(max_temperature, na.rm = T)) %>%
+  pivot_longer(cols = c(avg_temp, min_temp, max_temp, sd_avg_temp, sd_min_temp, sd_max_temp), 
+               names_to = "temperature_type", 
+               values_to = "value") %>% 
+  mutate(base = case_when(
+    temperature_type == "avg_temp" ~ 19.5,
+    temperature_type == "min_temp" ~ 12.5,
+    temperature_type == "max_temp" ~ 23
+  )) %>%
+  arrange(temperature_type, month)
+
+ecuador_monthly_mean_temps %>% 
+  filter(temperature_type %in% c("avg_temp", "min_temp", "max_temp")) %>%
+  ggplot(aes(x = as.factor(month), y = value - base, group = as.factor(month))) +
+  geom_col() +
+  facet_wrap(~temperature_type) +
+  labs(title = "Monthly Average Temperature for Ecuador",
+       x = "Month",
+       y = "Average Temperature (C)")  + 
+  coord_polar()
+
+# Standard deviation of the monthly mean temperatures, all country (Polar coordinates)
+
+ecuador_monthly_mean_temps %>% 
+  filter(temperature_type %in% c("sd_min_temp", "sd_max_temp")) %>%
+  ggplot(aes(x = as.factor(month), y = value, group = as.factor(month))) +
+  geom_col() +
+  facet_wrap(~temperature_type) +
+  labs(title = "Standard Deviation of Monthly Average Temperature for Ecuador",
+       x = "Month",
+       y = "Standard Deviation (C)")  + 
+  coord_polar()

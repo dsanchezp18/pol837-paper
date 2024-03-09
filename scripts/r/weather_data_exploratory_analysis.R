@@ -17,11 +17,27 @@ library(lubridate)
 
 # Load the data
 
-temperature_df <- read_csv("data/weather/temperature_processed.csv",
-                           show_col_types = FALSE)
+temperature_min <- read_csv("data/weather/min_temperature.csv")
 
-precipitation_df <- read_csv("data/weather/precipitation_processed.csv",
-                             show_col_types = FALSE)
+temperature_max <- read_csv("data/weather/max_temperature.csv")
+
+precipitation <- read_csv("data/weather/precipitation.csv")
+
+cantons_df <- read_csv("data/other/ecuador_cantons.csv")
+
+# Quick data preparation --------------------------------------------------
+
+temperature_df <- 
+  temperature_min %>% 
+  rename(min_temperature = value) %>%
+  left_join(temperature_max %>% select(date, canton_id, max_temperature = value), by = c("date", "canton_id")) %>% 
+  mutate(avg_temp = (min_temperature + max_temperature) / 2) %>% 
+  left_join(cantons_df, by = "canton_id")
+
+precipitation_df <- 
+  precipitation %>% 
+  rename(precipitation = value) %>% 
+  left_join(cantons_df, by = "canton_id")
 
 # Exploratory Analysis -----------------------------------------------------
 
