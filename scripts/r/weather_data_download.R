@@ -42,6 +42,3 @@ write_csv(min_temperature_df, "data/weather/min_temperature.csv")
 write_csv(max_temperature_df, "data/weather/max_temperature.csv")
 
 write_csv(precipitation_df, "data/weather/precipitation.csv")
-
-
-

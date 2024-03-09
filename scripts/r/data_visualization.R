@@ -172,7 +172,5 @@ temperature_df %>%
   ggplot(aes(x = month_year, y = value, color = temperature_type)) +
   geom_line() +
   scale_x_date(date_labels = "%b %Y", date_breaks = "2 months") +
-  labs(title = "Time Series of Temperature for Ecuador",
-       x = "Date",
-       y = "Temperature (C)")  + 
-  scale_color_discrete(palette = "Set1")
+  labs(x = "Date",
+       y = "Temperature (C)")
