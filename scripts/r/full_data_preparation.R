@@ -176,7 +176,7 @@ ecu_ab_with_cantons %>%
 ecu_ab_2008_2023 <- 
     ecu_ab_with_cantons %>% 
     filter(year >= 2008)  %>% 
-    mutate(interview_date = parse_date_time(fecha, order = "dby"))
+    mutate(interview_date = dmy(fecha))
 
 # Canton and weather data ------------------------------------------------------------
 
