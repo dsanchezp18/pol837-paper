@@ -192,4 +192,10 @@ df <-
 
 # Export the final data ------------------------------------------------------------
 
+# As a CSV file
+
 write_csv(df, "data/full_df.csv")
+
+# As an RData file
+
+save(df, file = "data/full_df.RData")
