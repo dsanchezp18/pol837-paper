@@ -139,7 +139,8 @@ ecuador_monthly_mean_temps %>%
   filter(temperature_type %in% c("avg_temp", "min_temp", "max_temp")) %>%
   ggplot(aes(x = as.factor(month), y = value - base, group = as.factor(month))) +
   geom_col() +
-  facet_wrap(~temperature_type) +
+  #facet_wrap(~temperature_type) +
+  facet_grid(cols = vars(temperature_type)) +   
   labs(title = "Monthly Average Temperature for Ecuador",
        x = "Month",
        y = "Average Temperature (C)")  + 
@@ -156,3 +157,22 @@ ecuador_monthly_mean_temps %>%
        x = "Month",
        y = "Standard Deviation (C)")  + 
   coord_polar()
+
+# Do a time series of mean temperatures at the national level
+
+temperature_df %>%
+  mutate(month_year = floor_date(date, "month")) %>%
+  group_by(month_year) %>% 
+  summarise(avg_temp = mean(avg_temp, na.rm = T),
+            min_temp = mean(min_temperature, na.rm = T),
+            max_temp = mean(max_temperature, na.rm = T)) %>% 
+  pivot_longer(cols = c(avg_temp, min_temp, max_temp), 
+               names_to = "temperature_type", 
+               values_to = "value") %>% 
+  ggplot(aes(x = month_year, y = value, color = temperature_type)) +
+  geom_line() +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "2 months") +
+  labs(title = "Time Series of Temperature for Ecuador",
+       x = "Date",
+       y = "Temperature (C)")  + 
+  scale_color_discrete(palette = "Set1")
