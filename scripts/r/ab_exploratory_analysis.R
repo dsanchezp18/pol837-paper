@@ -22,6 +22,10 @@ ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_Americ
 
 ecu_ab_2010 <- read_sav("data/americas_barometer/1707311029Ecuador_LAPOP_AmericasBarometer 2010 data set  approved v3.sav")
 
+# 2021 file for Ecuador
+
+ecu_ab_2021 <- read_dta("data/americas_barometer/ECU_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
+
 # Cleaned Ecuador file (2008-2023)
 
 # Analysis ----------------------------------------------------------------
@@ -144,6 +148,32 @@ ecu_ab_raw %>%
   summarise(n = n())  %>%
   ungroup()
 
+# Missing values of basic variables, by year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_ur = sum(is.na(ur)),
+            missing_q1 = sum(is.na(q1)),
+            missing_ur1new = sum(is.na(ur1new)),
+            missing_q2 = sum(is.na(q2)),
+            missing_ed = sum(is.na(ed)),
+            missing_edre = sum(is.na(edre)))
+        
+# Joining data with the 2021 file to get the gender variable
+
+ecu_joined_2021<-
+  ecu_ab_raw %>%
+  left_join(ecu_ab_2021 %>% select(idnum, uniq_id, q1tb), by = c("idnum" = "uniq_id"))
+
+# Look at the missing values of the gender variable
+
+ecu_joined_2021 %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q1tb = sum(is.na(q1tb))) %>% 
+  mutate(perc_q1tb = missing_q1tb / total_obs)
+
 # Look at the m1 variable, presidential job approval
 
 ecu_ab_raw %>%
@@ -157,6 +187,15 @@ ecu_ab_raw %>%
   summarise(total_obs = n(),
             missing_m1 = sum(is.na(m1))) %>%
   mutate(perc_m1 = missing_m1 / total_obs) %>%
+  ungroup()
+
+# Count missing values of the l1 variable
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_l1 = sum(is.na(l1))) %>%
+  mutate(perc_l1 = missing_l1 / total_obs) %>%
   ungroup()
 
 # Look at year 2004 ----------------------------------------------------

@@ -30,6 +30,10 @@ ecu_ab_raw <- read_sav("data/americas_barometer/ECU_merge_2004-2023_LAPOP_Americ
 
 ecu_ab_2010_raw <- read_sav("data/americas_barometer/1707311029Ecuador_LAPOP_AmericasBarometer 2010 data set  approved v3.sav")
 
+# 2021 file for Ecuador
+
+ecu_ab_2021_raw <- read_dta("data/americas_barometer/ECU_2021_LAPOP_AmericasBarometer_v1.2_w.dta")
+
 # Weather data
 
 min_temperature_df <- read_csv("data/weather/min_temperature.csv",
@@ -74,6 +78,7 @@ ecuador_cantons_df <-
 ecu_ab <-
     ecu_ab_raw %>% 
     left_join(ecu_ab_2010_raw %>% select(idnum, municipio2010 = municipio), by = "idnum") %>%
+    left_join(ecu_ab_2021_raw %>% select(uniq_id, q1tb), by = c("idnum" = "uniq_id")) %>%
     mutate(year = zap_labels(year),
            wave = zap_labels(wave),
            pais = as_factor(pais),
@@ -97,14 +102,36 @@ ecu_ab <-
             province_name_ab = if_else(year == 2021, as_factor(prov1t), as_factor(prov)),
             province_name_clean = str_to_lower(province_name_ab) %>% 
                                   str_trim(),
+            sex = case_when(
+                year == 2021 & q1tb == 1 ~ "Male",
+                year == 2022 & q1tb == 2 ~ "Female",
+                year == 2021 & q1tb == 3 ~ NA_character_,
+                year != 2021 & q1 == 1 ~ "Male",
+                year != 2021 & q1 == 2 ~ "Female"
+            ) %>% forcats::as_factor() %>% fct_relevel("Male"),
+            urban_rural = case_when(
+                year == 2021 & ur1new %in% c(1,2) ~ "Urban",
+                year == 2021 & ur1new %in% c(3,4) ~ "Rural",
+                year != 2021 & ur == 1 ~ "Urban",
+                year != 2021 & ur == 2 ~ "Rural"
+            ) %>% forcats::as_factor() %>% fct_relevel("Urban"),
+            highest_education_2021 = case_when(
+                ed == 0 ~ "None",
+                ed %>% between(1, 7) ~ "Primary",
+                ed %>% between(8, 13) ~ "Secondary",
+                ed >= 14 ~ "Superior"),
+            education = case_when(
+                year == 2021 & edr == 0 ~ "None",
+                year == 2021 & edr == 1 ~ "Primary",
+                year == 2021 & edr == 2 ~ "Secondary",
+                year == 2021 & edr == 3 ~ "Superior",
+                year != 2021 ~ highest_education_2021),
             pres_approval_rating = case_match(m1, 
                                               c(1,2) ~ "Approves",
                                               3 ~ "Indifferent",
-                                              c(4,5) ~ "Disapproves"
-                                              ),
+                                              c(4,5) ~ "Disapproves"),
             approves_president =  if_else(pres_approval_rating == "Approve", "Approves", "Indifferent or Disapproves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Disapproves"),
-            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves")
-        )
+            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"))
 
 # Canton name matching ------------------------------------------------------------
 

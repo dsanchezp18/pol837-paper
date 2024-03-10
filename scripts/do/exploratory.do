@@ -51,7 +51,17 @@ tab municipio08 if year == 2010
 
 tab canton if year == 2010
 
-tab municiopio1t if year == 2010
+**tab municiopio1t if year == 2010
+
+* Look at 2021 only
+
+preserve
+
+use "data/americas_barometer/ECU_2021_LAPOP_AmericasBarometer_v1.2_w.dta", clear
+
+tab q1tb
+
+restore
 
 // ------------------------------------- Finalizing script ----------------------------------------- //
 
