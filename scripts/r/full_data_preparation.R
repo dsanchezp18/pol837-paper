@@ -131,7 +131,15 @@ ecu_ab <-
                                               3 ~ "Indifferent",
                                               c(4,5) ~ "Disapproves"),
             approves_president =  if_else(pres_approval_rating == "Approve", "Approves", "Indifferent or Disapproves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Disapproves"),
-            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"))
+            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"),
+            ideology = l1,
+            corruption_perception = if_else(exc7 >= 2, "Corrupt", "Not Corrupt") %>% forcats::as_factor() %>% fct_relevel("Not Corrupt"),
+            corruption_tolerance = if_else(exc18 == 1, "Tolerant", "Not Tolerant") %>% forcats::as_factor() %>% fct_relevel("Not Tolerant"),
+            democracy_support = if_else(ing4 >= 5, "Supports", "Does Not Support") %>% forcats::as_factor() %>% fct_relevel("Does Not Support"),
+            political_pride = zap_labels(b4),
+            confidence_justice = zap_labels(b10a),
+            confidence_police = zap_labels(b18),
+            confidence_local_gov = zap_labels(b32))
 
 # Canton name matching ------------------------------------------------------------
 

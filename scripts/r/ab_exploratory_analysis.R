@@ -198,6 +198,102 @@ ecu_ab_raw %>%
   mutate(perc_l1 = missing_l1 / total_obs) %>%
   ungroup()
 
+# M2, congress job approval
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_m2 = sum(is.na(m2))) %>%
+  mutate(perc_m2 = missing_m2 / total_obs) %>%
+  ungroup()
+
+# exc7, corruption perception
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_exc7 = sum(is.na(exc7))) %>%
+  mutate(perc_exc7 = missing_exc7 / total_obs) %>%
+  ungroup()
+
+# exc18, corruption tolerance
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_exc18 = sum(is.na(exc18))) %>%
+  mutate(perc_exc18 = missing_exc18 / total_obs) %>%
+  ungroup()
+
+# ing4, support for democracy
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_ing4 = sum(is.na(ing4))) %>%
+  mutate(perc_ing4 = missing_ing4 / total_obs) %>%
+  ungroup()
+
+# Look at many confidence in institutions variables (b4 thru b37)
+
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_b4 = sum(is.na(b4)),
+            missing_b6 = sum(is.na(b6)),
+            missing_b10 = sum(is.na(b10a)),
+            missing_b11 = sum(is.na(b11)),
+            missing_b12 = sum(is.na(b12)),
+            missing_b13 = sum(is.na(b13)),
+            missing_b14 = sum(is.na(b14)),
+            missing_b15 = sum(is.na(b15)),
+            missing_b16 = sum(is.na(b16)),
+            missing_b17 = sum(is.na(b17)),
+            missing_b18 = sum(is.na(b18)),
+            missing_b19 = sum(is.na(b19)),
+            missing_b20 = sum(is.na(b20)),
+            missing_b21 = sum(is.na(b20a)),
+            missing_b22 = sum(is.na(b21)),
+            missing_b23 = sum(is.na(b21a)),
+            missing_b24 = sum(is.na(b23)),
+            missing_b25 = sum(is.na(b31)),
+            missing_b26 = sum(is.na(b32)),
+            missing_b27 = sum(is.na(b33)),
+            missing_b28 = sum(is.na(b37)),
+            missing_b29 = sum(is.na(b39)),
+            missing_b30 = sum(is.na(b40)),
+            missing_b31 = sum(is.na(b47)),
+            missing_b32 = sum(is.na(b42)),
+            missing_b33 = sum(is.na(b44)),
+            missing_b34 = sum(is.na(b46)),
+            missing_b35 = sum(is.na(b46a)),
+            missing_b36 = sum(is.na(b47a)))
+
+# Calculate the percent missing with transmute of b32 and cosmun12
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_b32 = sum(is.na(b32)),
+            missing_cosmun12 = sum(is.na(cosmun12))) %>% 
+  transmute(year, perc_b32 = missing_b32 / total_obs,
+            perc_cosmun12 = missing_cosmun12 / total_obs)
+
+# Look at missing values of the soct1, soct2, and soct3 variables
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_soct1 = sum(is.na(soct1)),
+            missing_soct2 = sum(is.na(soct2)),
+            missing_soct3 = sum(is.na(soct3)),
+            missing_idio2 = sum(is.na(idio2)),
+            missing_ocup = sum(is.na(ocup4a))) %>%
+  mutate(perc_soct1 = missing_soct1 / total_obs,
+         perc_soct2 = missing_soct2 / total_obs,
+         perc_soct3 = missing_soct3 / total_obs)
+
 # Look at year 2004 ----------------------------------------------------
 
 # Get 2004 only from the total
