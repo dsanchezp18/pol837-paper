@@ -1,0 +1,30 @@
+---
+title: "My Research Paper Title"
+subtitle: "POL837 Research Paper"
+date: "2024-03-08"
+date-format: "MMMM YYYY"
+author: "Daniel Sánchez Pazmiño"
+format: pdf
+pdf-engine: xelatex
+mainfont: Times New Roman
+monofont: Times New Roman
+mathfont: "Libertinus Math"
+include-in-header:
+  text: |
+    \usepackage{lipsum}
+    \newfontfamily\tfont{Times New Roman}
+    \addtokomafont{title}{\tfont}
+    \newfontfamily\sfont{Times New Roman}tart
+    \addtokomafont{section}{\sfont}
+    \usepackage{scrlayer-scrpage}
+    \lofoot{\thepage}
+# reference-doc: "apa_format_reference_doc.docx"
+# bibliography: "one_pager_bibliography.bib"
+# csl: "apa_one_pager.csl"
+# suppress-bibliography: true
+--- 
+
+\lipsum[1]
+
+$$ y_{it} = \alpha + \beta x_{it} + \gamma_t + \delta_i + \epsilon_{it} $$
+
