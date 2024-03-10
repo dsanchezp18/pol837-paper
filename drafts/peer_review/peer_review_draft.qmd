@@ -1,11 +1,14 @@
 ---
 title: "My Research Paper Title"
 subtitle: "POL837 Research Paper"
-date: "2024-03-08"
-date-format: "MMMM YYYY"
-author: "Daniel Sánchez Pazmiño"
+#date: "2024-03-08"
+#date-format: "MMMM YYYY"
+author: 
+    - name: "Daniel Sánchez Pazmiño"
+institute: "Simon Fraser University"
 format: pdf
 pdf-engine: xelatex
+number-sections: true
 mainfont: Times New Roman
 monofont: Times New Roman
 mathfont: "Libertinus Math"
@@ -14,17 +17,72 @@ include-in-header:
     \usepackage{lipsum}
     \newfontfamily\tfont{Times New Roman}
     \addtokomafont{title}{\tfont}
-    \newfontfamily\sfont{Times New Roman}tart
+    \newfontfamily\sfont{Times New Roman}
     \addtokomafont{section}{\sfont}
-    \usepackage{scrlayer-scrpage}
-    \lofoot{\thepage}
+    \addtokomafont{subsection}{\sfont}
+    \renewcommand{\thesection}{\Roman{section}}
+    \renewcommand{\thesubsection}{\Alph{subsection}}
 # reference-doc: "apa_format_reference_doc.docx"
 # bibliography: "one_pager_bibliography.bib"
 # csl: "apa_one_pager.csl"
-# suppress-bibliography: true
---- 
+knitr: 
+  opts_chunk: 
+      echo : false
+      message: false
+      warning: false
+---
+```{r}
+#| label: setup
+
+# Load libraries
+
+library(modelsummary)
+library(knitr)
+library(here)
+
+# Execute the models code to get results
+
+source(here("scripts/r/empirical_analysis.R"))
+
+```
+```{=tex}
+\thispagestyle{empty}
+
+\begin{center}
+
+POL837 Issues in Comparative Politics
+
+Spring 2024
+
+\textbf{Student ID}: 301560593
+
+Professor Eline de Rooij, Ph.D.
+
+\textbf{Word count}: XXXX
+
+\vspace{0.5cm}
+
+\end{center}
+
+\begin{abstract}
 
 \lipsum[1]
 
-$$ y_{it} = \alpha + \beta x_{it} + \gamma_t + \delta_i + \epsilon_{it} $$
+\end{abstract}
 
+\clearpage
+```
+
+# Introduction
+
+# Background
+
+# Empirical Approach
+
+## Data
+
+## Identification Strategy
+
+# Results
+
+# Conclusion
