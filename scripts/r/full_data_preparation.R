@@ -82,6 +82,7 @@ ecu_ab <-
     mutate(year = zap_labels(year),
            wave = zap_labels(wave),
            pais = as_factor(pais),
+           region = case_match(estratopri, 901 ~ "Costa", 902 ~ "Sierra", 903 ~ "Oriente") %>% forcats::as_factor() %>% fct_relevel("Sierra"),
            fecha = if_else(fecha == "NR", NA_character_, fecha),
            canton_id_ab = case_when(
                year %in% 2004:2008 ~ as.character(canton),
@@ -109,6 +110,7 @@ ecu_ab <-
                 year != 2021 & q1 == 1 ~ "Male",
                 year != 2021 & q1 == 2 ~ "Female"
             ) %>% forcats::as_factor() %>% fct_relevel("Male"),
+            age = q2, 
             urban_rural = case_when(
                 year == 2021 & ur1new %in% c(1,2) ~ "Urban",
                 year == 2021 & ur1new %in% c(3,4) ~ "Rural",
@@ -133,6 +135,9 @@ ecu_ab <-
             approves_president =  if_else(pres_approval_rating == "Approves", 1, 0),
             disapproves_president = if_else(pres_approval_rating == "Disapproves", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"),
             ideology = l1,
+            labour_market = case_match(ocup4a, c(1,2) ~ "Employed", 3 ~ "Unemployed", c(4:7) ~ "Not in Labour Force"),
+            country_econ_situation = if_else(soct2 > 2, "Worse", "Better or Same") %>% forcats::as_factor() %>% fct_relevel("Better or Same"),
+            personal_econ_situation = if_else(idio2 > 2, "Worse", "Better or Same") %>% forcats::as_factor() %>% fct_relevel("Better or Same"),
             corruption_perception = if_else(exc7 >= 2, "Corrupt", "Not Corrupt") %>% forcats::as_factor() %>% fct_relevel("Not Corrupt"),
             corruption_tolerance = if_else(exc18 == 1, "Tolerant", "Not Tolerant") %>% forcats::as_factor() %>% fct_relevel("Not Tolerant"),
             democracy_support = if_else(ing4 >= 5, "Supports", "Does Not Support") %>% forcats::as_factor() %>% fct_relevel("Does Not Support"),

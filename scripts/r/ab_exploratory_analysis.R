@@ -236,7 +236,6 @@ ecu_ab_raw %>%
 
 # Look at many confidence in institutions variables (b4 thru b37)
 
-
 ecu_ab_raw %>%
   group_by(year) %>%
   summarise(total_obs = n(),
