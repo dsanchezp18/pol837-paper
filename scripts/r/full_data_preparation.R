@@ -130,8 +130,8 @@ ecu_ab <-
                                               c(1,2) ~ "Approves",
                                               3 ~ "Indifferent",
                                               c(4,5) ~ "Disapproves"),
-            approves_president =  if_else(pres_approval_rating == "Approve", "Approves", "Indifferent or Disapproves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Disapproves"),
-            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"),
+            approves_president =  if_else(pres_approval_rating == "Approves", 1, 0),
+            disapproves_president = if_else(pres_approval_rating == "Disapproves", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"),
             ideology = l1,
             corruption_perception = if_else(exc7 >= 2, "Corrupt", "Not Corrupt") %>% forcats::as_factor() %>% fct_relevel("Not Corrupt"),
             corruption_tolerance = if_else(exc18 == 1, "Tolerant", "Not Tolerant") %>% forcats::as_factor() %>% fct_relevel("Not Tolerant"),
@@ -227,13 +227,15 @@ ecu_ab_2008_2023 <-
 
 # Join the AB data with the canton data to get the canton names and ids
 # Also join with the weather data, by day and canton, to get daily temperatures and precipitation
+# Compute or include any other relevant variables as needed
 
 df <- 
     ecu_ab_2008_2023 %>%
     left_join(ecuador_cantons_df %>% select(canton_id, canton_dpa = canton_name, province_dpa = prov, prov_id), by = "canton_id") %>% 
     left_join(min_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
     left_join(max_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
-    left_join(precipitation_df, by = c("interview_date" = "date", "canton_id"))
+    left_join(precipitation_df, by = c("interview_date" = "date", "canton_id")) %>% 
+    mutate(avg_temperature = (min_temperature + max_temperature) / 2)
 
 # Count missing values for temperature and precipitation ------------------------------------------------------------
 
@@ -245,6 +247,12 @@ df %>%
     mutate(perc_missing_min_temp = missing_min_temp / n(),
            perc_missing_max_temp = missing_max_temp / n(),
            perc_missing_precipitation = missing_precipitation / n())
+
+# Calculate observations per day
+
+df %>% 
+    group_by(interview_date) %>% 
+    summarise(n = n()) 
 
 # Export the final data ------------------------------------------------------------
 
