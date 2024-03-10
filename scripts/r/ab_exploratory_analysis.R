@@ -144,6 +144,21 @@ ecu_ab_raw %>%
   summarise(n = n())  %>%
   ungroup()
 
+# Look at the m1 variable, presidential job approval
+
+ecu_ab_raw %>%
+  select(m1) %>%
+  glimpse()
+
+# Count missing values per year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_m1 = sum(is.na(m1))) %>%
+  mutate(perc_m1 = missing_m1 / total_obs) %>%
+  ungroup()
+
 # Look at year 2004 ----------------------------------------------------
 
 # Get 2004 only from the total

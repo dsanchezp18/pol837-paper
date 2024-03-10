@@ -18,6 +18,7 @@ library(readr)
 library(lubridate)
 library(stringr)
 library(fuzzyjoin)
+library(forcats)
 
 # Load AmericasBarometer (AB) data
 
@@ -95,7 +96,15 @@ ecu_ab <-
             province_id_ab = if_else(year == 2021, as.character(prov1t), as.character(prov)),
             province_name_ab = if_else(year == 2021, as_factor(prov1t), as_factor(prov)),
             province_name_clean = str_to_lower(province_name_ab) %>% 
-                                  str_trim())
+                                  str_trim(),
+            pres_approval_rating = case_match(m1, 
+                                              c(1,2) ~ "Approves",
+                                              3 ~ "Indifferent",
+                                              c(4,5) ~ "Disapproves"
+                                              ),
+            approves_president =  if_else(pres_approval_rating == "Approve", "Approves", "Indifferent or Disapproves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Disapproves"),
+            disapproves_president = if_else(pres_approval_rating == "Disapprove", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves")
+        )
 
 # Canton name matching ------------------------------------------------------------
 
@@ -172,6 +181,7 @@ ecu_ab_with_cantons %>%
 
 # Select only 2008-2023 and clean the data
 # Create a date variable from the fecha variable
+
 
 ecu_ab_2008_2023 <- 
     ecu_ab_with_cantons %>% 
