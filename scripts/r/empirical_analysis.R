@@ -19,3 +19,9 @@ library(modelsummary)
 # Load the full dataset
 
 df <- read_csv("data/full_df.csv", show_col_types = FALSE)
+
+# Descriptive statistics --------------------------------------------------
+
+
+
+# Empirical models ---------------------------------------------------------

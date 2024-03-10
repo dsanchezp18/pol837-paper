@@ -190,6 +190,17 @@ df <-
     left_join(max_temperature_df, by = c("interview_date" = "date", "canton_id")) %>% 
     left_join(precipitation_df, by = c("interview_date" = "date", "canton_id"))
 
+# Count missing values for temperature and precipitation ------------------------------------------------------------
+
+df %>% 
+    group_by(year) %>% 
+    summarise(missing_min_temp = sum(is.na(min_temperature)),
+              missing_max_temp = sum(is.na(max_temperature)),
+              missing_precipitation = sum(is.na(precipitation))) %>% 
+    mutate(perc_missing_min_temp = missing_min_temp / n(),
+           perc_missing_max_temp = missing_max_temp / n(),
+           perc_missing_precipitation = missing_precipitation / n())
+
 # Export the final data ------------------------------------------------------------
 
 # As a CSV file
