@@ -16,6 +16,7 @@ library(tidyr)
 library(ggplot2)
 library(patchwork)
 library(lubridate)
+library(scales)
 
 # Load the full dataset
 
@@ -92,17 +93,6 @@ interview_dates_barchart <-
 
 interview_dates_barchart
 
-# Exporting relevant figures ------------------------------------------------
-
-# Interview dates barchart (facets)
-
-ggsave("figures/interview_dates_barchart.png", 
-        interview_dates_barchart, 
-        width = 17, 
-        height = 10,
-        units = "cm", 
-        dpi = 800)
-
 # Temperature visualization --------------------------------------------------
 
 # Get the overall sd for the temperatures
@@ -160,17 +150,60 @@ ecuador_monthly_mean_temps %>%
 
 # Do a time series of mean temperatures at the national level
 
-temperature_df %>%
+ecuador_monthly_mean_temps <-
+  temperature_df %>%
   mutate(month_year = floor_date(date, "month")) %>%
   group_by(month_year) %>% 
-  summarise(avg_temp = mean(avg_temp, na.rm = T),
-            min_temp = mean(min_temperature, na.rm = T),
-            max_temp = mean(max_temperature, na.rm = T)) %>% 
-  pivot_longer(cols = c(avg_temp, min_temp, max_temp), 
+  summarise(`Minimum` = mean(min_temperature, na.rm = T),
+            `Maximum` = mean(max_temperature, na.rm = T)) %>% 
+  pivot_longer(cols = c(`Minimum`, `Maximum`), 
                names_to = "temperature_type", 
-               values_to = "value") %>% 
+               values_to = "value")
+
+ecuador_monthly_mean_temps_fig <-
+  ecuador_monthly_mean_temps %>% 
   ggplot(aes(x = month_year, y = value, color = temperature_type)) +
   geom_line() +
-  scale_x_date(date_labels = "%b %Y", date_breaks = "2 months") +
-  labs(x = "Date",
-       y = "Temperature (C)")
+  labs(x = "",
+       y = "Temperature (\u00B0C)",
+       color = "Type of temperature") +
+  scale_x_date(date_labels = "%b %Y", 
+               date_breaks = "6 months",
+               expand = c(0,0), 
+               limits = c(as.Date("2008-01-01"), as.Date("2024-07-01"))) +
+  scale_y_continuous(breaks = seq(12, 28, by = 1),
+                     labels = comma) +
+  scale_color_manual(values = c("#E60F2D", "#56589e")) +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
+        text = element_text(family = 'serif', color = "black"),
+        plot.background = element_rect(fill = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
+        plot.caption = element_text(hjust = 0),
+        panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
+        panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
+        strip.background = element_rect(fill = "grey80", colour = "black", linewidth = 1),
+        legend.position = c(0.9, 0.05)
+  )
+
+ecuador_monthly_mean_temps_fig
+
+# Exporting relevant figures ------------------------------------------------
+
+# Interview dates barchart (facets)
+
+ggsave("figures/interview_dates_barchart.png", 
+        interview_dates_barchart, 
+        width = 17, 
+        height = 10,
+        units = "cm", 
+        dpi = 800)
+
+# Temperature time series (national level)
+
+ggsave("figures/ecuador_monthly_mean_temps_fig.png", 
+        ecuador_monthly_mean_temps_fig, 
+        width = 17, 
+        height = 10,
+        units = "cm", 
+        dpi = 800)
