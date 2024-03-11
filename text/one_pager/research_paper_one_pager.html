@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -38,6 +38,33 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body>
@@ -68,7 +95,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <section id="research-question" class="level3">
 <h3 class="anchored" data-anchor-id="research-question">Research Question</h3>
@@ -79,40 +108,40 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li>Retrospective voting, attribution errors and the influence of emotion</li>
 </ol>
-<p><span class="citation" data-cites="bower_mood_1981"><a href="#ref-bower_mood_1981" role="doc-biblioref">Bower, G. H. (1981). Mood and memory. <em>American Psychologist</em>, <em>36</em>(2), 129–148. <span role="doc-biblioref">https://doi.org/10.1037/0003-066X.36.2.129</span></a></span></p>
-<p><span class="citation" data-cites="schwarz_mood_1983"><a href="#ref-schwarz_mood_1983" role="doc-biblioref">Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of well-being: <span>Informative</span> and directive functions of affective states. <em>Journal of Personality and Social Psychology</em>, <em>45</em>(3), 513–523.</a></span></p>
-<p><span class="citation" data-cites="achen_democracy_2017"><a href="#ref-achen_democracy_2017" role="doc-biblioref">Achen, C., &amp; Bartels, L. (2017). <em>Democracy for realists: <span>Why</span> elections do not produce responsive government</em>. Princeton University Press.</a></span></p>
-<p><span class="citation" data-cites="healy_irrelevant_2010"><a href="#ref-healy_irrelevant_2010" role="doc-biblioref">Healy, A. J., Malhotra, N., Mo, C. H., &amp; Laitin, D. (2010). Irrelevant events affect voters’ evaluations of government performance. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, <em>107</em>(29), 12804–12809. <span role="doc-biblioref">https://www.jstor.org/stable/25708619</span></a></span></p>
-<p><span class="citation" data-cites="healy_random_2010"><a href="#ref-healy_random_2010" role="doc-biblioref">Healy, A., &amp; Malhotra, N. (2010). Random <span>Events</span>, <span>Economic</span> <span>Losses</span>, and <span>Retrospective</span> <span>Voting</span>: <span>Implications</span> for <span>Democratic</span> <span>Competence</span>. <em>Quarterly Journal of Political Science</em>, <em>5</em>(2), 193–208. <span role="doc-biblioref">https://doi.org/10.1561/100.00009057</span></a></span></p>
+<p><span class="citation" data-cites="bower_mood_1981">Bower, G. H. (1981). Mood and memory. <em>American Psychologist</em>, <em>36</em>(2), 129–148. <a href="https://doi.org/10.1037/0003-066X.36.2.129" role="doc-biblioref">https://doi.org/10.1037/0003-066X.36.2.129</a></span></p>
+<p><span class="citation" data-cites="schwarz_mood_1983">Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of well-being: <span>Informative</span> and directive functions of affective states. <em>Journal of Personality and Social Psychology</em>, <em>45</em>(3), 513–523.</span></p>
+<p><span class="citation" data-cites="achen_democracy_2017">Achen, C., &amp; Bartels, L. (2017). <em>Democracy for realists: <span>Why</span> elections do not produce responsive government</em>. Princeton University Press.</span></p>
+<p><span class="citation" data-cites="healy_irrelevant_2010">Healy, A. J., Malhotra, N., Mo, C. H., &amp; Laitin, D. (2010). Irrelevant events affect voters’ evaluations of government performance. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, <em>107</em>(29), 12804–12809. <a href="https://www.jstor.org/stable/25708619" role="doc-biblioref">https://www.jstor.org/stable/25708619</a></span></p>
+<p><span class="citation" data-cites="healy_random_2010">Healy, A., &amp; Malhotra, N. (2010). Random <span>Events</span>, <span>Economic</span> <span>Losses</span>, and <span>Retrospective</span> <span>Voting</span>: <span>Implications</span> for <span>Democratic</span> <span>Competence</span>. <em>Quarterly Journal of Political Science</em>, <em>5</em>(2), 193–208. <a href="https://doi.org/10.1561/100.00009057" role="doc-biblioref">https://doi.org/10.1561/100.00009057</a></span></p>
 <ol start="2" type="1">
 <li>Presidential approval literature</li>
 </ol>
-<p><span class="citation" data-cites="berlemann_economic_2014"><a href="#ref-berlemann_economic_2014" role="doc-biblioref">Berlemann, M., &amp; Enkelmann, S. (2014). The economic determinants of <span>U</span>.<span>S</span>. Presidential approval: <span>A</span> survey. <em>European Journal of Political Economy</em>, <em>36</em>, 41–54. <span role="doc-biblioref">https://doi.org/10.1016/j.ejpoleco.2014.06.005</span></a></span></p>
-<p><span class="citation" data-cites="donovan_motivated_2020"><a href="#ref-donovan_motivated_2020" role="doc-biblioref">Donovan, K., Kellstedt, P. M., Key, E. M., &amp; Lebo, M. J. (2020). Motivated <span>Reasoning</span>, <span>Public</span> <span>Opinion</span>, and <span>Presidential</span> <span>Approval</span>. <em>Political Behavior</em>, <em>42</em>(4), 1201–1221. <span role="doc-biblioref">https://doi.org/10.1007/s11109-019-09539-8</span></a></span></p>
-<p><span class="citation" data-cites="jung_determinants_2020"><a href="#ref-jung_determinants_2020" role="doc-biblioref">Jung, J. W., &amp; Oh, J. (2020). Determinants of presidential approval ratings: <span>Cross</span>-country analyses with reference to <span>Latin</span> <span>America</span>. <em>International Area Studies Review</em>, <em>23</em>(3), 251–267. <span role="doc-biblioref">https://doi.org/10.1177/2233865919888373</span></a></span></p>
+<p><span class="citation" data-cites="berlemann_economic_2014">Berlemann, M., &amp; Enkelmann, S. (2014). The economic determinants of <span>U</span>.<span>S</span>. Presidential approval: <span>A</span> survey. <em>European Journal of Political Economy</em>, <em>36</em>, 41–54. <a href="https://doi.org/10.1016/j.ejpoleco.2014.06.005" role="doc-biblioref">https://doi.org/10.1016/j.ejpoleco.2014.06.005</a></span></p>
+<p><span class="citation" data-cites="donovan_motivated_2020">Donovan, K., Kellstedt, P. M., Key, E. M., &amp; Lebo, M. J. (2020). Motivated <span>Reasoning</span>, <span>Public</span> <span>Opinion</span>, and <span>Presidential</span> <span>Approval</span>. <em>Political Behavior</em>, <em>42</em>(4), 1201–1221. <a href="https://doi.org/10.1007/s11109-019-09539-8" role="doc-biblioref">https://doi.org/10.1007/s11109-019-09539-8</a></span></p>
+<p><span class="citation" data-cites="jung_determinants_2020">Jung, J. W., &amp; Oh, J. (2020). Determinants of presidential approval ratings: <span>Cross</span>-country analyses with reference to <span>Latin</span> <span>America</span>. <em>International Area Studies Review</em>, <em>23</em>(3), 251–267. <a href="https://doi.org/10.1177/2233865919888373" role="doc-biblioref">https://doi.org/10.1177/2233865919888373</a></span></p>
 <ol start="3" type="1">
 <li>Weather and political outcomes</li>
 </ol>
-<p><span class="citation" data-cites="bassi_weather_2019"><a href="#ref-bassi_weather_2019" role="doc-biblioref">Bassi, A. (2019). Weather, <span>Risk</span>, and <span>Voting</span>: <span>An</span> <span>Experimental</span> <span>Analysis</span> of the <span>Effect</span> of <span>Weather</span> on <span>Vote</span> <span>Choice</span>. <em>Journal of Experimental Political Science</em>, <em>6</em>(1), 17–32. <span role="doc-biblioref">https://doi.org/10.1017/XPS.2018.13</span></a></span></p>
-<p><span class="citation" data-cites="liao_extreme_2022"><a href="#ref-liao_extreme_2022" role="doc-biblioref">Liao, Y., &amp; Ruiz Junco, P. (2022). Extreme weather and the politics of climate change: <span>A</span> study of campaign finance and elections. <em>Journal of Environmental Economics and Management</em>, <em>111</em>, 102550. <span role="doc-biblioref">https://doi.org/10.1016/j.jeem.2021.102550</span></a></span></p>
+<p><span class="citation" data-cites="bassi_weather_2019">Bassi, A. (2019). Weather, <span>Risk</span>, and <span>Voting</span>: <span>An</span> <span>Experimental</span> <span>Analysis</span> of the <span>Effect</span> of <span>Weather</span> on <span>Vote</span> <span>Choice</span>. <em>Journal of Experimental Political Science</em>, <em>6</em>(1), 17–32. <a href="https://doi.org/10.1017/XPS.2018.13" role="doc-biblioref">https://doi.org/10.1017/XPS.2018.13</a></span></p>
+<p><span class="citation" data-cites="liao_extreme_2022">Liao, Y., &amp; Ruiz Junco, P. (2022). Extreme weather and the politics of climate change: <span>A</span> study of campaign finance and elections. <em>Journal of Environmental Economics and Management</em>, <em>111</em>, 102550. <a href="https://doi.org/10.1016/j.jeem.2021.102550" role="doc-biblioref">https://doi.org/10.1016/j.jeem.2021.102550</a></span></p>
 <ol start="4" type="1">
 <li>Other relevant literature</li>
 </ol>
-<p><span class="citation" data-cites="quijano-ruiz_assessing_2023"><a href="#ref-quijano-ruiz_assessing_2023" role="doc-biblioref">Quijano-Ruiz, A. (2023). <em>Assessing the <span>Reliability</span> of <span>Self</span>-rated <span>Health</span>: <span>The</span> effects of <span>Transient</span> <span>Weather</span> <span>Fluctuations</span> on <span>Perceived</span> <span>Health</span></em> [Working {Paper}].</a></span></p>
-<p><span class="citation" data-cites="deller_effect_2022"><a href="#ref-deller_effect_2022" role="doc-biblioref">Deller, C., &amp; Michels, J. (2022). <em>The <span>Effect</span> of <span>Weather</span> on <span>Subjective</span> <span>Performance</span> <span>Evaluation</span></em>. SSRN. <span role="doc-biblioref">https://doi.org/10.2139/ssrn.3780405</span></a></span></p>
-<p><span class="citation" data-cites="lucas_does_2013"><a href="#ref-lucas_does_2013" role="doc-biblioref">Lucas, R. E., &amp; Lawless, N. M. (2013). Does <span>Life</span> <span>Seem</span> <span>Better</span> on a <span>Sunny</span> <span>Day</span>? <span>Examining</span> the <span>Association</span> between <span>Daily</span> <span>Weather</span> <span>Conditions</span> and <span>Life</span> <span>Satisfaction</span> <span>Judgments</span>. <em>Journal of Personality and Social Psychology</em>, <em>104</em>(5), 872–884. <span role="doc-biblioref">https://doi.org/10.1037/a0032124</span></a></span></p>
+<p><span class="citation" data-cites="quijano-ruiz_assessing_2023">Quijano-Ruiz, A. (2023). <em>Assessing the <span>Reliability</span> of <span>Self</span>-rated <span>Health</span>: <span>The</span> effects of <span>Transient</span> <span>Weather</span> <span>Fluctuations</span> on <span>Perceived</span> <span>Health</span></em> [Working {Paper}].</span></p>
+<p><span class="citation" data-cites="deller_effect_2022">Deller, C., &amp; Michels, J. (2022). <em>The <span>Effect</span> of <span>Weather</span> on <span>Subjective</span> <span>Performance</span> <span>Evaluation</span></em>. SSRN. <a href="https://doi.org/10.2139/ssrn.3780405" role="doc-biblioref">https://doi.org/10.2139/ssrn.3780405</a></span></p>
+<p><span class="citation" data-cites="lucas_does_2013">Lucas, R. E., &amp; Lawless, N. M. (2013). Does <span>Life</span> <span>Seem</span> <span>Better</span> on a <span>Sunny</span> <span>Day</span>? <span>Examining</span> the <span>Association</span> between <span>Daily</span> <span>Weather</span> <span>Conditions</span> and <span>Life</span> <span>Satisfaction</span> <span>Judgments</span>. <em>Journal of Personality and Social Psychology</em>, <em>104</em>(5), 872–884. <a href="https://doi.org/10.1037/a0032124" role="doc-biblioref">https://doi.org/10.1037/a0032124</a></span></p>
 </section>
 <section id="data" class="level3">
 <h3 class="anchored" data-anchor-id="data">Data</h3>
 <ul>
 <li>Public opinion data from the <a href="https://www.vanderbilt.edu/lapop/">AmericasBarometer survey</a> from the Latin American Public Opinion Project (LAPOP) for Ecuador. I intend to use eight waves of data (2008-2023), each with about 1,500 respondents. The survey rounds include the day of the interview, which will allow me to join this data with the temperature data.</li>
 </ul>
-<p><span class="citation" data-cites="the_americasbarometer_by_the_lapop_lab_americasbarometer_nodate"><a href="#ref-the_americasbarometer_by_the_lapop_lab_americasbarometer_nodate" role="doc-biblioref">The AmericasBarometer by the LAPOP Lab. (n.d.). <em>The <span>AmericasBarometer</span></em> [Datasets with codebooks]. Retrieved February 11, 2024, from <span role="doc-biblioref">https://www.vanderbilt.edu/lapop/raw-data.php</span></a></span></p>
+<p><span class="citation" data-cites="the_americasbarometer_by_the_lapop_lab_americasbarometer_nodate">The AmericasBarometer by the LAPOP Lab. (n.d.). <em>The <span>AmericasBarometer</span></em> [Datasets with codebooks]. Retrieved February 11, 2024, from <a href="https://www.vanderbilt.edu/lapop/raw-data.php" role="doc-biblioref">https://www.vanderbilt.edu/lapop/raw-data.php</a></span></p>
 <p>If the need arises, the <a href="https://www.latinobarometro.org/">Latinobarómetro</a> survey is also available, but the AmericasBarometer is more scientifically rigorous.</p>
 <ul>
 <li><a href="https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html">Global daily grided temperature</a> from the U.S. government National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). I will use the daily temperature data for Ecuador, available 1979-2024. An algorithm is needed to extract the temperature from the NetCDF files, which was developed by Alonso Quijano-Ruiz and freely available on <a href="https://github.com/aquijanoruiz/Weather_HealthPerception/blob/main/code/weather_draft.R">GitHub</a>.</li>
 </ul>
-<p><span class="citation" data-cites="national_oceanic_and_atmospheric_administration_noaa_physical_sciences_laboratory_psl_cpc_2024"><a href="#ref-national_oceanic_and_atmospheric_administration_noaa_physical_sciences_laboratory_psl_cpc_2024" role="doc-biblioref">National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). (2024). <em><span>CPC</span> <span>Global</span> <span>Unified</span> <span>Temperature</span></em> [Datasets]. <span role="doc-biblioref">https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html</span></a></span></p>
+<p><span class="citation" data-cites="national_oceanic_and_atmospheric_administration_noaa_physical_sciences_laboratory_psl_cpc_2024">National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). (2024). <em><span>CPC</span> <span>Global</span> <span>Unified</span> <span>Temperature</span></em> [Datasets]. <a href="https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html" role="doc-biblioref">https://psl.noaa.gov/data/gridded/data.cpc.globaltemp.html</a></span></p>
 </section>
 <section id="empirical-strategy" class="level3">
 <h3 class="anchored" data-anchor-id="empirical-strategy">Empirical Strategy</h3>
@@ -209,10 +238,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -222,8 +268,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -235,7 +290,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -279,6 +457,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -304,6 +483,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -364,6 +569,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
