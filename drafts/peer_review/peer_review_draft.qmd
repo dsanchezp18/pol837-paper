@@ -28,6 +28,7 @@ include-in-header:
     \newcolumntype{d}{S[input-symbols = ()]}
     \usepackage{amsmath, amsfonts}
     \usepackage{float}
+    \usepackage{pdflscape}
 # reference-doc: "apa_format_reference_doc.docx"
 # bibliography: "one_pager_bibliography.bib"
 # csl: "apa_one_pager.csl"
@@ -267,7 +268,6 @@ With regard to the political behaviour controls, I find that the relationship be
 #| fig-cap-location: top
 #| fig-width: 6.7
 #| fig-height: 4
-#| fig-pos: h
 
 plot_slopes(model4_controls, variables = "max_temperature", condition = "max_temperature") + 
   theme_minimal() +
@@ -294,46 +294,58 @@ In this subsection I allow for heterogeneity in the effect of temperature on pre
 y_{it} = \alpha + \tau_t + \theta_j + \beta \ \text{temp}_{it} + \mathbb{X'}_{it} \gamma + \delta \ \text{temp}_{it} \times g_{it} + u_{it}
 \end{equation}
 
-All variables are defined as in Equation \ref{eqn:baseline}, but I include an interaction term between temperature and any explanatory variable $g_{it}$, which was only contained in the vector of controls $\mathbb{X'}_{it}$. In this section, I explore important covariates that can interact with temperature to affect presidential approval, which are region\footnote{I did not include region as a explanatory variable in other models since it would induce perfect collinearity. See the background section for more information on Ecuadorian regions}, perceived economic situations for both the country and the respondent, and political ideology. If the interaction term is statistically significant, it would suggest that the effect of temperature on presidential approval is not constant across the population, and that the relationship between temperature and presidential approval is conditional on the value of the covariate.
+All variables are defined as in Equation \ref{eqn:baseline}, but I include an interaction term between temperature and any explanatory variable $g_{it}$, which was only contained in the vector of controls $\mathbb{X'}_{it}$. In this section, I explore important covariates that can interact with temperature to affect presidential approval, which are region\footnote{I did not include region as a explanatory variable in other models since it would induce perfect collinearity. See the background section for more information on Ecuadorian regions.}, perceived economic situations for both the country and the respondent, and political ideology. If the interaction term is statistically significant, it would suggest that the effect of temperature on presidential approval is not constant across the population, and that the relationship between temperature and presidential approval is conditional on the value of the covariate. The controls on vector $\mathbb{X'}_{it}$ are the same as in Table 2 for this subsection, but are not shown in the table for brevity.
 
 ```{r}
 #| label: heterogeneity-table
 #| output: asis
-#| tbl-pos: H
 
 # Define the coefficient names
 
 coef_names_heterogeneity <- c(
-  "min_temperature" = "Min. temperature (\u00B0C)",
-  "max_temperature" = "Max. temperature (\u00B0C)",
-  "avg_temperature" = "Avg. temperature (\u00B0C)",
-  "region::Costa:min_temperature" = "Costa \u00D7 Min. temperature (\u00B0C)",
-  "region::Oriente:min_temperature" = "Sierra \u00D7 Min. temperature (\u00B0C)",
-  "region::Costa:max_temperature" = "Costa \u00D7 Max. temperature (\u00B0C)",
-  "region::Oriente:max_temperature" = "Sierra \u00D7 Max. temperature (\u00B0C)",
-  "country_econ_situationWorse:min_temperature" = "Perceived worse country economy \u00D7 Min. temperature (\u00B0C)",
-  "country_econ_situationWorse:max_temperature" = "Perceived worse country economy \u00D7 Max. temperature (\u00B0C)",
-  "personal_econ_situationWorse:min_temperature" = "Perceived worse personal economy \u00D7 Min. temperature (\u00B0C)",
-  "personal_econ_situationWorse:max_temperature" = "Perceived worse personal economy \u00D7 Max. temperature (\u00B0C)",
-  "ideology:min_temperature" = "Ideology score \u00D7 Min. temperature (\u00B0C)",
-  "ideology:max_temperature" = "Ideology score \u00D7 Max. temperature (\u00B0C)"
+  "min_temperature" = "Min. temp. (\u00B0C)",
+  "max_temperature" = "Max. temp. (\u00B0C)",
+  "region::Costa:min_temperature" = "Coastal \u00D7 Min. temp. (\u00B0C)",
+  "region::Oriente:min_temperature" = "Amazon \u00D7 Min. temp. (\u00B0C)",
+  "region::Costa:max_temperature" = "Coastal \u00D7 Max. temp. (\u00B0C)",
+  "region::Oriente:max_temperature" = "Amazon \u00D7 Max. temp. (\u00B0C)",
+  "country_econ_situationWorse:min_temperature" = "Worse country econ. \u00D7 Min. temp. (\u00B0C)",
+  "country_econ_situationWorse:max_temperature" = "Worse country econ. \u00D7 Max. temp. (\u00B0C)",
+  "personal_econ_situationWorse:min_temperature" = "Worse personal econ. \u00D7 Min. temp. (\u00B0C)",
+  "personal_econ_situationWorse:max_temperature" = "Worse personal econ. \u00D7 Max. temp. (\u00B0C)",
+  "ideology:min_temperature" = "Ideology score \u00D7 Min. temp. (\u00B0C)",
+  "ideology:max_temperature" = "Ideology score \u00D7 Max. temp. (\u00B0C)"
 )
 
 # Notes for the table
 
 notes_heterogeneity_models <- list(
-  "Note: Models allowing for heterogeneous effects of temperature on presidential approval. Standard errors shown in parentheses are clustered by canton.",
+  "Note: Models allowing for heterogeneous effects of temperature on presidential approval. Regional categories hold the Highlands region as the reference level. Standard errors shown in parentheses are clustered by canton.",
   "***p<0.01, **p<0.05, *p<0.1."
 )
 
 # Use modelsummary to create the table
 
 modelsummary(models_hetero,
-            coef_map = coef_names_heterogeneity
-            )
-
-    
+             gof_map = gf_map,
+             coef_map = coef_names_heterogeneity,
+             stars = stars,
+             estimate = "{estimate}{stars}",
+             booktabs = TRUE,
+             align = "lrrrr", 
+             threeparttable = TRUE,
+             title = "Logit coefficients for models with interaction terms",
+             vcov = ~ canton_dpa,
+             notes = notes_heterogeneity_models,
+             output = "latex",
+             threeparttable = TRUE,
+             longtable = T) %>% 
+kable_styling(latex_options = c("hold_position", "repeat_header"))
 ```
+
+These results show that heterogeneity exists in the effect of the temperature on presidential approval between different regions in the country. Survey respondents from the Amazon region are less likely to approve of the president at higher values of maximum temperature compared to those in the Highlands region. As pointed out in the background section, the Amazon region is the most humid and warm region in the country, which could explain this result if weather truly affects presidential approval. However, the AmericasBarometer surveys very little respondents in Amazon cantons, which is why this result is very preliminary. Survey respondents from the Coastal region do not show a statistically significant difference between temperature and presidential approval compared to those in the Highlands region. Given the large difference in temperatures between the Highlands and the Coastal region, this result is surprising and could point to biases in the estimation process.
+
+I find no heterogeneity between personal and country economic situations, which suggests that economic voting may be unrelated to weather-related attribution errors. Ideology does interact with temperature to affect presidential approval, but results are conflicting. Voters who identify closer to the political right are more likely to approve of the president at higher values of minimum temperature, but at the same time are likely to disapprove of the president at higher values of maximum temperature. Table A.3 in Appendix A shows the average marginal effects for all specifications in Table 3, which show that the average marginal effect of minimum temperature is still statistically insignificant, while the average marginal effect of maximum temperature is -1.9%, which is consistent with the results in Table A.2.
 
 # Appendix A: Average Marginal Effects {.appendix .unnumbered}
 
@@ -433,3 +445,43 @@ modelsummary(apes_controls,
   kable_styling(latex_options = c("hold_position"))
 ```
 \renewcommand{\arraystretch}{1}
+
+```{r}
+#| label: apes-calculate-hetero
+#| cache: true
+
+# Apply the avg_slopes function to the models_hetero list
+
+apes_hetero <- lapply(models_hetero, avg_slopes, type = "response")
+
+```
+
+
+```{r}
+#| label: apes-table-3
+#| output: asis
+
+# Notes for the table
+
+notes_heterogeneity_models_apes <- list(
+  "Note: Average partial effects for models allowing for heterogeneous effects of temperature on presidential approval. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(apes_hetero,
+             output = "latex",
+             coef_map = coefficients_controls_apes,
+             stars = stars,
+             shape = term:contrast + statistic ~ model,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for models with interaction terms in Table 3",
+             threeparttable = TRUE,
+             notes = notes_heterogeneity_models_apes,
+             gof_map = gf_map,
+             longtable = T) %>%
+kable_styling(latex_options = c("hold_position"))
+
+```
