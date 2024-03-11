@@ -77,29 +77,19 @@ simple_model3 <-
 
 summary(simple_model3)
 
-# Simple Model 4: Precipitation
+# Simple Model 4: Min and Max temperature, with precipitation
 
 simple_model4 <- 
-    feglm(approves_president ~ precipitation | canton_dpa + interview_date, 
+    feglm(approves_president ~ min_temperature + max_temperature + precipitation | canton_dpa + interview_date, 
           data = full_df,
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
 summary(simple_model4)
 
-# Simple Model 5: Min and Max temperature, with precipitation
-
-simple_model5 <- 
-    feglm(approves_president ~ min_temperature + max_temperature + precipitation | canton_dpa + interview_date, 
-          data = full_df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
-
-summary(simple_model5)
-
 # Present these models as a markdown table for now 
 
-simple_models <- list(simple_model1, simple_model2, simple_model3, simple_model4, simple_model5)
+simple_models <- list(simple_model1, simple_model2, simple_model3, simple_model4)
 
 modelsummary(simple_models, stars = stars, output = "markdown")
 

@@ -110,7 +110,7 @@ ecu_ab <-
                 year != 2021 & q1 == 1 ~ "Male",
                 year != 2021 & q1 == 2 ~ "Female"
             ) %>% forcats::as_factor() %>% fct_relevel("Male"),
-            age = q2, 
+            age = q2 %>% zap_missing() %>% zap_labels(), 
             urban_rural = case_when(
                 year == 2021 & ur1new %in% c(1,2) ~ "Urban",
                 year == 2021 & ur1new %in% c(3,4) ~ "Rural",
@@ -134,7 +134,7 @@ ecu_ab <-
                                               c(4,5) ~ "Disapproves"),
             approves_president =  if_else(pres_approval_rating == "Approves", 1, 0),
             disapproves_president = if_else(pres_approval_rating == "Disapproves", "Disapproves", "Indifferent or Approves") %>% forcats::as_factor() %>% fct_relevel("Indifferent or Approves"),
-            ideology = l1,
+            ideology = l1 %>% zap_missing %>% zap_labels(),
             labour_market = case_match(ocup4a, c(1,2) ~ "Employed", 3 ~ "Unemployed", c(4:7) ~ "Not in Labour Force"),
             country_econ_situation = if_else(soct2 > 2, "Worse", "Better or Same") %>% forcats::as_factor() %>% fct_relevel("Better or Same"),
             personal_econ_situation = if_else(idio2 > 2, "Worse", "Better or Same") %>% forcats::as_factor() %>% fct_relevel("Better or Same"),

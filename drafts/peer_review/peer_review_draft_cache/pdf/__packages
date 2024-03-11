@@ -1,0 +1,11 @@
+modelsummary
+knitr
+here
+dplyr
+kableExtra
+scales
+marginaleffects
+ggplot2
+readr
+fixest
+forcats
