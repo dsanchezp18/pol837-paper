@@ -36,6 +36,7 @@ knitr:
       echo : false
       message: false
       warning: false
+bibliography: references.bib
 ---
 
 ```{r}
@@ -116,7 +117,7 @@ gf_map <- list(
 
 ## Data
 
-I extract daily weather data from the Physical Sciences Laboratory of the U.S. Government National Oceanic and Atmospheric Administration (NOAA), and merge it with public opinion data obtained from the AmericasBarometer
+I extract daily weather data from the Physical Sciences Laboratory of the U.S. Government National Oceanic and Atmospheric Administration (NOAA)[@cpcglob], and merge it with public opinion data obtained from the AmericasBarometer
 
 ## Identification strategy
 
