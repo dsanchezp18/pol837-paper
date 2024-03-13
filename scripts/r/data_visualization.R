@@ -176,14 +176,14 @@ ecuador_monthly_mean_temps_fig <-
   scale_color_manual(values = c("#E60F2D", "#56589e")) +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
-        text = element_text(family = 'serif', color = "black"),
+        text = element_text(family = 'serif', color = "black", size = 8),
         plot.background = element_rect(fill = "white"),
         panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
         plot.caption = element_text(hjust = 0),
         panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
         panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
         strip.background = element_rect(fill = "grey80", colour = "black", linewidth = 1),
-        legend.position = c(0.9, 0.05)
+        legend.position = c(0.9, 0.5)
   )
 
 ecuador_monthly_mean_temps_fig
