@@ -4,6 +4,10 @@
 
 data/americas_barometer/ECU_merge_2004-2023_LAPOP_AmericasBarometer_v1.0_w.sav
 data/weather/temperature_processed.csv
+
+# Other files
+
 .Rproj.user
+.Rhistory
 data/full_df.csv
 /.quarto/
