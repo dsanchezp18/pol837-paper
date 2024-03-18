@@ -4,3 +4,5 @@
 {{< include /paper-text/sections/1_introduction.qmd >}}
 
 {{< include /paper-text/sections/3_empirical_strategy.qmd >}}
+
+# References
