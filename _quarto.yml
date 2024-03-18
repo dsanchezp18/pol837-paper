@@ -1,0 +1,15 @@
+project:
+  title: "POL837 Research Paper"
+  execute-dir: project
+  render:
+    - paper-text/sections/1_introduction.qmd
+    - paper-text/sections/3_empirical_strategy.qmd
+    - paper-text/main.qmd
+
+format: 
+     pdf:
+        fontsize: 12pt
+        pdf-engine: xelatex
+
+bibliography: paper-text/references.bib
+csl: paper-text/apa7_normal.csl
