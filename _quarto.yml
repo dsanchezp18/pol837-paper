@@ -1,12 +1,10 @@
 project:
   title: "POL837 Research Paper"
+  execute-dir: project
   render:
     - paper-text/sections/1_introduction.qmd
     - paper-text/sections/3_empirical_strategy.qmd
     - paper-text/main.qmd
-
-title: "POL837 Research Paper"
-
 format: 
      pdf:
         fontsize: 12pt
@@ -14,5 +12,6 @@ format:
         mathfont: "Libertinus Math"
         latex-output-dir: output
 
+title: "POL837 Research Paper"
 bibliography: paper-text/references.bib
 csl: paper-text/apa7_normal.csl
