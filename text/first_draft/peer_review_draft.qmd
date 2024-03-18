@@ -1,0 +1,614 @@
+---
+title: "The effect of short-term temperature changes in presidential approval"
+subtitle: "POL837 Research Paper"
+#date: "2024-03-08"
+#date-format: "MMMM YYYY"
+author:  "Daniel Sánchez Pazmiño"
+number-sections: true
+linestretch: 2
+mainfont: Times New Roman
+monofont: Times New Roman
+mathfont: "Libertinus Math"
+format: 
+    pdf:
+        fontsize: 12pt
+        pdf-engine: xelatex
+include-in-header:
+  text: |
+    \usepackage{lipsum}
+    \newfontfamily\tfont{Times New Roman}
+    \addtokomafont{title}{\tfont}
+    \newfontfamily\sfont{Times New Roman}
+    \addtokomafont{section}{\sfont}
+    \addtokomafont{subsection}{\sfont}
+    \usepackage{booktabs}
+    \usepackage{siunitx}
+    \newcolumntype{d}{S[
+        input-open-uncertainty=,
+        input-close-uncertainty=,
+        parse-numbers = false,
+        table-align-text-pre=false,
+        table-align-text-post=false
+    ]}
+    \usepackage{amsmath, amsfonts}
+    \usepackage{float}
+    \usepackage{pdflscape}
+    \usepackage{csquotes}
+# reference-doc: "apa_format_reference_doc.docx"
+csl: "../apa7_normal.csl"
+bibliography: "../peer_review_refs.bib"
+knitr: 
+  opts_chunk: 
+      echo : false
+      message: false
+      warning: false
+---
+
+```{r}
+#| label: setup
+
+# Load libraries
+
+library(modelsummary)
+library(knitr)
+library(here)
+library(dplyr)
+library(kableExtra)
+library(scales)
+library(marginaleffects)
+library(ggplot2)
+
+# Execute the models code to get results
+# This code also gets the data
+
+source(here("scripts/r/empirical_analysis.R"))
+
+```
+
+```{=tex}
+\thispagestyle{empty}
+
+\begin{center}
+
+POL837 Issues in Comparative Politics
+
+Spring 2024
+
+\textbf{Student ID}: 301560593
+
+Professor Eline de Rooij, Ph.D.
+
+\textbf{Word count}: 4854
+
+\end{center}
+
+\textit{\textbf{Note to the reviewer}: Due to time constraints, both my introduction and conclusion are preliminary. I welcome any feedback on how to improve these sections, especially regarding my literature review and the inclusion of more relevant political science theory, as well as any suggestions on how to improve.} 
+
+\clearpage
+
+```
+# Introduction
+
+Retrospective voting is a fundamental concept in political science, which proposes that voters evaluate the performance of political leaders based on their past performance. This evaluation is based on the voters' perceptions of the leader's performance, which can be influenced by a variety of factors [@healyRetrospectiveVotingReconsidered2013]. An adequate system of retrospective voting, where voters duefully reward and punish politicians, has been theorized to cause efficient political outcomes, where political actors who underperform leave office [@ferejohnIncumbentperformanceelectoral1986; @perssonPoliticaleconomicsexplaining2002; @ducheconomicvoteHow2008], resulting in greater democratic accountability. However, the literature on retrospective voting has found a variety of biases in the way voters attribute responsibility to political leaders, which challenges the foundational basis on early performance models. In this paper, I contribute to the literature on attribution errors by focusing on a novel subject, which is the effect of weather on voter attitudes, namely, on how seemingly irrelevant weather conditions affect presidential approval.
+
+Most of the literature of retrospective voting has focused on economic voting, which has long discussed if voters truly evaluate politicians based on the management of the economy, or the economy is seen through partisan lens. Presidential approval is closely related to this, considering the ample perception of the executive as the main responsible for the economy. Attribution errors have been found in this environment, where voters cannot accurately judge the performance due to a lack of information of politicians' mandates [@healyMyopicVotersNatural2009]. 
+
+While the most obvious mistake of voters could be seen as the lack of information, cognitive biases can also lead to the incorrect attribution of responsibility to political leaders. Cognitive biases such as an increased emphasis in the election year, party cues, heurisitics, have been found to be present in experimental settings [@hartQualityControlExperiments2023]. Further, there is evidence that voters can commit severe attribution errors by assigning blame to politicians because of irrelevant events [@healyIrrelevanteventsaffect2010; @achenBlindRetrospectionElectoral2017, @healyRandomEventsEconomic2010]. The existence of these biases has been confirmed in recent observational studies, which find that in Latin America economic variables have little explanatory power in explaining presidential approval [@berlemanneconomicdeterminantspresidential2014; @laytonChapterCitizenSecurity2016].
+
+Nevertheless, even though research has shown clear results on the existence of biases and a growing importance on attribution errors, the literature is still limited in the exploration of unrelated factors that can affect presidential approval, such as the weather. This is important in developing democracies, where weather can be a more relevant factor in the lives of citizens, and where the literature on retrospective voting is still limited. 
+
+Outside political science, it has been found that weather is a strong determinant of mood and personal evaluations of happinness and satisfaction [@barrington-leighimpactdailyweather2017; @barrington-leighWeathertransientinfluence2008; @lucasDoesLifeSeem2013]. Further, organizational behaviour literature has also determined that weather can impact the way that subjective performance evaluations are made [@dellerEffectWeatherSubjective2022], which can be seen as a parallel to the way that voters evaluate politicians. Given that the literature on retrospective voting is based on the idea that mood can impact the way that voters evaluate politicians [@bowerMoodmemory1981; @schwarzMoodmisattributionjudgments1983], it is reasonable to assume that weather can have an impact on presidential approval, but to my knowledge, this is the only paper that explores this relationship. 
+
+I construct a novel dataset by merging the AmericasBarometer (AB) public opinion survey data with CPC Global Unified temperature data in Ecuador. Given that short-term temperature changes can be assumed to be random, I exploit this variation to estimate the effect of temperature on presidential approval ratings. I find that higher temperatures have a negative and statistically significant relationship with presidential approval, which suggests that voters commit attribution errors when evaluating politicians.
+
+The paper proceeds as follows. In the next section, I present the empirical approach of the paper, which includes the data. In the Results section, I present the paper's main findings. I also present the heterogenous effects of temperature on presidential approval. In the conclusion, I discuss the main findings of the paper and their implications for the literature on retrospective voting and attribution errors.
+
+# Empirical Approach
+
+```{r}
+#| label: modelsummary-arguments
+
+# Define modelsummary arguments for tables
+
+stars <- c("*" = 0.1,
+           "**" = 0.05,
+           "***" = 0.05)
+
+# Do the goodness of fit mapping as a list mapping
+
+gf_map <- list(
+  list("raw" = "nobs", "clean" = "N", "fmt" = 0),
+  list("raw" = "aic", "clean" = "AIC", "fmt" = 0),
+  list("raw" = "rmse", "clean" = "RMSE", "fmt" = 3),
+  list("raw" = "FE: canton_dpa", "clean" = "Canton fixed effects", "fmt" = 0),
+  list("raw" = "FE: interview_date", "clean" = "Interview date fixed effects", "fmt" = 0)
+)
+```
+
+## Data
+
+My data are composed of a pooled cross section of the AmericasBarometer (AB) [@ABDatasets] merged with daily CPC Global Unified temperature [@NOAADatasets] based on interview date and canton in Ecuador. The AB is a public opinion survey conducted by the Latin American Public Opinion Project (LAPOP), which has conducted biyearly survey waves in Ecuador and other countries from 2004 to 2023. I use the subscriber LAPOP datasets available through Universidad San Francisco de Quito's research affiliation with LAPOP, focusing on the eight survey waves carried out between 2008 to 2023[^1]. The surveys are based on a multi-stage national probability design, representative at the national level, except for 2021, where the survey switched to a random-digit-dialing design due to the COVID-19 pandemic.
+
+The explained variable of interest is presidential job approval, which the AmericasBarometer measures as in a 1-5 scale in the question: \textquote{Speaking in general of the current administration, how would you rate the job performance of President [NAME]} [@ABDatasets] (p.14), where 1 represents a very good performance and 5 terrible performance. This question is similarly similarly to the classic Gallup presidential approval question, which the literature has used extensively [@berlemanneconomicdeterminantspresidential2014] and has not been found to significantly deviate from other presidential popularity measures. I dichotomize the variable following LAPOP research reports [@laytonChapterCitizenSecurity2016], where responses greater than 3 are considerar as approval for the incumbent president. 
+
+[^1]: The 2004 and 2006 waves did not record interview dates. The eight waves took place every two years between 2008 and 2016. The 2018/19 wave took place between late 2018 and 2019. The two most recent two survey waves were carried out in 2021 and 2023.
+
+Table 1 below displays descriptive statistics for the variables used in the empirical analysis. I collect opinion on personal economic situations and on country economic situation, also measured on a 1-5 scale, where 1 represents a very good situation and 5 a terrible situation. Political ideology is represent in a 0-10 scale, where 0 represents the "extreme left" and 10 the extreme right. I include 1-7 scales for trust in police, local government, political pride, and support for democracy where 0 represents no trust or support and 7 complete the opposite. Corruption perceptions are collected by the AB as a 1-4 scale, where 1 represents "corruption not generalized" and 4 "very generalized" [@ABDatasets] (p. 22). I dichotomize this variable taking values greater than 1 as perceiving corruption. Corruption tolerance is measured as tolerance to paying a bribe, where 0 is not justified, and 1 is justified. The empirical analysis also includes demographic controls, where labour market status includes three categories: employed, not in the labour force, and unemployed. Not being in the labour force includes retired, students, homemakers, and those not working. Education is a categorical variable for highest educational degree attained, including levels for no education, primary, secondary, and higher education (college, university or higher are lumped together). 
+
+\begin{landscape}
+\begin{footnotesize}
+```{r}
+#| label: descriptive-stats
+#| output: asis
+
+# Prepare relevant variables for all years
+
+df_descriptive <- 
+  full_df %>%
+  transmute(`Presidential approval` = approves_president,
+            `Daily minimum temperature (C)` = min_temperature, 
+            `Daily maximum temperature (C)` = max_temperature, 
+            `Daily average temperature (C)` = avg_temperature, 
+            `Daily precipitation (mm)` = precipitation,
+            `Female` = sex,
+            `Age (years)` = age,
+            `Rural status` = urban_rural,
+            `Education` = education,
+            `Labour market status` = labour_market,
+            `Worse perception of personal economy` = personal_econ_situation,
+            `Worse perception of country economy` = country_econ_situation,
+            `Ideology score (0-10)` = ideology,
+            `Support of democracy` = democracy_support,
+            `Perception of corruption` = corruption_perception,
+            `Tolerance to bribes` = corruption_tolerance,
+            `Political pride score` = political_pride,
+            `Trust in police score (0-7)` = confidence_police,
+            `Trust in local government score (0-7)` = confidence_local_gov,
+  )
+
+# Notes
+
+notes_descriptive <- list(
+  "Note: Descriptive statistics for variables used in the empirical analysis. For categorical variables, the percent of observations in the category out of the total sample is presented. For numerical (either ordinal or continuous) variables, the mean, standard deviation, minimum and maximum are presented. For both, the number of observations and the percentage of missing values."
+)
+
+# Use datasummary() to create the table
+
+datasummary((Education + Female + `Labour market status` + `Worse perception of personal economy` + `Worse perception of country economy` + `Perception of corruption` + `Tolerance to bribes` + All(df_descriptive)) ~ ((N) + Percent() + (`Missing (%)` = PercentMissing) + Mean + (`Std. dev.` = SD) + Min + Median + Max + Percent()),
+            data = df_descriptive,
+            fmt = 2,
+            output = 'latex',
+            booktabs = TRUE,
+            threeparttable = TRUE,
+            title = 'Descriptive statistics',
+            notes = notes_descriptive) %>% 
+kable_styling(latex_options = c("hold_position"), font_size = 8)
+```
+\end{footnotesize}
+\end{landscape}
+
+I extract daily minimum and maximum temperature and precipitation data from the CPC Global Unified Temperature datasets [@NOAADatasets]. These datasets are prepared by the U.S. government National Oceanic and Atmospheric Administration (NOAA) and result from satellite imaging of the Earth surface. While typically daily weather data would be available from every country's meteorological authority^[In Ecuador, the relevant institution is the Instituto Nacional de Meteorología e Hidrología.], the Ecuadorian publicly available meteorological data lacks the frequency and geospatial granularity required for this type of analysis. 
+
+The temperature data from NOAA is of lower quality than that of a typical meteorological authority, given that this data is global gridded GTS data (0.5\textdegree \texttimes 0.5\textdegree) for temperature and gauge-based for precipitation. However, I follow Quijano-Ruiz [-@quijano-ruizAssessingReliabilitySelfrated2023] and compute weighted mean minimum and maximum temperatures for each canton^[Cantons in Ecuador are the second highest level of the political-administrative division of the country, after to provinces. They are similar to municipalities]. and day, where the weights are the surface area of each canton. Replication code for this process is publicly available in a [GitHub repository](https://github.com/laboratoriolide/ecuador-temperature-noaa). The surface area of each canton is obtained the Ecuadorian statistics authority (INEC, for its initials in Spanish) geoportal, along with the map shapefiles and political administrative divisions to match the canton names and codes to the AB data [@INECGeoportal]. I then merge this data with the AB data using the interview dates and canton codes as join identifiers. 
+
+```{=tex}
+\begin{figure}[H]
+\label{fig:interviewdates}
+\centering
+\includegraphics{../../figures/interview_dates_barchart.png}
+\caption{Survey dates of the Americas Barometer in Ecuador, 2008-2023}
+\end{figure}
+```
+Figure 1 shows the distribution of respondents by interview date in the AmericasBarometer survey waves. As it can be seen, most stay in a relatively small time frame. The 2018 wave (sometimes referred as the 2018/19 wave) is the most spread out due to the survey being carried out between late 2018 and early 2019. Most waves are carried out January to April. These periods contain rich variation of temperature for Ecuador's diverse geography.
+```{=tex}
+\begin{figure}[H]
+\label{fig:temperature}
+\centering
+\includegraphics{../../figures/ecuador_monthly_mean_temps_fig.png}
+\caption{Mean monthly temperatures, 2008-2023}
+\end{figure}
+```
+In Figure 2 above I show mean monthly minimum and maximum temperatures from 2008 to 2023. There are no notable upward or downward trends through time, with some periods showing higher temperatures, possible due to El Niño events [@yehNinochangingclimate2009]. An important feature is that the spread between minimum and maximum temperatures is relatively stable, which will be important for the identification strategy, which I describe below. 
+
+## Identification strategy
+
+I exploit variation produced by a natural experiment: the transitory nature of daily temperature changes. I assume these changes are random and exogenous to variables related to political mechanisms or other variables that can affect the performance of political leaders. By making this assumption, I can definme a presidential population function as follows:
+
+```{=tex}
+\begin{equation}
+\label{eqn:baseline}
+ \text{approval}_{it} = \alpha + \tau_d + \theta_j + \beta \text{temp}_{jd} + \mathbb{X'}_{it} \gamma + u_{it}
+\end{equation}
+```
+where $\text{approval}_{it}$ is presidential approval, $\tau_d$ and $\theta_j$ are vectors of interview date and canton fixed effects, $\text{temp}_{jd}$ is daily temperature, $\mathbb{X'}_{it}$ a vector of survey-wave and individual varying controls, $\gamma$ the vector of associated control coefficients and $u_{it}$ an error term. The parameter $\beta$ is the coefficient of interest, which measures the effect of temperature on presidential approval. The assumption of randomness in temperature changes implies that
+
+\begin{equation}
+\label{eqn:identification}
+\text{E}[\text{temp}_{jt} \times u_{it}] = 0
+\end{equation}
+
+which allows me to estimate $\beta$ consistently. However, if temperature as measured by the CPC Global Unified Temperature datasets suffers from measurement error, $\hat{\beta}$ can suffer from attenuation bias, which makes me underestimate the true effect of temperature on presidential approval. Attenuation bias will exist if measurement error is more likely to be present in days with higher or lower temperatures, or for certain cantons. There is no reason to assume this is the case, but I address this possibility later in the paper. If measurement error is present but not correlated with the error term, then $\hat{\beta}$ will still be consistently estimated, but with less precision. 
+
+Further, given that I only observe presidential approval in an ordinal or binary scale, I cannot directly estimate Equation 1. While it is possible to use a linear probability model, I choose to follow the literature and use logistic regression to estimate a variant of Equation 1, as follows:
+
+```{=tex}
+\begin{equation}
+\label{eqn:logit}
+P(\text{approval}_{it} = 1) = G(\lambda \mathbf{R}') = G(\alpha + \tau_d + \theta_j + \beta \text{temp}_{jd} + \mathbb{X'}_{it} \gamma + u_{it})
+\end{equation}
+```
+where $P(\text{approval}_{it} = 1)$ is the probability of approving the incumbent president, $G$ is the link function, $\mathbf{R}$ is a vector of explanatory variables, which includes all variables in Equation 1, and $\lambda$ is the associated vector of coefficients. I estimate Equation 2 using the logistic function as $G$. I cluster all standard errors at the canton level, to allow for spatially clustered correlation in the error term.
+
+# Results
+
+## Baseline specifications
+
+Table 3 shows baseline results of the logit fixed effects estimation of Equation \ref{eqn:logit}, which are the baseline empirical models of the paper, implementing only daily weather variables and canton and interview date fixed effects. These results serve as a benchmark comparison for the subsequent models that include additional control variables. Further, models without any type of political behaviour controls leverage a large sample size. I later estimate models with controls to examine the robustness of these results and the existence of omitted variable bias.
+
+Specification (1) considers only daily minimum temperature as a weather variable, which shows a positive logit coefficient which is not statistically distinguishable from zero at any conventional significance level. Specification (2) only includes maximum daily temperature, which shows a negative logit coefficient that is statistically significant at the 0.01 level. Specification (3) includes my measure of average temperature, again showing no statistically significant relationship between temperature and presidential approval. Specification (4) considers the relationship between both daily temperature variables, to account for interconnected relationships between these two variables. I also include a daily precipitation variable, to account for the possibility that a more humid rain may have an effect. It is shown that maximum temperature keeps its significance at the 0.01 level, while the other weather variables remain statistically insignificant at any conventional significance level. It is valuable to note that standard errors for these variables are not notably large, which suggests that the lack of statistical significance may not be due to a lack of precision in the estimation process. This is evidence which supports the hypothesis that voters may commit attribution errors when evaluating politician's performance, and tend to evaluate the president worse in days with higher temperatures.
+
+```{r}
+#| label: results-baseline-models
+#| output: asis
+
+# Define the coefficient names
+
+coefficients_baseline_models <- c(
+  "min_temperature" = "Min. temperature (\u00B0C)",
+  "max_temperature" = "Max. temperature (\u00B0C)",
+  "avg_temperature" = "Avg. temperature (\u00B0C)",
+  "precipitation" = "Precipitation (mm)"
+)
+
+# Add notes as a list
+
+notes_baseline_models <- list(
+  "Note: Baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(simple_models,
+             coef_map = coefficients_baseline_models,
+             stars = stars,
+             output = "latex",
+             estimate = "{estimate}{stars}",
+             booktabs = TRUE,
+             align = "lrrrr", 
+             threeparttable = TRUE,
+             title = "Logit coefficients for baseline specifications",
+             vcov = ~ canton_dpa,
+             notes = notes_baseline_models,
+             gof_map = gf_map) %>%
+kable_styling(latex_options = "hold_position")
+```
+
+```{r}
+#| label: partial-effects-plot
+#| fig-cap: "Marginal Effects of Max. Temperature on Presidential Approval"
+#| fig-cap-location: top
+#| fig-width: 6.7
+#| fig-height: 4
+#| fig-pos: H
+
+plot_slopes(simple_model4, 
+            variables = "max_temperature", 
+            condition = "max_temperature") +
+  theme_minimal() +
+  labs(x = "Max. Temperature (\u00B0C)",
+       y = "Marginal Probability of Presidential Approval") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme(panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
+        panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
+        axis.text.x = element_text(color = "black"),
+        text = element_text(family = 'serif', color = "black"),
+        plot.background = element_rect(fill = "white", colour = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
+        plot.caption = element_text(hjust = 0))
+```
+
+Figure 3 shows the marginal effects plot of maximum temperature on presidential approval from Specification (4). The plot shows that the marginal probability of presidential approval decreases as maximum temperature increases. At about 10°C of maximum daily temperatures, an additional degree makes survey respondents one percent point less likely to approve of the president. At the highest maximum temperature, which is about 34°C, an additional degree makes survey respondents about 1.3 percent points less likely to approve of the president. These translate to an average marginal effect of -1.1%, as it can be seen in the Appendix, which presents average marginal effects for all the tables in the paper. 
+
+## Controlling for political behaviour
+
+\renewcommand{\arraystretch}{0.5}
+
+```{r}
+#| label: results-political-behaviour
+#| output: asis
+
+# Coefficient names
+
+coefficients_controls <- c(
+  "min_temperature" = "Min. temperature (\u00B0C)",
+  "max_temperature" = "Max. temperature (\u00B0C)",
+  "avg_temperature" = "Avg. temperature (\u00B0C)",
+  "precipitation" = "Precipitation (mm)",
+  "sexFemale" = "Female",
+  "age" = "Age",
+  "urban_ruralRural" = "Rural area ",
+  "educationPrimary" = "Primary education (ref. No education)",
+  "educationSecondary" = "Secondary education",
+  "educationSuperior" = "Higher education",
+  "labour_marketNot in Labour Force" = "Not in Labour Force",
+  "labour_marketUnemployed" = "Unemployed",
+  "personal_econ_situationWorse" = "Perceived worse personal economy",
+  "country_econ_situationWorse" = "Perceived worse country economy",
+  "ideology" = "Ideology score (0-10)",
+  "democracy_supportSupports" = "Supports democracy",
+  "political_pride" = "Political pride score (0-7)",
+  "corruption_perceptionCorrupt" = "Perceives corruption",
+  "corruption_toleranceTolerant" = "Tolerates bribes",
+  "confidence_police" = "Trust in police score (0-7)",
+  "confidence_local_gov" = "Trust in local gov. (0-7)"
+)
+
+# Notes for the table
+
+notes_control_models <- list(
+  "Note: Models explaining presidential approval through daily weather variables and controls. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(models_controls,
+             gof_map = gf_map,
+             coef_map = coefficients_controls,
+             stars = stars,
+             estimate = "{estimate}{stars}",
+             booktabs = TRUE,
+             align = "lrrrr", 
+             threeparttable = TRUE,
+             title = "Logit coefficients for specifications with controls",
+             vcov = ~ canton_dpa,
+             notes = notes_control_models,
+             output = "latex",
+             threeparttable = TRUE,
+             longtable = T) %>%
+kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+Table 4 shows the results of the logit fixed effects estimation of Equation \ref{eqn:baseline} with additional political behaviour controls. I control for regular demographic and socioeconomic variables, as well as political ideology and behaviour. I control for sex, age and rural status (vs. an urban status reference level). I also compare the effect of different levels of education, where my reference level is no reported education level (0 years of education). For labour market status, I consider four categories, where the reference level is being employed and binary variables for not being the labour force (retired, not working, student, and homemakers.) and being unemployed (looking actively for a job). Personal perceptions of both personal and country economic situations are included too. The country's economic situation is particularly informative, given that it partials out the relationship of economic voting from the weather variables.
+
+I also control for political ideology through a 0-10 scale indicating the degree to which a survey respondent identifies with a more right-wing ideology. Finally, I include variables for democracy support, as measured by the classic "Churchill" definition, political pride, corruption perceptions, corruption tolerance (bribes) and trust scores for police and local government. By including these controls, I aim to address any potential omitted variable bias that could be present from the underlying model in Table 1. The literature has pointed to several factors that can interact with voters' attribution processes; these could act as confounders in my estimation procedure and should be controlled for to the extent that is possible. A disadvantage to these models is that lose a large amount of observations, since not all questions are asked consistently across survey rounds. Further, I completely lose the 2021 wave due to a lack of the most fundamental controls, which were not asked due to the restricted survey design which was adopted to the COVID-19 pandemic.
+
+Specifications (1) through (4) show the results of the specifications in Table 3, but with the addition of the political behaviour controls. These results show that the sign and statistical significance of daily maximum temperature remain unchanged, which suggests that the relationship between temperature and presidential approval is robust to the inclusion of these controls. Further, I also find a negative and statistically significant relationship between presidential approval and my measure of average temperature in specification (3), which was not present in the baseline models.
+
+With regard to the political behaviour controls, I find that the relationship between presidential approval and the political behaviour controls is consistent with the literature. Those who perceive the country's economic situation as worse are less likely to approve of the president, as are those who perceive the country as more corrupt and those more tolerant to bribes. The former result is consistent with most of the literature on economic voting. Further, I find that support for democracy, police, and political pride are positively related to presidential approval, while the opposite is true for those who are more right-wing and those who are unemployed. No demographic or socioeconomic variables are statistically significant at any conventional significance level other than sex (female).
+
+```{r}
+#| label: partial-effects-plot-controls
+#| fig-cap: "Marginal Effects of Max. Temperature on Presidential Approval with Controls"
+#| fig-cap-location: top
+#| fig-width: 6.7
+#| fig-height: 4
+
+plot_slopes(model4_controls, variables = "max_temperature", condition = "max_temperature") + 
+  theme_minimal() +
+  labs(x = "Max. Temperature (\u00B0C)",
+       y = "Marginal Probability of Presidential Approval") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme(panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
+        panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
+        axis.text.x = element_text(color = "black"),
+        text = element_text(family = 'serif', color = "black"),
+        plot.background = element_rect(fill = "white", colour = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
+        plot.caption = element_text(hjust = 0))
+```
+
+Above, Figure 2 the marginal effects plot of maximum temperature on presidential approval from Specification (4) with controls is shown. Comparing to Figure 1, it is shown that the inclusion of controls does not change the decreasing marginal probability of presidential approval acrossing maximum temperature. The relationship is in fact increased after controls are included, suggest a downward bias in the baseline models. The average marginal effect of maximum temperature on presidential approval is -2.2%, as it can be seen in Appendix A.
+
+## Heterogenous effects of temperature on presidential approval
+
+In this subsection I allow for heterogeneity in the effect of temperature on presidential approval. Table 3 below follows the general model below, which includes an interaction term.
+
+```{=tex}
+\begin{equation}
+\label{eqn:heterogeneity}
+y_{it} = \alpha + \tau_t + \theta_j + \beta \ \text{temp}_{it} + \mathbb{X'}_{it} \gamma + \delta \ \text{temp}_{it} \times g_{it} + u_{it}
+\end{equation}
+```
+All variables are defined as in Equation \ref{eqn:baseline}, but I include an interaction term between temperature and any explanatory variable $g_{it}$, which was only contained in the vector of controls $\mathbb{X'}_{it}$. In this section, I explore important covariates that can interact with temperature to affect presidential approval, which are region\footnote{I did not include region as a explanatory variable in other models since it would induce perfect collinearity.}, perceived economic situations for both the country and the respondent, and political ideology. If the interaction term is statistically significant, it would suggest that the effect of temperature on presidential approval is not constant across the population, and that the relationship between temperature and presidential approval is conditional on the value of the covariate. The controls on vector $\mathbb{X'}_{it}$ are the same as in Table 2 for this subsection, but are not shown in the table for brevity.
+
+```{r}
+#| label: heterogeneity-table
+#| output: asis
+
+# Define the coefficient names
+
+coef_names_heterogeneity <- c(
+  "min_temperature" = "Min. temp. (\u00B0C)",
+  "max_temperature" = "Max. temp. (\u00B0C)",
+  "region::Costa:min_temperature" = "Coastal \u00D7 Min. temp. (\u00B0C)",
+  "region::Oriente:min_temperature" = "Amazon \u00D7 Min. temp. (\u00B0C)",
+  "region::Costa:max_temperature" = "Coastal \u00D7 Max. temp. (\u00B0C)",
+  "region::Oriente:max_temperature" = "Amazon \u00D7 Max. temp. (\u00B0C)",
+  "country_econ_situationWorse:min_temperature" = "Worse country econ. \u00D7 Min. temp. (\u00B0C)",
+  "country_econ_situationWorse:max_temperature" = "Worse country econ. \u00D7 Max. temp. (\u00B0C)",
+  "personal_econ_situationWorse:min_temperature" = "Worse personal econ. \u00D7 Min. temp. (\u00B0C)",
+  "personal_econ_situationWorse:max_temperature" = "Worse personal econ. \u00D7 Max. temp. (\u00B0C)",
+  "ideology:min_temperature" = "Ideology score \u00D7 Min. temp. (\u00B0C)",
+  "ideology:max_temperature" = "Ideology score \u00D7 Max. temp. (\u00B0C)"
+)
+
+# Notes for the table
+
+notes_heterogeneity_models <- list(
+  "Note: Models allowing for heterogeneous effects of temperature on presidential approval. Regional categories hold the Highlands region as the reference level. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(models_hetero,
+             gof_map = gf_map,
+             coef_map = coef_names_heterogeneity,
+             stars = stars,
+             estimate = "{estimate}{stars}",
+             booktabs = TRUE,
+             align = "lrrrr", 
+             threeparttable = TRUE,
+             title = "Logit coefficients for models with interaction terms",
+             vcov = ~ canton_dpa,
+             notes = notes_heterogeneity_models,
+             output = "latex",
+             threeparttable = TRUE,
+             longtable = T) %>% 
+kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+These results show that heterogeneity exists in the effect of the temperature on presidential approval between different regions in the country. Survey respondents from the Amazon region are less likely to approve of the president at higher values of maximum temperature compared to those in the Highlands region. As pointed out in the background section, the Amazon region is the most humid and warm region in the country, which could explain this result if weather truly affects presidential approval. However, the AmericasBarometer surveys very little respondents in Amazon cantons, which is why this result is very preliminary. Survey respondents from the Coastal region do not show a statistically significant difference between temperature and presidential approval compared to those in the Highlands region. Given the large difference in temperatures between the Highlands and the Coastal region, this result is surprising and could point to biases in the estimation process.
+
+I find no heterogeneity between personal and country economic situations, which suggests that economic voting may be unrelated to weather attribution errors. Ideology does interact with temperature to affect presidential approval, but results are conflicting. Voters who identify closer to the political right are more likely to approve of the president at higher values of minimum temperature, but at the same time are likely to disapprove of the president at higher values of maximum temperature. In the Appendix A, it is shown that the average marginal effect of minimum temperature is still statistically insignificant, while the average marginal effect of maximum temperature is -1.9%. 
+
+# Conclusion
+
+This paper has shown that daily temperature has a statistically significant and negative effect on presidential approval in Ecuador. Survey respondents are about 1.9-2.2% less likely to approve of the president when maximum daily temperatures increase by one degree. This result is robust to the inclusion of socioeconomic and political behaviour controls. The results are consistent with the literature retrospective voting, which suggests that voters may commit attribution errors when evaluating politician's performance.
+
+The results also show that the effect of temperature on presidential approval is not constant across the population. I find that the effect of temperature on presidential approval is conditional on the region of the country and the political ideology of the survey respondent. These results, while understandable given that the Amazon region is the most humid and warm region in the country, are preliminary and should be taken with caution, because of the small sample size of the Amazon region in the AmericasBarometer surveys. 
+
+There is a possibility that my temperature variables are subject to measurement error, which could bias my results. If this is the case, then my results are likely to be downward biased, which would suggest that the true effect of temperature on presidential approval is larger than what I estimate. The fact that I am able to find statistically significant results in an observational setting suggests that the true effect of temperature on presidential approval is likely to be larger, and future research should aim to address this possibility by using more precise temperature data, and by using more sophisticated methods to address measurement error. Replicating this study in other countries where temperature data of higher quality is available would also be valuable, in order to validate these results and to evaluate the generalizability of these results to other contexts.
+
+# References
+
+::: {#refs}
+:::
+
+# Appendix: Average marginal effects {.appendix .unnumbered}
+
+```{r}
+#| label: apes-table-1
+#| output: asis
+#| tbl-pos: H
+
+# Apply the avg_slopes function to the simple_models list
+notes_baseline_models_apes <- list(
+  "Note: Average partial effects for baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1.")
+
+apes_baseline <- lapply(simple_models, avg_slopes, type = "response")
+
+modelsummary(apes_baseline,
+             output = "latex",
+             coef_map = coefficients_baseline_models,
+             stars = stars,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for baseline models in Table 3",
+             threeparttable = TRUE,
+             notes = notes_baseline_models_apes,
+             gof_map = gf_map) %>%
+  kable_styling(latex_options = c("hold_position"))
+```
+
+```{r}
+#| label: apes-calculate-controls
+#| output: asis
+#| cache: true
+
+# Apply the avg_slopes function to the models_controls list
+
+apes_controls <- lapply(models_controls, avg_slopes, type = "response")
+```
+
+\renewcommand{\arraystretch}{0.5}
+
+```{r}
+#| label: apes-table-2
+#| output: asis
+#| tbl-pos: H
+
+# Notes for the table
+
+notes_control_models_apes <- list(
+  "Note: Average partial effects for models explaining presidential approval through daily weather variables, canton and interview date fixed effects, and political behaviour controls. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Coefficient names
+
+coefficients_controls_apes <- c(
+  "min_temperature dY/dX" = "Min. temperature (\u00B0C)",
+  "max_temperature dY/dX" = "Max. temperature (\u00B0C)",
+  "avg_temperature dY/dX" = "Avg. temperature (\u00B0C)",
+  "precipitation dY/dX" = "Precipitation (mm)",
+  "sex Female - Male" = "Female",
+  "age dY/dX" = "Age",
+  "urban_rural Rural - Urban" = "Rural area ",
+  "education Primary - None" = "Primary education (ref. No education)",
+  "education Secondary - None" = "Secondary education",
+  "education Superior - None" = "Higher education",
+  "labour_market Not in Labour Force - Employed" = "Not in Labour Force",
+  "labour_market Unemployed - Employed" = "Unemployed",
+  "personal_econ_situation Worse - Better or Same" = "Perceived worse personal economy",
+  "country_econ_situation Worse - Better or Same" = "Perceived worse country economy",
+  "ideology dY/dX" = "Ideology score (0-10)",
+  "democracy_support Supports - Does Not Support" = "Supports democracy",
+  "political_pride dY/dX" = "Political pride score (0-7)",
+  "corruption_perception Corrupt - Not Corrupt" = "Perceives corruption",
+  "corruption_tolerance Tolerant - Not Tolerant" = "Tolerates bribes",
+  "confidence_police dY/dX" = "Trust in police score (0-7)",
+  "confidence_local_gov dY/dX" = "Trust in local gov. (0-7)"
+)
+
+# Use modelsummary to create the table
+
+modelsummary(apes_controls,
+             output = "latex",
+             coef_map = coefficients_controls_apes,
+             stars = stars,
+             shape = term:contrast + statistic ~ model,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for models with controls in Table 4",
+             threeparttable = TRUE,
+             notes = notes_control_models_apes,
+             gof_map = gf_map,
+             longtable = T) %>%
+  kable_styling(latex_options = c("hold_position"))
+```
+
+\renewcommand{\arraystretch}{1}
+
+```{r}
+#| label: apes-calculate-hetero
+#| cache: true
+
+# Apply the avg_slopes function to the models_hetero list
+
+apes_hetero <- lapply(models_hetero, avg_slopes, type = "response")
+
+```
+
+\renewcommand{\arraystretch}{0.5}
+```{r}
+#| label: apes-table-3
+#| output: asis
+
+# Notes for the table
+
+notes_heterogeneity_models_apes <- list(
+  "Note: Average partial effects for models allowing for heterogeneous effects of temperature on presidential approval. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(apes_hetero,
+             output = "latex",
+             coef_map = coefficients_controls_apes,
+             stars = stars,
+             shape = term:contrast + statistic ~ model,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for models with interaction terms in Table 5",
+             threeparttable = TRUE,
+             notes = notes_heterogeneity_models_apes,
+             gof_map = gf_map,
+             longtable = T) %>%
+kable_styling(latex_options = c("hold_position"))
+```
+\renewcommand{\arraystretch}{1}
