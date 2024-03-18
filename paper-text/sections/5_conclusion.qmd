@@ -1,0 +1,12 @@
+---
+# Conclusion
+suppress-bibliography: true
+---
+
+# Conclusion
+
+This paper has shown that daily temperature has a statistically significant and negative effect on presidential approval in Ecuador. Survey respondents are about 1.9-2.2% less likely to approve of the president when maximum daily temperatures increase by one degree. This result is robust to the inclusion of socioeconomic and political behaviour controls. The results are consistent with the literature retrospective voting, which suggests that voters may commit attribution errors when evaluating politician's performance.
+
+The results also show that the effect of temperature on presidential approval is not constant across the population. I find that the effect of temperature on presidential approval is conditional on the region of the country and the political ideology of the survey respondent. These results, while understandable given that the Amazon region is the most humid and warm region in the country, are preliminary and should be taken with caution, because of the small sample size of the Amazon region in the AmericasBarometer surveys. 
+
+There is a possibility that my temperature variables are subject to measurement error, which could bias my results. If this is the case, then my results are likely to be downward biased, which would suggest that the true effect of temperature on presidential approval is larger than what I estimate. The fact that I am able to find statistically significant results in an observational setting suggests that the true effect of temperature on presidential approval is likely to be larger, and future research should aim to address this possibility by using more precise temperature data, and by using more sophisticated methods to address measurement error. Replicating this study in other countries where temperature data of higher quality is available would also be valuable, in order to validate these results and to evaluate the generalization of these results to other contexts.

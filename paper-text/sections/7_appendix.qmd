@@ -1,0 +1,183 @@
+---
+# Appendix
+---
+
+```{r}
+#| label: appendix-setup
+
+# Source models
+
+source("scripts/r/empirical_analysis.R")
+
+# Load other needed libraries
+
+library(dplyr)
+library(marginaleffects)
+library(ggplot2)
+library(kableExtra)
+
+# Define modelsummary arguments for tables
+
+stars <- c("*" = 0.1,
+           "**" = 0.05,
+           "***" = 0.05)
+
+# Do the goodness of fit mapping as a list mapping
+
+gf_map <- list(
+  list("raw" = "nobs", "clean" = "N", "fmt" = 0),
+  list("raw" = "aic", "clean" = "AIC", "fmt" = 0),
+  list("raw" = "rmse", "clean" = "RMSE", "fmt" = 3),
+  list("raw" = "FE: canton_dpa", "clean" = "Canton fixed effects", "fmt" = 0),
+  list("raw" = "FE: interview_date", "clean" = "Interview date fixed effects", "fmt" = 0)
+)
+
+
+```
+# Appendix: Average marginal effects {.appendix .unnumbered}
+
+```{r}
+#| label: apes-table-1
+#| output: asis
+#| tbl-pos: H
+
+# Redefine controls apes
+
+coefficients_baseline_models <- c(
+  "min_temperature" = "Min. temperature (\u00B0C)",
+  "max_temperature" = "Max. temperature (\u00B0C)",
+  "avg_temperature" = "Avg. temperature (\u00B0C)",
+  "precipitation" = "Precipitation (mm)"
+)
+
+# Apply the avg_slopes function to the simple_models list
+notes_baseline_models_apes <- list(
+  "Note: Average partial effects for baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1.")
+
+apes_baseline <- lapply(simple_models, avg_slopes, type = "response")
+
+modelsummary(apes_baseline,
+             output = "latex",
+             coef_map = coefficients_baseline_models,
+             stars = stars,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for baseline models in Table 3",
+             threeparttable = TRUE,
+             notes = notes_baseline_models_apes,
+             gof_map = gf_map) %>%
+  kable_styling(latex_options = c("hold_position"))
+```
+
+```{r}
+#| label: apes-calculate-controls
+#| output: asis
+#| cache: true
+
+# Apply the avg_slopes function to the models_controls list
+
+apes_controls <- lapply(models_controls, avg_slopes, type = "response")
+```
+
+\clearpage
+
+\renewcommand{\arraystretch}{0.5}
+
+```{r}
+#| label: apes-table-2
+#| output: asis
+#| tbl-pos: H
+
+# Notes for the table
+
+notes_control_models_apes <- list(
+  "Note: Average partial effects for models explaining presidential approval through daily weather variables, canton and interview date fixed effects, and political behaviour controls. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Coefficient names
+
+coefficients_controls_apes <- c(
+  "min_temperature dY/dX" = "Min. temperature (\u00B0C)",
+  "max_temperature dY/dX" = "Max. temperature (\u00B0C)",
+  "avg_temperature dY/dX" = "Avg. temperature (\u00B0C)",
+  "precipitation dY/dX" = "Precipitation (mm)",
+  "sex Female - Male" = "Female",
+  "age dY/dX" = "Age",
+  "urban_rural Rural - Urban" = "Rural area ",
+  "education Primary - None" = "Primary education (ref. No education)",
+  "education Secondary - None" = "Secondary education",
+  "education Superior - None" = "Higher education",
+  "labour_market Not in Labour Force - Employed" = "Not in Labour Force",
+  "labour_market Unemployed - Employed" = "Unemployed",
+  "personal_econ_situation Worse - Better or Same" = "Perceived worse personal economy",
+  "country_econ_situation Worse - Better or Same" = "Perceived worse country economy",
+  "ideology dY/dX" = "Ideology score (0-10)",
+  "democracy_support Supports - Does Not Support" = "Supports democracy",
+  "political_pride dY/dX" = "Political pride score (0-7)",
+  "corruption_perception Corrupt - Not Corrupt" = "Perceives corruption",
+  "corruption_tolerance Tolerant - Not Tolerant" = "Tolerates bribes",
+  "confidence_police dY/dX" = "Trust in police score (0-7)",
+  "confidence_local_gov dY/dX" = "Trust in local gov. (0-7)"
+)
+
+# Use modelsummary to create the table
+
+modelsummary(apes_controls,
+             output = "latex",
+             coef_map = coefficients_controls_apes,
+             stars = stars,
+             shape = term:contrast + statistic ~ model,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for models with controls in Table 4",
+             threeparttable = TRUE,
+             notes = notes_control_models_apes,
+             gof_map = gf_map,
+             longtable = T) %>%
+  kable_styling(latex_options = c("hold_position"))
+```
+\renewcommand{\arraystretch}{1}
+
+\clearpage
+
+```{r}
+#| label: apes-calculate-hetero
+#| cache: true
+
+# Apply the avg_slopes function to the models_hetero list
+
+apes_hetero <- lapply(models_hetero, avg_slopes, type = "response")
+
+```
+
+\renewcommand{\arraystretch}{0.5}
+```{r}
+#| label: apes-table-3
+#| output: asis
+
+# Notes for the table
+
+notes_heterogeneity_models_apes <- list(
+  "Note: Average partial effects for models allowing for heterogeneous effects of temperature on presidential approval. Standard errors shown in parentheses are clustered by canton.",
+  "***p<0.01, **p<0.05, *p<0.1."
+)
+
+# Use modelsummary to create the table
+
+modelsummary(apes_hetero,
+             output = "latex",
+             coef_map = coefficients_controls_apes,
+             stars = stars,
+             shape = term:contrast + statistic ~ model,
+             align = "lrrrr",
+             estimate = "{estimate}{stars}",
+             title = "Average partial effects for models with interaction terms in Table 5",
+             threeparttable = TRUE,
+             notes = notes_heterogeneity_models_apes,
+             gof_map = gf_map,
+             longtable = T) %>%
+kable_styling(latex_options = c("hold_position"))
+```
+\renewcommand{\arraystretch}{1}

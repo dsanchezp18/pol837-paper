@@ -1,0 +1,11 @@
+---
+# References
+suppress-bibliography: false
+nocite: '@*'
+---
+
+# References
+
+:::{#refs}
+
+:::

@@ -2,16 +2,63 @@ project:
   title: "POL837 Research Paper"
   execute-dir: project
   render:
+    - paper-text/sections/0_prelim.qmd
     - paper-text/sections/1_introduction.qmd
     - paper-text/sections/3_empirical_strategy.qmd
+    - paper-text/sections/4_results.qmd
+    - paper-text/sections/5_conclusion.qmd
+    - paper-text/sections/6_references.qmd
+    - paper-text/sections/7_appendix.qmd
     - paper-text/main.qmd
+
+
 format: 
      pdf:
-        fontsize: 12pt
         pdf-engine: xelatex
-        mathfont: "Libertinus Math"
         latex-output-dir: output
+        mainfont: Times New Roman
+        monofont: Times New Roman
+        mathfont: Libertinus Math
+        number-sections: true
+        linestretch: 2
+        fontsize: 12pt
+     docx:
+        reference-doc: paper-text/apa_format_reference_doc.docx
+        
+include-in-header:
+  text: |
+    \usepackage{lipsum}
+    \newfontfamily\tfont{Times New Roman}
+    \addtokomafont{title}{\tfont}
+    \newfontfamily\sfont{Times New Roman}
+    \addtokomafont{section}{\sfont}
+    \addtokomafont{subsection}{\sfont}
+    \usepackage{booktabs}
+    \usepackage{siunitx}
+    \newcolumntype{d}{S[
+        input-open-uncertainty=,
+        input-close-uncertainty=,
+        parse-numbers = false,
+        table-align-text-pre=false,
+        table-align-text-post=false
+    ]}
+    \usepackage{amsmath,amsfonts}
+    \usepackage{float}
+    \usepackage{pdflscape}
+    \usepackage{csquotes}
 
-title: "POL837 Research Paper"
+knitr: 
+  opts_chunk: 
+      echo : false
+      message: false
+      warning: false
+      
 bibliography: paper-text/references.bib
 csl: paper-text/apa7_normal.csl
+
+fig-cap-location: top
+fig-width: 6.7
+fig-height: 4
+# fig-pos: H
+
+tbl-cap-location: top

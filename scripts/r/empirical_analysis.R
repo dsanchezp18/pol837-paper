@@ -19,7 +19,7 @@ library(forcats)
 
 # Load the full dataset
 
-load(here("data/full_df.RData"))
+load("data/full_df.RData")
 
 # Redefine the full dataset
 
