@@ -8,7 +8,7 @@
 
 \vspace*{\fill}
 
-\Huge{Title of the paper}
+\Huge{Mood misattribution and external factors: The effect of short-term temperature changes on presidential approval in Ecuador}
 
 \Large{Daniel Sánchez Pazmiño}
 
@@ -20,20 +20,11 @@ Spring 2024
 
 Professor Eline de Rooij, Ph.D.
 
-\textbf{Word count}: 4854
+\textbf{Word count}: 5142
 
 \vspace*{\fill}
 
 \end{center}
 
 \clearpage
-
-\begin{abstract}
-\textit{
-\lipsum[1]}
-\end{abstract}
-
-# Acknowledgments {.unnumbered}
-
-I acknowledge support from Universidad San Francisco de Quito in providing access to the AmericasBarometer subscriber data, which was used in this work. These data were supplied by the Latin American Public Opinion Project at Vanderbilt University, which takes no responsibility for any interpretation of the data.
 
