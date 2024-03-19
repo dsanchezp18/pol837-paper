@@ -27,3 +27,18 @@
 - Does focusing on a variety of dependent variables make sense, or is it too broad, making the paper too hard to handle? 
     - I could focus on presidential approval ratings, local government, trust in institutions, etc. 
   
+# Pendings
+
+- Non linear relationship between temperature and presidential
+
+- Does temperature affect mood ? Mechanism check?
+
+- Including the vote in the paper (did I vote for the guy in the next election? Will I vote for their party or for the guy in the next elections?)
+
+- Controlling for mood, does it kill the results? 
+
+- Robustness checks at different cluster levels. Robustness check with killing other cantons
+
+- Other survey. 
+
+

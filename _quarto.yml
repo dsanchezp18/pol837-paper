@@ -22,8 +22,8 @@ format:
         number-sections: true
         linestretch: 2
         fontsize: 12pt
-     docx:
-        reference-doc: paper-text/apa_format_reference_doc.docx
+     #docx:
+        #reference-doc: paper-text/apa_format_reference_doc.docx
         
 include-in-header:
   text: |
