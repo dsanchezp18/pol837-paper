@@ -4,10 +4,11 @@ output-dir: /paper-text/sections/output
 output-file: sanchez_daniel_pol837_research_paper
 ---
 
-<!-- This is an HTML comment Ctrl + k Ctrl c or Shift Alt A -->
-<!-- To include Quarto files relative to the project directory, do so with a leading slash / -->
+{{< include /paper-text/sections/0_prelim.qmd >}}
 
 {{< include /paper-text/sections/1_introduction.qmd >}}
+
+{{< include /paper-text/sections/2_theory.qmd >}}
 
 {{< include /paper-text/sections/3_empirical_strategy.qmd >}}
 
