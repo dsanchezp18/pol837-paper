@@ -4,6 +4,8 @@ output-dir: /paper-text/sections/output
 output-file: sanchez_daniel_pol837_research_paper
 ---
 
+<!-- This is the main paper file -->
+
 {{< include /paper-text/sections/0_prelim.qmd >}}
 
 {{< include /paper-text/sections/1_introduction.qmd >}}

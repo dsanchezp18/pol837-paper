@@ -222,7 +222,6 @@ ecu_ab_with_cantons %>%
 # Select only 2008-2023 and clean the data
 # Create a date variable from the fecha variable
 
-
 ecu_ab_2008_2023 <- 
     ecu_ab_with_cantons %>% 
     filter(year >= 2008)  %>% 
