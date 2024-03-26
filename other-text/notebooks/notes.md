@@ -49,4 +49,8 @@
 
 - Other survey. 
 
+- Literature on weather and turnout, weather, draughts, acknowledge this literature. 
 
+- Italicize a hypothesis.  For presentation and paper. 
+
+- Classify or make it non linear.  

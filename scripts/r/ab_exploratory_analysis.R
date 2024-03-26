@@ -485,3 +485,166 @@ ecu_ab_2021_raw %>%
   group_by(upm) %>%
   summarise(n = n()) %>%
   ungroup()
+
+# Retrospective vote variables
+
+# Vote in 2002 Presidential election: vb3_04
+# Asked in 2004 only
+# Count nas per year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3_04 = sum(is.na(vb3_04)),
+            count = n())
+
+# First round 2002: ecuvb3. Asked in 2004 and 2006
+# Count nas per year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ecuvb3 = sum(is.na(ecuvb3)),
+            count = n())
+
+# First round 2006: vb3_08. Asked in 2008
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3_08 = sum(is.na(vb3_08)),
+            count = n())
+
+# First round 2009: vb3_10. Asked in 2010
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3_10 = sum(is.na(vb3_10)),
+            count = n())
+
+# First round 2009: vb3_12. Asked in 2012
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3_12 = sum(is.na(vb3_12)),
+            count = n())
+
+# First round 2013: vb3n_14. Asked in 2014
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3n_14 = sum(is.na(vb3n_14)),
+            count = n())
+
+# First round 2013: vb3n_16. Asked in 2016
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3n_16 = sum(is.na(vb3n_16)),
+            count = n())
+
+# First round 2017: vb3n_18. Asked in 2019
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3n_18 = sum(is.na(vb3n_18)),
+            count = n())
+
+# First round 2021: vb3n asked in 2023
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb3n = sum(is.na(vb3n)),
+            count = n())
+
+# Other vote-related variables ------------------------------------------
+
+# Registered to vote: vb1
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb1 = sum(is.na(vb1)),
+            count = n())
+
+# Voted: vb2
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb2 = sum(is.na(vb2)),
+            count = n())
+
+# Identify with a political party vb10
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb10 = sum(is.na(vb10)),
+            count = n())
+
+# What political party do you identify with? ecuvb11 (only 2006)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ecuvb11 = sum(is.na(ecuvb11)),
+            count = n())
+
+# What political party do you identify with? vb11_08 (only 2008)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_08 = sum(is.na(vb11_08)),
+            count = n())
+
+# What political party do you identify with? vb11_10 (only 2010)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_10 = sum(is.na(vb11_10)),
+            count = n())
+
+# What political party do you identify with? vb11_12 (only 2012)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_12 = sum(is.na(vb11_12)),
+            count = n())
+
+# What political party do you identify with? vb11_14 (only 2014)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_14 = sum(is.na(vb11_14)),
+            count = n())
+
+# What political party do you identify with? vb11_16 (only 2016)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_16 = sum(is.na(vb11_16)),
+            count = n())
+
+# What political party do you identify with? vb11_18 (only 2018)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11_18 = sum(is.na(vb11_18)),
+            count = n())
+
+# What political party do you identify with? vb11 (only 2023)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb11 = sum(is.na(vb11)),
+            count = n())
+
+# Negative, dislike political party vb10neg
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb10neg = sum(is.na(vb10neg)),
+            count = n())
+
+# Prospective vote ----------------------------------------------------
+
+# VB20
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_vb20 = sum(is.na(vb20)),
+            count = n())
