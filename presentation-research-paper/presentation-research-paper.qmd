@@ -1,0 +1,63 @@
+---
+title: Retrospectively sweaty? The effects of temperature changes on presidential approval
+subtitle: POL837 Issues in Comparative Politics Research Paper
+format: clean-revealjs
+author:
+  - name: Daniel Sánchez Pazmiño
+    affiliations: Simon Fraser University
+date: "2024-04-01"
+date-format: "MMMM YYYY"
+bibliography: references.bib
+csl: apa7_normal.csl
+knitr: 
+  opts_chunk: 
+      echo : false
+      message: false
+      warning: false
+---
+
+```{r setup}
+#| label: setupq
+#| include: false
+library(ggdag, warn.conflicts = F)
+```
+
+# Introduction
+
+- Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.
+
+- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healyIrrelevanteventsaffect2010; @healyRandomeventseconomic2010; @achenBlindretrospectionelectoral2017]
+
+- I investigate whether transient temperature changes affect retrospective evaluations of  presidential performance in Ecuador, using CPC weather data and the AmericasBarometer public opinion survey. 
+
+- Results show that a 1°C increase in maximum temperature leads to a **1.9 - 2.2 p.p.** decrease in the likelihood of presidential approval. 
+
+::: {.notes}
+- The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes [@besleyPrincipledagentspolitical2006; @perssonPoliticaleconomicsexplaining2002]
+
+- Factors include cognitive bias, recency bias, heuristics, party cues, among others. 
+
+- Shark attacks, draughts, football matches, among others. 
+:::
+
+# Theoretical framework
+
+- I hypothesize that temperature affects presidential approval through mood.
+
+```{r}
+#| label: dag
+
+dag <- dagify(
+  presidential_approval ~ temperature,
+  temperature ~ mood
+)
+
+ggdag(dag) + 
+  theme_dag()
+```
+
+# Empirical strategy
+
+# Results
+
+# Conclusion
