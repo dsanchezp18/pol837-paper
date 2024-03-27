@@ -949,3 +949,16 @@ ecu_ab_raw %>%
   group_by(year) %>%
   summarise(missing_ls6a = sum(is.na(ls6a)),
             count = n())
+
+# Confidence in others -----------------------------------------------
+
+# it1 
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_it1 = sum(is.na(it1)),
+            count = n())
+
+# Look at labels 
+
+print_labels(ecu_ab_raw$it1)

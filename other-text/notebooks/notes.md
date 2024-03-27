@@ -41,6 +41,8 @@
 
     - Can run with life satisfaction. 
 
+    - Unsure if confidence in others would have an effect. 
+
 - Robustness checks at different cluster levels. Robustness check with killing other cantons
 
 - Relationships between temperature and other variables (e.g. economic perceptions, trust in institutions, etc.). Need to review if there is some sort of correlation of the errors. 

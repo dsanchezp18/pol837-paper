@@ -195,6 +195,7 @@ ecu_ab <-
             political_interest = zap_labels(pol1) %>% zap_missing(), # Higher means more
             ls = zap_labels(ls3) %>% zap_missing(), # Higher means less
             satisfied_life = if_else(ls >= 2, "Satisfied", "Not satisfied") %>% forcats::as_factor() %>% fct_relevel("Not satisfied"),
+            confidence_in_others = zap_labels(it1) %>% zap_missing(), # Higher means less confidence in others.
 )
 
 # Canton name matching ------------------------------------------------------------
