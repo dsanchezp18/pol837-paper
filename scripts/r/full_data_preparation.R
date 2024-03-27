@@ -105,12 +105,21 @@ ecu_ab <-
                                   str_trim(),
             sex = case_when(
                 year == 2021 & q1tb == 1 ~ "Male",
-                year == 2022 & q1tb == 2 ~ "Female",
+                year == 2021 & q1tb == 2 ~ "Female",
                 year == 2021 & q1tb == 3 ~ NA_character_,
                 year != 2021 & q1 == 1 ~ "Male",
-                year != 2021 & q1 == 2 ~ "Female"
-            ) %>% forcats::as_factor() %>% fct_relevel("Male"),
-            age = q2 %>% zap_missing() %>% zap_labels(), 
+                year != 2021 & q1 == 2 ~ "Female") %>% forcats::as_factor() %>% fct_relevel("Male"),
+            age = q2 %>% zap_missing() %>% zap_labels(),
+            q11 = zap_labels(q11) %>% zap_missing(),
+            q11n = zap_labels(q11n) %>% zap_missing(),
+            civil_status = case_when(
+                year %in% c(2008, 2010) & q11 == 1 ~ "Single",
+                year %in% c(2008, 2010) & q11 %in% c(2,3) ~ "Married/Common Law",
+                year %in% c(2008, 2010) & q11 %in% c(3,4,5) ~ "Divorced/Separated/Widowed",
+                year %in% c(2012, 2014, 2016, 2019, 2023) & q11n == 1 ~ "Single",
+                year %in% c(2012, 2014, 2016, 2019, 2023) & q11n %in% c(2,3) ~ "Married/Common Law",
+                year %in% c(2012, 2014, 2016, 2019, 2023) & q11n %in% c(3,4,5) ~ "Divorced/Separated/Widowed",
+                TRUE ~ NA_character_) %>% forcats::as_factor() %>% fct_relevel("Single"),
             urban_rural = case_when(
                 year == 2021 & ur1new %in% c(1,2) ~ "Urban",
                 year == 2021 & ur1new %in% c(3,4) ~ "Rural",
@@ -144,7 +153,49 @@ ecu_ab <-
             political_pride = zap_labels(b4),
             confidence_justice = zap_labels(b10a),
             confidence_police = zap_labels(b18),
-            confidence_local_gov = zap_labels(b32))
+            confidence_local_gov = zap_labels(b32),
+            ethnicity = as_factor(etid),
+            q3 = zap_labels(q3) %>% zap_missing(),
+            q3c = zap_labels(q3c) %>% zap_missing(),
+            q3cn = zap_labels(q3cn) %>% zap_missing(),
+            non_religious = case_when(
+                year == 2008 & q3 == 4 ~ "Non-religious/Agnostic",
+                year == 2008 & q3 %in% c(1,2,3,5,6) ~ "Religious",
+                year %in% 2010:2016 & q3c %in% c(4,11) ~ "Non-religious/Agnostic",
+                year %in% 2010:2016 & q3c %in% c(1:3, 5:10, 12,77) ~ "Religious",
+                year %in% c(2019,2023) & q3cn %in% c(4,11) ~ "Non-religious/Agnostic",
+                year %in% c(2019,2023) & q3cn %in% c(1:3, 5:10, 12,77) ~ "Religious",
+                TRUE ~ NA_character_) %>% forcats::as_factor() %>% fct_relevel("Non-religious/Agnostic"),
+            vb3_08 = zap_labels(vb3_08) %>% zap_missing(),
+            vb3_10 = zap_labels(vb3_10) %>% zap_missing(),
+            vb3_12 = zap_labels(vb3_12) %>% zap_missing(),
+            vb3n_14 = zap_labels(vb3n_14) %>% zap_missing(),
+            vb3n_16 = zap_labels(vb3n_16) %>% zap_missing(),
+            vb3n_18 = zap_labels(vb3n_18) %>% zap_missing(),
+            vb3n = zap_labels(vb3n) %>% zap_missing(),
+            vb20 = zap_labels(vb20) %>% zap_missing(),    
+            voted_for_incumbent = case_when(
+                year == 2008 & vb3_08 == 901 ~ "Yes",
+                year == 2008 & vb3_08 != 901 ~ "No",
+                year == 2010 & vb3_10 == 901 ~ "Yes",
+                year == 2010 & vb3_10 != 901 ~ "No",
+                year == 2012 & vb3_12 == 901 ~ "Yes",
+                year == 2012 & vb3_12 != 901 ~ "No",
+                year == 2014 & vb3_12 == 901 ~ "Yes",
+                year == 2014 & vb3_12 != 901 ~ "No",
+                year == 2016 & vb3n_16 == 901 ~ "Yes",
+                year == 2016 & vb3n_16 != 901 ~ "No",
+                year == 2019 & vb3n_18 == 901 ~ "Yes",
+                year == 2019 & vb3n_18 != 901 ~ "No",
+                year == 2023 & vb3n == 901 ~ "Yes",
+                year == 2023 & vb3n != 901 ~ "No") %>% forcats::as_factor() %>% fct_relevel("No"),
+            prospective_incumbent_vote = if_else(vb20 == 2, "Yes", "No") %>% forcats::as_factor() %>% fct_relevel("No"),
+            external_efficacy = zap_labels(eff1) %>% zap_missing(), # Higher means agree
+            internal_efficacy = zap_labels(eff2) %>% zap_missing(), # Higher means agree
+            political_interest = zap_labels(pol1) %>% zap_missing(), # Higher means more
+            ls = zap_labels(ls3) %>% zap_missing(), # Higher means less
+            satisfied_life = if_else(ls >= 2, "Satisfied", "Not satisfied") %>% forcats::as_factor() %>% fct_relevel("Not satisfied"),
+)
 
 # Canton name matching ------------------------------------------------------------
 

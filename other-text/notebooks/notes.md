@@ -35,22 +35,32 @@
 
 - Including the vote in the paper (did I vote for the guy in the next election? Will I vote for their party or for the guy in the next elections?)
 
-- Controlling for mood, does it kill the results? Similar stuff
+    - Included in the data along with other controls. 
+
+- Controlling for mood, does it kill the results? Similar stuff. Mechanism check
+
+    - Can run with life satisfaction. 
 
 - Robustness checks at different cluster levels. Robustness check with killing other cantons
 
 - Relationships between temperature and other variables (e.g. economic perceptions, trust in institutions, etc.). Need to review if there is some sort of correlation of the errors. 
 
-- Running the regression of covariates on temperatue values
+    - Running the regression of covariates on temperature values
 
 - Including a map.
 
 - Better reference to main core results in intro. 
-
-- Other survey. 
 
 - Literature on weather and turnout, weather, draughts, acknowledge this literature. 
 
 - Italicize a hypothesis.  For presentation and paper. 
 
 - Classify or make it non linear.  
+
+- Better label the appendix tables (A.1, A.2, A.3)
+
+-  List of presidents and their approval ratings. (I've already done this chart). Helps me track who's president. 
+
+- Fix the survey dates chart with a note. In general better chart notes. 
+
+- Literature: the effect of weather on political outcomes,. masters thesis that I found. 

@@ -174,6 +174,106 @@ ecu_joined_2021 %>%
             missing_q1tb = sum(is.na(q1tb))) %>% 
   mutate(perc_q1tb = missing_q1tb / total_obs)
 
+# Look at etid
+
+ecu_ab_raw %>%
+  select(etid) %>%
+  glimpse()
+
+# Count missing values per year
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_etid = sum(is.na(etid))) %>% 
+  mutate(perc_etid = missing_etid / total_obs)
+
+# Regional etid (etid2), count 
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_etid2 = sum(is.na(etid2))) %>% 
+  mutate(perc_etid2 = missing_etid2 / total_obs)
+
+# Count missing values of religion q3ca
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q3ca = sum(is.na(q3ca))) %>% 
+  mutate(perc_q3ca = missing_q3ca / total_obs)
+
+# Civil status (q11), count, 2004 thru 2010
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q11 = sum(is.na(q11))) %>% 
+  mutate(perc_q11 = missing_q11 / total_obs)
+
+# Print labels 
+
+print_labels(ecu_ab_raw$q11)
+
+# Civil status q11n 2014 thru 2023
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q11n = sum(is.na(q11n))) %>% 
+  mutate(perc_q11n = missing_q11n / total_obs)
+
+# Print labels
+
+print_labels(ecu_ab_raw$q11n)
+
+# Children (q12)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q12 = sum(is.na(q12))) %>% 
+  mutate(perc_q12 = missing_q12 / total_obs)
+
+# Count missing values of religion variables (q3)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q3 = sum(is.na(q3))) %>% 
+  mutate(perc_q3 = missing_q3 / total_obs)
+
+# Same, for q3c
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q3c = sum(is.na(q3c))) %>% 
+  mutate(perc_q3c = missing_q3c / total_obs)
+
+# q3cn
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_q3cn = sum(is.na(q3cn))) %>% 
+  mutate(perc_q3cn = missing_q3cn / total_obs)
+
+# Print labels of all three religion labels
+
+print_labels(ecu_ab_raw$q3)
+print_labels(ecu_ab_raw$q3c)
+print_labels(ecu_ab_raw$q3cn)
+
+# Look at ed2 variable mothers education
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_ed2 = sum(is.na(ed2))) %>% 
+  mutate(perc_ed2 = missing_ed2 / total_obs)
+
 # Look at the m1 variable, presidential job approval
 
 ecu_ab_raw %>%
@@ -234,6 +334,28 @@ ecu_ab_raw %>%
   mutate(perc_ing4 = missing_ing4 / total_obs) %>%
   ungroup()
 
+# Count missing value for dem30
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_dem30 = sum(is.na(dem30))) %>%
+  mutate(perc_dem30 = missing_dem30 / total_obs) %>%
+  ungroup()
+
+# count missing values for political interest pol1
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_pol1 = sum(is.na(pol1))) %>%
+  mutate(perc_pol1 = missing_pol1 / total_obs) %>%
+  ungroup()
+
+# See labels for pol1
+
+print_labels(ecu_ab_raw$pol1)
+
 # Look at many confidence in institutions variables (b4 thru b37)
 
 ecu_ab_raw %>%
@@ -279,6 +401,14 @@ ecu_ab_raw %>%
   transmute(year, perc_b32 = missing_b32 / total_obs,
             perc_cosmun12 = missing_cosmun12 / total_obs)
 
+# Calculate percent missing of muni6
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_muni6 = sum(is.na(muni6))) %>%
+  transmute(year, perc_muni6 = missing_muni6 / total_obs)
+
 # Look at missing values of the soct1, soct2, and soct3 variables
 
 ecu_ab_raw %>%
@@ -293,6 +423,15 @@ ecu_ab_raw %>%
          perc_soct2 = missing_soct2 / total_obs,
          perc_soct3 = missing_soct3 / total_obs)
 
+# Look at ecumuni3 and ecumuni7 missing values
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(total_obs = n(),
+            missing_ecumuni3 = sum(is.na(ecumuni3)),
+            missing_ecumuni7 = sum(is.na(ecumuni7))) %>%
+  mutate(perc_ecumuni3 = missing_ecumuni3 / total_obs,
+         perc_ecumuni7 = missing_ecumuni7 / total_obs)
 # Look at year 2004 ----------------------------------------------------
 
 # Get 2004 only from the total
@@ -512,12 +651,20 @@ ecu_ab_raw %>%
   summarise(missing_vb3_08 = sum(is.na(vb3_08)),
             count = n())
 
+# Should look for whether or not voted for Correa
+
+print_labels(ecu_ab_raw$vb3_08)
+
 # First round 2009: vb3_10. Asked in 2010
 
 ecu_ab_raw %>%
   group_by(year) %>%
   summarise(missing_vb3_10 = sum(is.na(vb3_10)),
             count = n())
+
+# Should look for whether or not voted for Correa
+
+print_labels(ecu_ab_raw$vb3_10)
 
 # First round 2009: vb3_12. Asked in 2012
 
@@ -526,12 +673,20 @@ ecu_ab_raw %>%
   summarise(missing_vb3_12 = sum(is.na(vb3_12)),
             count = n())
 
+# Should look for whether or not voted for Correa
+
+print_labels(ecu_ab_raw$vb3_12)
+
 # First round 2013: vb3n_14. Asked in 2014
 
 ecu_ab_raw %>%
   group_by(year) %>%
   summarise(missing_vb3n_14 = sum(is.na(vb3n_14)),
             count = n())
+
+# Should look for whether or not voted for Correa
+
+print_labels(ecu_ab_raw$vb3n_14)
 
 # First round 2013: vb3n_16. Asked in 2016
 
@@ -540,6 +695,10 @@ ecu_ab_raw %>%
   summarise(missing_vb3n_16 = sum(is.na(vb3n_16)),
             count = n())
 
+# Should look for whether or not voted for Correa
+
+print_labels(ecu_ab_raw$vb3n_16)
+
 # First round 2017: vb3n_18. Asked in 2019
 
 ecu_ab_raw %>%
@@ -547,12 +706,20 @@ ecu_ab_raw %>%
   summarise(missing_vb3n_18 = sum(is.na(vb3n_18)),
             count = n())
 
+# Should look if voted for Moreno 
+
+print_labels(ecu_ab_raw$vb3n_18)
+
 # First round 2021: vb3n asked in 2023
 
 ecu_ab_raw %>%
   group_by(year) %>%
   summarise(missing_vb3n = sum(is.na(vb3n)),
             count = n())
+
+# Should look if voted for Lasso
+
+print_labels(ecu_ab_raw$vb3n)
 
 # Other vote-related variables ------------------------------------------
 
@@ -647,4 +814,138 @@ ecu_ab_raw %>%
 ecu_ab_raw %>%
   group_by(year) %>%
   summarise(missing_vb20 = sum(is.na(vb20)),
+            count = n())
+
+# Look for the incumbent president on every year
+
+# Print labels
+
+print_labels(ecu_ab_raw$vb20)
+
+# Social transfers ----------------------------------------------------
+
+# cct1 (2010, 2012 only)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_cct1 = sum(is.na(cct1)),
+            count = n())
+
+# cct1b (2012 thru 2023, except 2021)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_cct1b = sum(is.na(cct1b)),
+            count = n())
+
+# Clientelism --------------------------------------------------------
+
+# clien1, count missing values (2010 only)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_clien1 = sum(is.na(clien1)),
+            count = n())
+  
+# clien1n count missing 
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_clien1n = sum(is.na(clien1n)),
+            count = n())
+
+# only 2014
+
+# clien1na
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_clien1na = sum(is.na(clien1na)),
+            count = n())
+
+# clien2
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_clien2 = sum(is.na(clien2)),
+            count = n())
+  
+# Political efficiency ------------------------------------------------
+
+# Eff1
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_eff1 = sum(is.na(eff1)),
+            count = n())
+
+ecu_ab_raw$eff1
+
+# Eff2
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_eff2 = sum(is.na(eff2)),
+            count = n())
+
+# Epp1
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_epp1 = sum(is.na(epp1)),
+            count = n())
+
+# Epp2
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_epp2 = sum(is.na(epp2)),
+            count = n())
+
+# Epp 3
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_epp3 = sum(is.na(epp3)),
+            count = n())
+
+# Protests prot3
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_prot3 = sum(is.na(prot3)),
+            count = n())
+
+# Life satisfaction ---------------------------------------------------
+
+# ls3 (up until 2016)
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ls3 = sum(is.na(ls3)),
+            count = n())
+
+# Show labels
+
+print_labels(ecu_ab_raw$ls3)
+
+# ls4 
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ls4 = sum(is.na(ls4)),
+            count = n())
+
+# ls6
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ls6 = sum(is.na(ls6)),
+            count = n())
+
+# ls6a 
+
+ecu_ab_raw %>%
+  group_by(year) %>%
+  summarise(missing_ls6a = sum(is.na(ls6a)),
             count = n())
