@@ -25,15 +25,8 @@
     - *Governing party literature*?
 
 - Does focusing on a variety of dependent variables make sense, or is it too broad, making the paper too hard to handle? 
-    - I could focus on presidential approval ratings, local government, trust in institutions, etc. 
   
 # Pendings
-
-- Non linear relationship between temperature and presidential
-
-- Including the vote in the paper (did I vote for the guy in the next election? Will I vote for their party or for the guy in the next elections?)
-
-    - Included in the data along with other controls. 
 
 - Controlling for mood, does it kill the results? Similar stuff. Mechanism check
 
@@ -70,7 +63,3 @@
 - Literature: the effect of weather on political outcomes,. masters thesis that I found. 
 
 - I do not validate gender results. 
-
-- Cluster by province
-
-- Cluster also by interview date. 
