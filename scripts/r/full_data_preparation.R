@@ -165,6 +165,8 @@ ecu_ab <-
                 year %in% c(2019,2023) & q3cn %in% c(4,11) ~ "Non-religious/Agnostic",
                 year %in% c(2019,2023) & q3cn %in% c(1:3, 5:10, 12,77) ~ "Religious",
                 TRUE ~ NA_character_) %>% forcats::as_factor() %>% fct_relevel("Non-religious/Agnostic"),
+            vb2 = zap_labels(vb2) %>% zap_missing(), # Voted or not
+            voted = if_else(vb2 == 1, "Yes", "No")  %>% forcats::as_factor() %>% fct_relevel("No"),
             vb3_08 = zap_labels(vb3_08) %>% zap_missing(),
             vb3_10 = zap_labels(vb3_10) %>% zap_missing(),
             vb3_12 = zap_labels(vb3_12) %>% zap_missing(),
@@ -188,6 +190,10 @@ ecu_ab <-
                 year == 2019 & vb3n_18 != 901 ~ "No",
                 year == 2023 & vb3n == 901 ~ "Yes",
                 year == 2023 & vb3n != 901 ~ "No") %>% forcats::as_factor() %>% fct_relevel("No"),
+            incumbent_vote = case_when(
+                voted == "Yes" & voted_for_incumbent == "Yes" ~ "Incumbent",
+                voted == "Yes" & voted_for_incumbent == "No" ~ "Not incumbent",
+                voted == "No" ~ "Did not vote") %>% forcats::as_factor() %>% fct_relevel("Did not vote"),
             prospective_incumbent_vote = if_else(vb20 == 2, "Yes", "No") %>% forcats::as_factor() %>% fct_relevel("No"),
             external_efficacy = zap_labels(eff1) %>% zap_missing(), # Higher means agree
             internal_efficacy = zap_labels(eff2) %>% zap_missing(), # Higher means agree
@@ -195,7 +201,33 @@ ecu_ab <-
             ls = zap_labels(ls3) %>% zap_missing(), # Higher means less
             satisfied_life = if_else(ls >= 2, "Satisfied", "Not satisfied") %>% forcats::as_factor() %>% fct_relevel("Not satisfied"),
             confidence_in_others = zap_labels(it1) %>% zap_missing(), # Higher means less confidence in others.
-)
+            vb10 = zap_labels(vb10) %>% zap_missing(), # Identify with a poly party
+            partisanship = if_else(ecu_ab_raw$vb10 == 1, "Yes", "No") %>% forcats::as_factor() %>% fct_relevel("No"),
+            ecuvb11 = zap_labels(ecuvb11) %>% zap_missing(), # Party identification
+            vb11_08 = zap_labels(vb11_08) %>% zap_missing(),
+            vb11_10 = zap_labels(vb11_10) %>% zap_missing(),
+            vb11_12 = zap_labels(vb11_12) %>% zap_missing(),
+            vb11_14 = zap_labels(vb11_14) %>% zap_missing(),
+            vb11_16 = zap_labels(vb11_16) %>% zap_missing(),
+            vb11_18 = zap_labels(vb11_18) %>% zap_missing(),
+            vb11 = zap_labels(vb11) %>% zap_missing(),
+            party_identification = case_when(
+                partisanship == "Yes" & year == 2008 & vb11_08 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2008 & vb11_08 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2010 & vb11_10 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2010 & vb11_10 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2012 & vb11_12 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2012 & vb11_12 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2014 & vb11_14 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2014 & vb11_14 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2016 & vb11_16 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2016 & vb11_16 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2019 & vb11_18 == 913 ~ "Incumbent",
+                partisanship == "Yes" & year == 2019 & vb11_18 != 913 ~ "Not incumbent",
+                partisanship == "Yes" & year == 2023 & vb11 == 912 ~ "Incumbent",
+                partisanship == "Yes" & year == 2023 & vb11 != 912 ~ "Not incumbent",
+                partisanship == "No" ~ "No party identification") %>% forcats::as_factor() %>% fct_relevel("No party identification")
+    )
 
 # Canton name matching ------------------------------------------------------------
 

@@ -16,6 +16,7 @@ library(dplyr)
 library(fixest)
 library(modelsummary)
 library(forcats)
+library(marginaleffects)
 
 # Load the full dataset
 
@@ -35,7 +36,7 @@ df <- full_df  %>% filter(year != 2021)
 
 stars <- c("*" = 0.1,
            "**" = 0.05,
-           "***" = 0.05)
+           "***" = 0.01)
 
 # Descriptive statistics --------------------------------------------------
 
@@ -93,6 +94,12 @@ simple_models <- list(simple_model1, simple_model2, simple_model3, simple_model4
 
 modelsummary(simple_models, stars = stars, output = "markdown")
 
+# Also estimate average marginal effects for these models
+
+#apes_baseline <- lapply(simple_models, avg_slopes, type = "response")
+
+#modelsummary(apes_baseline, stars = stars, output = "markdown")
+
 # Fixed effects models with controls ---------------------------------------
 
 # Estimate fixed effects models including various controls for presidential approval
@@ -100,52 +107,47 @@ modelsummary(simple_models, stars = stars, output = "markdown")
 
 # Define a formula object with all the controls
 
-# controls_formula <- 
-#     "+ sex + age + ethnicity + urban_rural + non_religious + education + civil_status + labour_market + country_econ_situation 
-#     + personal_econ_situation + voted_for_incumbent + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov"
-
 controls_formula <- 
-    "+ sex + age + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov | canton_dpa + interview_date"
+    "+ sex + age + ethnicity + urban_rural + non_religious + education + civil_status + labour_market + country_econ_situation + personal_econ_situation + incumbent_vote + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov + external_efficacy + internal_efficacy"
+
+# controls_formula <- 
+#     "+ sex + age + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov | canton_dpa + interview_date"
 
 # Model 1: Min temperature
 
 model1_controls <- 
     feglm(paste("approves_president ~ min_temperature + ", controls_formula) %>% as.formula(), 
           data = df,
+          fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
-
-summary(model1_controls)
 
 # Model 2: Max temperature
 
 model2_controls <- 
     feglm(paste("approves_president ~ max_temperature + ", controls_formula) %>% as.formula(), 
           data = df,
+          fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
-
-summary(model2_controls)
 
 # Model 3: Average temperature
 
 model3_controls <- 
     feglm(paste("approves_president ~ avg_temperature + ", controls_formula) %>% as.formula(), 
           data = df,
+          fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
-
-summary(model3_controls)
 
 # Model 4: Min, max and precipitation
 
 model4_controls <- 
     feglm(paste("approves_president ~ min_temperature + max_temperature + precipitation + ", controls_formula) %>% as.formula(), 
           data = df,
+          fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
-
-summary(model4_controls)
 
 # Present these models as a markdown table for now
 
@@ -153,56 +155,222 @@ models_controls <- list(model1_controls, model2_controls, model3_controls, model
 
 modelsummary(models_controls, stars = stars, output = "markdown")
 
+# Also estimate average marginal effects for these models
+
+#apes_controls <- lapply(models_controls, avg_slopes, type = "response")
+
+#modelsummary(apes_controls, stars = stars, output = "markdown", shape = term:contrast + statistic ~ model,)
+
+# Non-linear effects -------------------------------------------------------
+
+# Estimate quadratic, cubic, and quartic effects of temperature. Maximum temperature for brevity
+
+# Model 1: Baseline quadratic effect (no controls)
+
+model1_quad <- 
+    feglm(approves_president ~ max_temperature + I(max_temperature^2),
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model1_quad)
+
+# Model 2: Quadratic effect with controls
+
+model2_quad <- 
+    feglm(paste("approves_president ~ max_temperature + I(max_temperature^2) + ", controls_formula) %>% as.formula(), 
+          data = df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model2_quad)
+
+# Model 3: Baseline cubic effect (no controls)
+
+model3_cubic <- 
+    feglm(approves_president ~ max_temperature + I(max_temperature^2) + I(max_temperature^3),
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model3_cubic)
+
+# Model 4: Cubic effect with controls
+
+model4_cubic <- 
+    feglm(paste("approves_president ~ max_temperature + I(max_temperature^2) + I(max_temperature^3) + ", controls_formula) %>% as.formula(), 
+          data = df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model4_cubic)
+
+# Model 5: Baseline quartic effect (no controls)
+
+model5_quartic <- 
+    feglm(approves_president ~ max_temperature + I(max_temperature^2) + I(max_temperature^3) + I(max_temperature^4),
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model5_quartic)
+
+# Model 6: Quartic effect with controls
+
+model6_quartic <- 
+    feglm(paste("approves_president ~ max_temperature + I(max_temperature^2) + I(max_temperature^3) + I(max_temperature^4) + ", controls_formula) %>% as.formula(), 
+          data = df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model6_quartic)
+
+# Model 7: log temperature
+
+model7_log <- 
+    feglm(approves_president ~ log(max_temperature),
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model7_log)
+
+# Model 8: log temperature with controls
+
+model8_log <- 
+    feglm(paste("approves_president ~ log(max_temperature) + ", controls_formula) %>% as.formula(), 
+          data = df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model8_log)
+
+# Model 9: sqrt temperature
+
+model9_sqrt <- 
+    feglm(approves_president ~ sqrt(max_temperature),
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model9_sqrt)
+
+# Model 10: sqrt temperature with controls
+
+model10_sqrt <- 
+    feglm(paste("approves_president ~ sqrt(max_temperature) + ", controls_formula) %>% as.formula(), 
+          data = df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model10_sqrt)
+
 # Heterogeneous temperature effects for different groups -------------------
 
 # Estimate models with heterogeneous temperature effects for different groups using interaction terms.
 # I only use the last specification (min, max, and precipitation) for these models.
 
-# Model 1: Region (Amazon/Sierra(Mountains)/Coast)
+# Model 1: Region (Amazon/Sierra(Mountains)/Coast), max temperature interaction
 
 model1_hetero <- 
-    feglm(paste("approves_president ~ i(region, ref = 'Sierra', min_temperature) + i(region, ref = 'Sierra', max_temperature) + min_temperature + max_temperature + precipitation", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ i(region, ref = 'Sierra', max_temperature) + min_temperature + max_temperature + precipitation", controls_formula) %>% as.formula(), 
           data = df,
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
 summary(model1_hetero)
 
-# Model 2: country_econ_situation
+# Model 2: Region (Amazon/Sierra(Mountains)/Coast), min temperature interaction
 
 model2_hetero <- 
-    feglm(approves_president ~ country_econ_situation*(min_temperature + max_temperature) + precipitation + sex + age + urban_rural + education + labour_market  + personal_econ_situation + 
-          ideology + corruption_perception + corruption_tolerance +  democracy_support + political_pride + confidence_police + confidence_local_gov | canton_dpa + interview_date, 
+    feglm(paste("approves_president ~ i(region, ref = 'Sierra', min_temperature) + min_temperature + max_temperature + precipitation", controls_formula) %>% as.formula(), 
           data = df,
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
 summary(model2_hetero)
 
-# Model 3: Personal economic situation
+# Model 3: Sex 
 
 model3_hetero <- 
-    feglm(approves_president ~ personal_econ_situation*(min_temperature + max_temperature) +  precipitation + sex + age + urban_rural + education + labour_market + country_econ_situation + 
-          ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_justice + confidence_local_gov | canton_dpa + interview_date,
+    feglm(approves_president ~ sex*(max_temperature) + min_temperature + precipitation + age + ethnicity + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + 
+          incumbent_vote + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+          fixef = c("canton_dpa", "interview_date"),
           data = df,
           family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
+          cluster = ~ canton_dpa
+    )
 
 summary(model3_hetero)
 
-# Model 4: Ideology
+# Model 4: Ethnicity
 
 model4_hetero <- 
-    feglm(approves_president ~ (ideology*min_temperature) + (ideology*max_temperature) + precipitation + sex + age + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + 
-          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_justice + confidence_local_gov | canton_dpa + interview_date,
-          data = df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
+    feglm(approves_president ~ i(ethnicity, ref = "Blanca", max_temperature) + min_temperature + max_temperature + precipitation + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + 
+          incumbent_vote + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+            fixef = c("canton_dpa", "interview_date"),
+            data = df,
+            family = binomial(link = "logit"),
+            cluster = ~ canton_dpa
+    )
 
 summary(model4_hetero)
 
-# Present these models as a markdown table for now
+# Model 5: Incumbent vote
 
-models_hetero <- list(model1_hetero, model2_hetero, model3_hetero, model4_hetero)
+model5_hetero <- 
+    feglm(approves_president ~ i(incumbent_vote, ref = "Did not vote", max_temperature) + min_temperature + max_temperature + precipitation + precipitation + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + 
+          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+            fixef = c("canton_dpa", "interview_date"),
+            data = df,
+            family = binomial(link = "logit"),
+            cluster = ~canton_dpa)
 
-modelsummary(models_hetero, stars = stars, output = "markdown")
+summary(model5_hetero)
+
+
+# Model 6: Ideology (Max temp)
+
+model6_hetero <- 
+    feglm(approves_president ~ ideology*max_temperature + min_temperature + max_temperature + precipitation + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + 
+          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~canton_dpa)
+
+summary(model6_hetero)
+
+# Model 7: Ideology (Min temp)
+
+model7_hetero <- 
+    feglm(approves_president ~ ideology*min_temperature + max_temperature + precipitation + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + 
+          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~canton_dpa)
+        
+summary(model7_hetero)
+
+# Model 8: Ideology with both max and min 
+
+model8_hetero <- 
+    feglm(approves_president ~ ideology*(min_temperature+ max_temperature) + precipitation + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + 
+          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
+          fixef = c("canton_dpa", "interview_date"),
+          data = df,
+          family = binomial(link = "logit"),
+          cluster = ~canton_dpa)
+
+summary(model8_hetero)

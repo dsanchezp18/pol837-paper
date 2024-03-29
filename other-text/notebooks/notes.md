@@ -68,3 +68,9 @@
 - Fix the survey dates chart with a note. In general better chart notes. 
 
 - Literature: the effect of weather on political outcomes,. masters thesis that I found. 
+
+- I do not validate gender results. 
+
+- Cluster by province
+
+- Cluster also by interview date. 
