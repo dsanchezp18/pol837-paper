@@ -198,8 +198,8 @@ ecu_ab <-
             external_efficacy = zap_labels(eff1) %>% zap_missing(), # Higher means agree
             internal_efficacy = zap_labels(eff2) %>% zap_missing(), # Higher means agree
             political_interest = zap_labels(pol1) %>% zap_missing(), # Higher means more
-            ls = zap_labels(ls3) %>% zap_missing(), # Higher means less
-            satisfied_life = if_else(ls >= 2, "Satisfied", "Not satisfied") %>% forcats::as_factor() %>% fct_relevel("Not satisfied"),
+            ls = zap_labels(ls3) %>% zap_missing(), # Higher means less satisfied
+            satisfied_life = if_else(ls <= 2, 1, 0),
             confidence_in_others = zap_labels(it1) %>% zap_missing(), # Higher means less confidence in others.
             vb10 = zap_labels(vb10) %>% zap_missing(), # Identify with a poly party
             partisanship = if_else(ecu_ab_raw$vb10 == 1, "Yes", "No") %>% forcats::as_factor() %>% fct_relevel("No"),

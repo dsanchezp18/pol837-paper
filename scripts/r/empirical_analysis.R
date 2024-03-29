@@ -609,6 +609,176 @@ model8_hetero <-
 
 summary(model8_hetero)
 
+## Mechanism checks --------------------------------------------------------
+
+# Estimate the same models on life satisfaction
+
+# Baseline model, max temp
+
+simple_model_ls_1 <- 
+    feglm(satisfied_life ~ max_temperature | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(simple_model_ls_1)
+
+# Baseline model, min temp
+
+simple_model_ls_2 <- 
+    feglm(satisfied_life ~ min_temperature | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(simple_model_ls_2)
+
+# Baseline model, average temp
+
+simple_model_ls_3 <- 
+    feglm(satisfied_life ~ avg_temperature | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(simple_model_ls_3)
+
+# Baseline model, min, max, and precipitation
+
+simple_model_ls_4 <- 
+    feglm(satisfied_life ~ min_temperature + max_temperature + precipitation | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(simple_model_ls_4)  
+
+# Controls, max temp
+
+model1_controls_ls <- 
+    feglm(paste("satisfied_life ~ max_temperature + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model1_controls_ls)
+
+# Controls, min temp
+
+model2_controls_ls <- 
+    feglm(paste("satisfied_life ~ min_temperature + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model2_controls_ls)
+
+# Controls, average temp
+
+model3_controls_ls <- 
+    feglm(paste("satisfied_life ~ avg_temperature + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model3_controls_ls)
+
+# Controls, min, max, and precipitation
+
+model4_controls_ls <- 
+    feglm(paste("satisfied_life ~ min_temperature + max_temperature + precipitation + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+summary(model4_controls_ls)
+
+# Same models with log temperature 
+
+# Baseline model, log max temp
+
+simple_model_ls_5 <- 
+    feglm(satisfied_life ~ log(max_temperature) | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Baseline model, log min temp
+
+simple_model_ls_6 <- 
+    feglm(satisfied_life ~ log(min_temperature) | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Baseline model, log avg temp
+
+simple_model_ls_7 <- 
+    feglm(satisfied_life ~ log(avg_temperature) | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Baseline model, log min, max, and precipitation
+
+simple_model_ls_8 <- 
+    feglm(satisfied_life ~ log(min_temperature) + log(max_temperature) + precipitation | canton_dpa + interview_date, 
+          data = full_df,
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# List all log baseline models
+
+simple_models_ls_log <- list(simple_model_ls_5, simple_model_ls_6, simple_model_ls_7, simple_model_ls_8)
+
+modelsummary(simple_models_ls_log, stars = stars, output = "markdown")
+
+# Controls, log max temp
+
+model1_controls_ls_log <- 
+    feglm(paste("satisfied_life ~ log(max_temperature) + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Controls, log min temp
+
+model2_controls_ls_log <- 
+    feglm(paste("satisfied_life ~ log(min_temperature) + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Controls, log avg temp
+
+model3_controls_ls_log <- 
+    feglm(paste("satisfied_life ~ log(avg_temperature) + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# Controls, log min, max, and precipitation
+
+model4_controls_ls_log <- 
+    feglm(paste("satisfied_life ~ log(min_temperature) + log(max_temperature) + precipitation + ", controls_formula) %>% as.formula(), 
+          data = full_df,
+          fixef = c("canton_dpa", "interview_date"),
+          family = binomial(link = "logit"),
+          cluster = ~ canton_dpa)
+
+# List all log controls models
+
+models_controls_ls_log <- list(model1_controls_ls_log, model2_controls_ls_log, model3_controls_ls_log, model4_controls_ls_log)
+
+modelsummary(models_controls_ls_log, stars = stars, output = "markdown")
+
 # Clustering robustness checks ---------------------------------------------
 
 # Present the models with clustering at the province, region and canton + interview_date 
