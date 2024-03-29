@@ -100,6 +100,10 @@ modelsummary(simple_models, stars = stars, output = "markdown")
 
 # Define a formula object with all the controls
 
+# controls_formula <- 
+#     "+ sex + age + ethnicity + urban_rural + non_religious + education + civil_status + labour_market + country_econ_situation 
+#     + personal_econ_situation + voted_for_incumbent + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov"
+
 controls_formula <- 
     "+ sex + age + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov | canton_dpa + interview_date"
 

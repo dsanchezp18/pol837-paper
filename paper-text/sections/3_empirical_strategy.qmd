@@ -120,7 +120,7 @@ The temperature data from NOAA is of lower quality than that of a typical meteor
 
 ![Mean monthly temperatures, 2008-2023](/figures/ecuador_monthly_mean_temps_fig.png){#fig-temperature}
 
-In @fig-temperature above I show mean monthly minimum and maximum temperatures from 2008 to 2023. There are no notable upward or downward trends through time, with some periods showing higher temperatures. An important feature is that the spread between minimum and maximum temperatures is relatively stable, which will be important for the identification strategy, which I describe below. 
+In @fig-temperature I show mean monthly minimum and maximum temperatures from 2008 to 2023. There are no notable upward or downward trends through time, with some periods showing higher temperatures. An important feature is that the spread between minimum and maximum temperatures is relatively stable, which will be important for the identification strategy, which I describe below. 
 
 ## Identification strategy
 
