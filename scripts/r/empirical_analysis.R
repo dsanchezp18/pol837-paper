@@ -151,20 +151,6 @@ validity_results <- list(validity_max_temp_fe_controls, validity_min_temp_fe_con
 
 modelsummary(validity_results, stars = stars, output = "markdown")
 
-# Different clustering levels 
-
-# Province
-
-modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~province_dpa)
-
-# Region
-
-modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~region)
-
-# Canton + interview date
-
-modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~canton_dpa + interview_date)
-
 # Empirical models ---------------------------------------------------------
 
 ## Baseline models: simple fixed effects ------------------------------------
@@ -609,9 +595,9 @@ model8_hetero <-
 
 summary(model8_hetero)
 
-## Mechanism checks --------------------------------------------------------
+## Mechanism checks: life satisfaction as an explained variable --------------------------------------------------------
 
-# Estimate the same models on life satisfaction
+# Estimate the same models on life satisfaction as a dependent variable
 
 # Baseline model, max temp
 
@@ -697,91 +683,79 @@ model4_controls_ls <-
 
 summary(model4_controls_ls)
 
-# Same models with log temperature 
+# List all models with controls
 
-# Baseline model, log max temp
+models_controls_ls <- list(model1_controls_ls, model2_controls_ls, model3_controls_ls, model4_controls_ls)
 
-simple_model_ls_5 <- 
-    feglm(satisfied_life ~ log(max_temperature) | canton_dpa + interview_date, 
-          data = full_df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
+## Mechanism checks: controlling for life satisfaction as an explanatory variable --------------------------------------------------------
 
-# Baseline model, log min temp
+# Estimate the same models on presidential approval, but controlling for life satisfaction
 
-simple_model_ls_6 <- 
-    feglm(satisfied_life ~ log(min_temperature) | canton_dpa + interview_date, 
-          data = full_df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
+# Models with controls, max temp plus life satisfaction
 
-# Baseline model, log avg temp
-
-simple_model_ls_7 <- 
-    feglm(satisfied_life ~ log(avg_temperature) | canton_dpa + interview_date, 
-          data = full_df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
-
-# Baseline model, log min, max, and precipitation
-
-simple_model_ls_8 <- 
-    feglm(satisfied_life ~ log(min_temperature) + log(max_temperature) + precipitation | canton_dpa + interview_date, 
-          data = full_df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
-
-# List all log baseline models
-
-simple_models_ls_log <- list(simple_model_ls_5, simple_model_ls_6, simple_model_ls_7, simple_model_ls_8)
-
-modelsummary(simple_models_ls_log, stars = stars, output = "markdown")
-
-# Controls, log max temp
-
-model1_controls_ls_log <- 
-    feglm(paste("satisfied_life ~ log(max_temperature) + ", controls_formula) %>% as.formula(), 
-          data = full_df,
+model1_controls_ls_cov <- 
+    feglm(paste("approves_president ~ max_temperature + satisfied_life + ", controls_formula) %>% as.formula(), 
+          data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
-# Controls, log min temp
+summary(model1_controls_ls)
 
-model2_controls_ls_log <- 
-    feglm(paste("satisfied_life ~ log(min_temperature) + ", controls_formula) %>% as.formula(), 
-          data = full_df,
+# Models with controls, min temp plus life satisfaction
+
+model2_controls_ls_cov <- 
+    feglm(paste("approves_president ~ min_temperature + satisfied_life + ", controls_formula) %>% as.formula(), 
+          data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
-# Controls, log avg temp
+summary(model2_controls_ls)
 
-model3_controls_ls_log <- 
-    feglm(paste("satisfied_life ~ log(avg_temperature) + ", controls_formula) %>% as.formula(), 
-          data = full_df,
+# Models with controls, avg temp plus life satisfaction
+
+model3_controls_ls_cov <- 
+    feglm(paste("approves_president ~ avg_temperature + satisfied_life + ", controls_formula) %>% as.formula(), 
+          data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
-# Controls, log min, max, and precipitation
+summary(model3_controls_ls)
 
-model4_controls_ls_log <- 
-    feglm(paste("satisfied_life ~ log(min_temperature) + log(max_temperature) + precipitation + ", controls_formula) %>% as.formula(), 
-          data = full_df,
+# Models with controls, min, max, and precipitation plus life satisfaction
+
+model4_controls_ls_cov <- 
+    feglm(paste("approves_president ~ min_temperature + max_temperature + precipitation + satisfied_life + ", controls_formula) %>% as.formula(), 
+          data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
           cluster = ~ canton_dpa)
 
-# List all log controls models
+summary(model4_controls_ls)
 
-models_controls_ls_log <- list(model1_controls_ls_log, model2_controls_ls_log, model3_controls_ls_log, model4_controls_ls_log)
+# List all models with controls
 
-modelsummary(models_controls_ls_log, stars = stars, output = "markdown")
+models_controls_ls_cov <- list(model1_controls_ls_cov, model2_controls_ls_cov, model3_controls_ls_cov, model4_controls_ls_cov)
 
 # Clustering robustness checks ---------------------------------------------
 
 # Present the models with clustering at the province, region and canton + interview_date 
+
+## Validity checks ----------------------------------------------------------
+
+# Controls and fixed effects for all variables, province clustering
+
+modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~province_dpa)
+
+# Controls and fixed effects for all variables, region clustering
+
+modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~ region)
+
+# Controls and fixed effects for all variables, canton + interview_date clustering
+
+modelsummary(validity_results, stars = stars, output = "markdown", vcov = ~ canton_dpa + interview_date)
 
 ## Baseline, no controls ---------------------------------------------------
 
@@ -835,3 +809,50 @@ modelsummary(hetero_models,
                 stars = stars,
                 output = "markdown",
                 vcov = ~ canton_dpa + interview_date)
+
+## Mechanism checks: LS as an explained variable ---------------------------
+
+# LS as an explained variable, controls only, province clustering
+
+modelsummary(models_controls_ls, 
+             stars = stars, 
+             output = "markdown",
+             vcov = ~province_dpa)
+
+# LS as an explained variable, controls only, region clustering
+
+modelsummary(models_controls_ls,
+             stars = stars,
+             output = "markdown",
+             vcov = ~ region)
+
+# LS as an explained variable, controls only, canton + interview_date clustering
+
+modelsummary(models_controls_ls,
+             stars = stars,
+             output = "markdown",
+             vcov = ~ canton_dpa + interview_date)
+
+## Mechanism checks: LS as an explanatory variable -------------------------
+
+# LS as an explanatory variable, controls only, province clustering
+
+modelsummary(models_controls_ls_cov, 
+             stars = stars, 
+             output = "markdown",
+             vcov = ~province_dpa)
+
+# LS as an explanatory variable, controls only, region clustering
+
+modelsummary(models_controls_ls_cov,
+             stars = stars,
+             output = "markdown",
+             vcov = ~ region)
+
+# LS as an explanatory variable, controls only, canton + interview_date clustering
+
+modelsummary(models_controls_ls_cov,
+             stars = stars,
+             output = "markdown",
+             vcov = ~ canton_dpa + interview_date)
+
