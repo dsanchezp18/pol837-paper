@@ -124,8 +124,7 @@ ecu_ab <-
                 year == 2021 & ur1new %in% c(1,2) ~ "Urban",
                 year == 2021 & ur1new %in% c(3,4) ~ "Rural",
                 year != 2021 & ur == 1 ~ "Urban",
-                year != 2021 & ur == 2 ~ "Rural"
-            ) %>% forcats::as_factor() %>% fct_relevel("Urban"),
+                year != 2021 & ur == 2 ~ "Rural") %>% forcats::as_factor() %>% fct_relevel("Urban"),
             highest_education_2021 = case_when(
                 ed == 0 ~ "None",
                 ed %>% between(1, 7) ~ "Primary",

@@ -31,8 +31,6 @@
 
 - Non linear relationship between temperature and presidential
 
-- Does temperature affect mood ? Mechanism check?
-
 - Including the vote in the paper (did I vote for the guy in the next election? Will I vote for their party or for the guy in the next elections?)
 
     - Included in the data along with other controls. 
@@ -55,7 +53,7 @@
 
 - Literature on weather and turnout, weather, draughts, acknowledge this literature. 
 
-- Italicize a hypothesis.  For presentation and paper. 
+- Italicize a hypothesis. For presentation and paper. 
 
 - Classify or make it non linear.  
 
