@@ -47,7 +47,11 @@
 
     - Running the regression of covariates on temperature values
 
-- Including a map.
+- Including some maps.
+
+    - With included cantons in the AB Survey
+
+    - With temperature data (average temperature for 2023)
 
 - Better reference to main core results in intro. 
 
