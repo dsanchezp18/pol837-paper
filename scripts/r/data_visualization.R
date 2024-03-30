@@ -77,23 +77,29 @@ interview_dates_barchart <-
   geom_vline(xintercept = as.Date("2017-01-02"), linetype = "dashed", color = "blue", linewidth = 0.1) +
   facet_wrap(~wave, nrow = 2, scales = "free") +
   scale_x_date(date_labels = "%Y-%m-%d", date_breaks = "1 week") +
-  scale_color_discrete(palette = "Set4") +
  labs(x = "Survey Interview Date",
       y = "Count of Responses") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6, color = "black"),
-        text = element_text(family = 'serif', color = "black"),
-        plot.background = element_rect(fill = "white"),
-        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
+        text = element_text(color = "black"),
+        plot.background = element_rect(fill = "white", colour = NA),
+        panel.border = element_rect(fill = NA, linewidth = 1, linetype = "solid"),
         plot.caption = element_text(hjust = 0),
         panel.grid.major.y = element_line(linetype = "dashed", linewidth = 0.3),
         panel.grid.minor.y = element_line(linetype = "dashed", linewidth = 0.3),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        strip.background = element_rect(fill = "grey80", colour = "black", linewidth = 1)
+        strip.background = element_rect(fill = "grey80", linewidth = 1)
   )
 
 interview_dates_barchart
+
+ggsave("figures/interview_dates_barchart.png", 
+        interview_dates_barchart, 
+        width = 17, 
+        height = 8,
+        units = "cm", 
+        dpi = 800)
 
 # Temperature visualization --------------------------------------------------
 
@@ -227,8 +233,7 @@ approval_rating_by_year_fig <-
   geom_line(linetype = "dotted") + 
   scale_x_continuous(breaks = seq(2008, 2023, by = 2)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  labs(title = "Presidential Approval Rating by Year",
-       x = "Year",
+  labs(x = "Year",
        y = "Approval Rating",
        caption = "Note: Error bars represent 95% confidence intervals adjusted for survey design effects.") +
   theme_bw() +
@@ -254,7 +259,7 @@ approval_rating_by_year_fig
 ggsave("figures/approval_rating_by_year.jpg", 
         plot = approval_rating_by_year_fig, 
         width = 17, 
-        height = 10,
+        height = 8,
         units = "cm", 
         dpi = 800)
 

@@ -83,7 +83,7 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 . . .
 
-![Average daily temperature for 2023, cantons map](/figures/temperature_map.jpg){fig-align="center", height=80%}
+![Average daily temperature for 2023, cantons map](/figures/temperature_map.jpg)
 
 :::{.notes}
 
@@ -94,13 +94,46 @@ Respondents who had their survey on days with higher temperatures are less likel
 - I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.
 :::
 
-## Data {.smaller}
+## Data: The AmericasBarometer {.smaller}
 
-- Pooled cross section of public opinion data from the AmericasBarometer survey from [@ABEcuadorMerged]
+- Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50-60 cantons every year [@ABEcuadorMerged].
+
+- Daily weather data is joined with the survey by interview date, observed since 2008 wave, and canton of the survey respondent.
+
+. . .
+
+![AmericasBarometer Interview Dates](/figures/interview_dates_barchart.png)
+
+## Identification strategy
+
+- I use fixed effects logistic regression to estimate presidential popularity functions:
+
+. . .
+
+$$  \text{approval}_{ijt} = \alpha + \tau_t + \theta_j + \beta \ \text{temp}_{jt} + \mathbb{X'}_{ijt} \ \gamma + u_{ijt}
+$$
+
+- $\text{approval}_{ijt}$ is a binary indicator of approval by respondent $i$ in canton $j$ on day $t$.
+
+- $\tau_t$ and $\theta_j$ are day and canton fixed effects, $\text{temp}_{jt}$ is a daily temperature measure in canton $j$ on day $t$, and $\mathbb{X'}_{ijt}$ is a vector of control variables for presidential approval. 
+
+- Short-term temperature changes can been seen as random and thus unrelated to variables that affect presidential approval.
+
+- $\hat{\beta}$ is consistent and measures the causal effect of temperature on presidential approval.
+
+## Explained variable: presidential approval {.smaller}
+
+- The AmericasBaromter asks a slight variation of the common Gallup poll question [@berlemann_enkelmann14a], with a 5-point scale (5 being full disapproval).
+
+- Dichotomized the variable to a binary indicator of approval (1 or 2 responses) and (indifferent or disapproval).
 
 . . . 
 
-![](/figures/approval_rating_by_year.jpg){fig-align="center"}
+:::{.notes}
+- "Do you approve or disapprove of the way [name of the president] is handling his job as president?"
+:::
+
+![Presidential Approval Ratings](/figures/approval_rating_by_year.jpg)
 
 # Results
 

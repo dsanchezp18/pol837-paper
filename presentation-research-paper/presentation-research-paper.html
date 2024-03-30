@@ -448,7 +448,12 @@ Daniel Sánchez Pazmiño
 <li class="fragment"><p>Collects temperature of 50x50 km grids across the world mapped to Ecuadorian municipalities (cantons).</p></li>
 </ul>
 <div class="fragment">
-<p><img data-src="..\figures/temperature_map.jpg" alt="Average daily temperature for 2023, cantons map">{fig-align=“center”, height=80%}</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<figcaption>Average daily temperature for 2023, cantons map</figcaption>
+<p><img data-src="..\figures/temperature_map.jpg"></p>
+</figure>
+</div>
 <aside class="notes">
 <ul>
 <li><p>Data collected for grids in the whole world, but I focus on Ecuador.</p></li>
@@ -468,15 +473,63 @@ Daniel Sánchez Pazmiño
       }</style></aside>
 </div>
 </section>
-<section id="data-1" class="slide level2 smaller">
-<h2>Data</h2>
+<section id="data-the-americasbarometer" class="slide level2 smaller">
+<h2>Data: The AmericasBarometer</h2>
 <ul>
-<li class="fragment">Pooled cross section of public opinion data from the AmericasBarometer survey from <span class="citation" data-cites="ABEcuadorMerged">(<a href="#/conclusion" role="doc-biblioref" onclick="">LAPOP, n.d.</a>)</span></li>
+<li class="fragment"><p>Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50-60 cantons every year <span class="citation" data-cites="ABEcuadorMerged">(<a href="#/conclusion" role="doc-biblioref" onclick="">LAPOP, n.d.</a>)</span>.</p></li>
+<li class="fragment"><p>Daily weather data is joined with the survey by interview date, observed since 2008 wave, and canton of the survey respondent.</p></li>
 </ul>
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="..\figures/approval_rating_by_year.jpg" class="quarto-figure quarto-figure-center"></p>
+<figcaption>AmericasBarometer Interview Dates</figcaption>
+<p><img data-src="..\figures/interview_dates_barchart.png"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="identification-strategy" class="slide level2">
+<h2>Identification strategy</h2>
+<ul>
+<li class="fragment">I use fixed effects logistic regression to estimate presidential popularity functions:</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[  \text{approval}_{ijt} = \alpha + \tau_t + \theta_j + \beta \ \text{temp}_{jt} + \mathbb{X'}_{ijt} \ \gamma + u_{ijt}
+\]</span></p>
+<ul>
+<li class="fragment"><p><span class="math inline">\(\text{approval}_{ijt}\)</span> is a binary indicator of approval by respondent <span class="math inline">\(i\)</span> in canton <span class="math inline">\(j\)</span> on day <span class="math inline">\(t\)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\(\tau_t\)</span> and <span class="math inline">\(\theta_j\)</span> are day and canton fixed effects, <span class="math inline">\(\text{temp}_{jt}\)</span> is a daily temperature measure in canton <span class="math inline">\(j\)</span> on day <span class="math inline">\(t\)</span>, and <span class="math inline">\(\mathbb{X'}_{ijt}\)</span> is a vector of control variables for presidential approval.</p></li>
+<li class="fragment"><p>Short-term temperature changes can been seen as random and thus unrelated to variables that affect presidential approval.</p></li>
+<li class="fragment"><p><span class="math inline">\(\hat{\beta}\)</span> is consistent and measures the causal effect of temperature on presidential approval.</p></li>
+</ul>
+</div>
+</section>
+<section id="explained-variable-presidential-approval" class="slide level2 smaller">
+<h2>Explained variable: presidential approval</h2>
+<ul>
+<li class="fragment"><p>The AmericasBaromter asks a slight variation of the common Gallup poll question <span class="citation" data-cites="berlemann_enkelmann14a">(<a href="#/conclusion" role="doc-biblioref" onclick="">Berlemann &amp; Enkelmann, 2014</a>)</span>, with a 5-point scale (5 being full disapproval).</p></li>
+<li class="fragment"><p>Dichotomized the variable to a binary indicator of approval (1 or 2 responses) and (indifferent or disapproval).</p></li>
+</ul>
+<div class="fragment">
+<aside class="notes">
+<ul>
+<li>“Do you approve or disapprove of the way [name of the president] is handling his job as president?”</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<figcaption>Presidential Approval Ratings</figcaption>
+<p><img data-src="..\figures/approval_rating_by_year.jpg"></p>
 </figure>
 </div>
 </div>
@@ -502,6 +555,9 @@ Barrington-Leigh, C. (2008). Weather as a transient influence on survey-reported
 </div>
 <div id="ref-barrington-leigh_behzadnejad17" class="csl-entry" role="listitem">
 Barrington-Leigh, C., &amp; Behzadnejad, F. (2017). The impact of daily weather conditions on life satisfaction evidence from <span>Canadian</span> cross-sectional and panel data. <em>Journal of Economic Psychology</em>, <em>59</em>, 145–163. <a href="https://doi.org/10.1016/j.joep.2017.01.003">https://doi.org/10.1016/j.joep.2017.01.003</a>
+</div>
+<div id="ref-berlemann_enkelmann14a" class="csl-entry" role="listitem">
+Berlemann, M., &amp; Enkelmann, S. (2014). The economic determinants of <span>U</span>.<span>S</span>. Presidential approval: A survey. <em>European Journal of Political Economy</em>, <em>36</em>, 41–54. <a href="https://doi.org/10.1016/j.ejpoleco.2014.06.005">https://doi.org/10.1016/j.ejpoleco.2014.06.005</a>
 </div>
 <div id="ref-bower81" class="csl-entry" role="listitem">
 Bower, G. H. (1981). Mood and memory. <em>American Psychologist</em>, <em>36</em>(2), 129–148. <a href="https://doi.org/10.1037/0003-066X.36.2.129">https://doi.org/10.1037/0003-066X.36.2.129</a>

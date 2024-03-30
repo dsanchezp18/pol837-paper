@@ -341,6 +341,21 @@ df %>%
     group_by(interview_date) %>% 
     summarise(n = n()) 
 
+# Sample information per year ------------------------------------------------------------
+
+# Cantons surveyed per year 
+
+df %>% 
+    group_by(year) %>% 
+    summarise(n_cantons = n_distinct(canton_id))
+
+# Observations per year 
+
+df %>% 
+    group_by(year) %>% 
+    summarise(n_obs = n())
+
+
 # Export the final data ------------------------------------------------------------
 
 # As a CSV file
