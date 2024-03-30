@@ -74,8 +74,20 @@ Respondents who had their survey on days with higher temperatures are less likel
 # Empirical strategy
 
 ## Data
+:::{#fig-temperature-map}
+![](/figures/temperature_map.png)
+:::
 
-- Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration (NOAA) Climate Prediction Center (CPC)
+- Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration Climate Prediction Center [-@NOAADatasets].
+
+:::{.notes}
+
+- Data collected for grids in the whole world, but I focus on Ecuador. 
+
+- The data is available at a 0.5° x 0.5° resolution, which is approximately 50 km x 50 km at the equator.
+
+- I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.
+:::
 
 # Results
 
