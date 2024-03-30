@@ -11,6 +11,7 @@ project:
     - paper-text/sections/6_references.qmd
     - paper-text/sections/7_appendix.qmd
     - paper-text/main.qmd
+    - presentation-research-paper/presentation-research-paper.qmd
 
 format: 
      pdf:
@@ -22,31 +23,28 @@ format:
         number-sections: true
         linestretch: 2
         fontsize: 12pt
-     #docx:
-        #reference-doc: paper-text/apa_format_reference_doc.docx
+        include-in-header:
+        - text: |
+            \usepackage{lipsum}
+            \newfontfamily\tfont{Times New Roman}
+            \addtokomafont{title}{\tfont}
+            \newfontfamily\sfont{Times New Roman}
+            \addtokomafont{section}{\sfont}
+            \addtokomafont{subsection}{\sfont}
+            \usepackage{booktabs}
+            \usepackage{siunitx}
+            \newcolumntype{d}{S[
+                input-open-uncertainty=,
+                input-close-uncertainty=,
+                parse-numbers = false,
+                table-align-text-pre=false,
+                table-align-text-post=false
+            ]}
+            \usepackage{amsmath,amsfonts}
+            \usepackage{float}
+            \usepackage{pdflscape}
+            \usepackage{csquotes}
         
-include-in-header:
-  text: |
-    \usepackage{lipsum}
-    \newfontfamily\tfont{Times New Roman}
-    \addtokomafont{title}{\tfont}
-    \newfontfamily\sfont{Times New Roman}
-    \addtokomafont{section}{\sfont}
-    \addtokomafont{subsection}{\sfont}
-    \usepackage{booktabs}
-    \usepackage{siunitx}
-    \newcolumntype{d}{S[
-        input-open-uncertainty=,
-        input-close-uncertainty=,
-        parse-numbers = false,
-        table-align-text-pre=false,
-        table-align-text-post=false
-    ]}
-    \usepackage{amsmath,amsfonts}
-    \usepackage{float}
-    \usepackage{pdflscape}
-    \usepackage{csquotes}
-
 knitr: 
   opts_chunk: 
       echo : false
@@ -57,8 +55,8 @@ bibliography: paper-text/references.bib
 csl: paper-text/apa7_normal.csl
 
 fig-cap-location: top
-fig-width: 6.7
-fig-height: 4
+#fig-width: 6.7
+#fig-height: 4
 # fig-pos: H
 
 tbl-cap-location: top

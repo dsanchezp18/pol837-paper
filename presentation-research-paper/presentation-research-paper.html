@@ -441,9 +441,27 @@ Daniel Sánchez Pazmiño
 </section>
 <section id="data" class="slide level2">
 <h2>Data</h2>
-<ul>
-<li class="fragment">Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration (NOAA) Climate Prediction Center (CPC)</li>
+
+<img data-src="..\figures/temperature_map.png" style="width:120.0%" class="r-stretch"><ul>
+<li class="fragment">Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration Climate Prediction Center <span class="citation" data-cites="NOAADatasets">(<a href="#/conclusion" role="doc-biblioref" onclick="">2024</a>)</span>.</li>
 </ul>
+<aside class="notes">
+<ul>
+<li><p>Data collected for grids in the whole world, but I focus on Ecuador.</p></li>
+<li><p>The data is available at a 0.5° x 0.5° resolution, which is approximately 50 km x 50 km at the equator.</p></li>
+<li><p>I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section id="results" class="title-slide slide level1 center">
 <h1>Results</h1>
@@ -505,6 +523,9 @@ Lucas, R. E., &amp; Lawless, N. M. (2013). Does life seem better on a sunny day?
 </div>
 <div id="ref-mullins_white19" class="csl-entry" role="listitem">
 Mullins, J. T., &amp; White, C. (2019). Temperature and mental health: <span>Evidence</span> from the spectrum of mental health outcomes. <em>Journal of Health Economics</em>, <em>68</em>, 102240. <a href="https://doi.org/10.1016/j.jhealeco.2019.102240">https://doi.org/10.1016/j.jhealeco.2019.102240</a>
+</div>
+<div id="ref-NOAADatasets" class="csl-entry" role="listitem">
+National Oceanic and Atmospheric Administration (NOAA) Physical Sciences Laboratory (PSL). (2024). <em><span>CPC Global Unified Temperature</span></em> [Datasets].
 </div>
 <div id="ref-quijano-ruiz23" class="csl-entry" role="listitem">
 Quijano-Ruiz, A. (2023). <em><span>Assessing the reliability of self-rated health: the effects of transient weather fluctuations on perceived health</span></em> [{Working Paper}].
