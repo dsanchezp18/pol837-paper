@@ -1,7 +1,9 @@
 ---
 title: Retrospectively sweaty? The effects of temperature changes on presidential approval
 subtitle: POL837 Issues in Comparative Politics Research Paper
-format: clean-revealjs
+format: 
+  clean-revealjs:
+    incremental: true
 author:
   - name: Daniel Sánchez Pazmiño
     affiliations: Simon Fraser University
@@ -19,21 +21,21 @@ knitr:
 ```{r setup}
 #| label: setupq
 #| include: false
-library(ggdag, warn.conflicts = F)
+library(ggplot2, warn.conflicts = F)
 ```
 
 # Introduction
 
 - Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.
 
-- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healyIrrelevanteventsaffect2010; @healyRandomeventseconomic2010; @achenBlindretrospectionelectoral2017]
+- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healy_etal10; @healy_malhotra10; @achen_bartels17]
 
-- I investigate whether transient temperature changes affect retrospective evaluations of  presidential performance in Ecuador, using CPC weather data and the AmericasBarometer public opinion survey. 
+- I investigate whether transient temperature changes affect presidential approval in Ecuador.
 
 - Results show that a 1°C increase in maximum temperature leads to a **1.9 - 2.2 p.p.** decrease in the likelihood of presidential approval. 
 
 ::: {.notes}
-- The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes [@besleyPrincipledagentspolitical2006; @perssonPoliticaleconomicsexplaining2002]
+- The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes
 
 - Factors include cognitive bias, recency bias, heuristics, party cues, among others. 
 
@@ -42,21 +44,38 @@ library(ggdag, warn.conflicts = F)
 
 # Theoretical framework
 
-- I hypothesize that temperature affects presidential approval through mood.
+::: {.callout-tip icon=false}
+### Hypothesis
+Respondents who had their survey on days with higher temperatures are less likely to approve of the president.
+:::
 
-```{r}
-#| label: dag
+- @schwarz_clore83 show that, when induced negative moods, individuals are more likely to search for outside factors which justify their feelings. 
 
-dag <- dagify(
-  presidential_approval ~ temperature,
-  temperature ~ mood
-)
+- A "higher than normal" temperature would then induce a negative mood, leading to citizens looking for reasons to justify their feelings of discontent. 
 
-ggdag(dag) + 
-  theme_dag()
-```
+- @bower81 show that individuals are more likely to remember negative events when in a negative mood.
+
+::: {.notes}
+- These are studies in psychology which set the stage for how mood can affect how people behave in a variety of settings. 
+
+- The idea is that, if people are in a bad mood, they are more likely to remember negative events and attribute them to the source of their mood.
+:::
+
+# Documented weather effects
+
+- Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13] 
+
+- In some cases, effects are significant though small and not robust [@schmiedeberg_schroder14;@lucas_lawless13]. 
+
+- @feddersen_etal16 and @quijano-ruiz23 find small negative effects of temperature changes on self-rated health; @li_etal20 and @mullins_white19 find significant impacts on mental health. 
+
+- @deller_michels22 find that rain impacts the way that managers evaluate subordinates and @li_patel21 find that students are only marginally sensitive to higher temperatures during exams. 
 
 # Empirical strategy
+
+## Data
+
+- Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration (NOAA) Climate Prediction Center (CPC)
 
 # Results
 

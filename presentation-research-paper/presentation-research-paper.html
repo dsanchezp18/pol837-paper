@@ -365,14 +365,14 @@ Daniel Sánchez Pazmiño
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
 <ul>
-<li><p>Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.</p></li>
-<li><p>However, evaluations of political performance can be influenced by factors unrelated to politican performance <span class="citation" data-cites="healyIrrelevanteventsaffect2010 healyRandomeventseconomic2010 achenBlindretrospectionelectoral2017">(<a href="#/conclusion" role="doc-biblioref" onclick="">Achen &amp; Bartels, 2017</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">A. J. Healy et al., 2010</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">A. Healy &amp; Malhotra, 2010</a>)</span></p></li>
-<li><p>I investigate whether transient temperature changes affect retrospective evaluations of presidential performance in Ecuador, using CPC weather data and the AmericasBarometer public opinion survey.</p></li>
-<li><p>Results show that a 1°C increase in maximum temperature leads to a <strong>1.9 - 2.2 p.p.</strong> decrease in the likelihood of presidential approval.</p></li>
+<li class="fragment"><p>Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.</p></li>
+<li class="fragment"><p>However, evaluations of political performance can be influenced by factors unrelated to politican performance <span class="citation" data-cites="healy_etal10 healy_malhotra10 achen_bartels17">(<a href="#/conclusion" role="doc-biblioref" onclick="">Achen &amp; Bartels, 2017</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">A. J. Healy et al., 2010</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">A. Healy &amp; Malhotra, 2010</a>)</span></p></li>
+<li class="fragment"><p>I investigate whether transient temperature changes affect presidential approval in Ecuador.</p></li>
+<li class="fragment"><p>Results show that a 1°C increase in maximum temperature leads to a <strong>1.9 - 2.2 p.p.</strong> decrease in the likelihood of presidential approval.</p></li>
 </ul>
 <aside class="notes">
 <ul>
-<li><p>The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes <span class="citation" data-cites="besleyPrincipledagentspolitical2006 perssonPoliticaleconomicsexplaining2002">(<a href="#/conclusion" role="doc-biblioref" onclick="">Besley, 2006</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Persson &amp; Tabellini, 2002</a>)</span></p></li>
+<li><p>The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes</p></li>
 <li><p>Factors include cognitive bias, recency bias, heuristics, party cues, among others.</p></li>
 <li><p>Shark attacks, draughts, football matches, among others.</p></li>
 </ul>
@@ -391,17 +391,60 @@ Daniel Sánchez Pazmiño
 
 <section id="theoretical-framework" class="title-slide slide level1 center">
 <h1>Theoretical framework</h1>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Hypothesis</strong></p>
+</div>
+<div class="callout-content">
+<p>Respondents who had their survey on days with higher temperatures are less likely to approve of the president.</p>
+</div>
+</div>
+</div>
 <ul>
-<li>I hypothesize that temperature affects presidential approval through mood.</li>
+<li class="fragment"><p><span class="citation" data-cites="schwarz_clore83">Schwarz &amp; Clore (<a href="#/conclusion" role="doc-biblioref" onclick="">1983</a>)</span> show that, when induced negative moods, individuals are more likely to search for outside factors which justify their feelings.</p></li>
+<li class="fragment"><p>A “higher than normal” temperature would then induce a negative mood, leading to citizens looking for reasons to justify their feelings of discontent.</p></li>
+<li class="fragment"><p><span class="citation" data-cites="bower81">Bower (<a href="#/conclusion" role="doc-biblioref" onclick="">1981</a>)</span> show that individuals are more likely to remember negative events when in a negative mood.</p></li>
 </ul>
+<aside class="notes">
+<ul>
+<li><p>These are studies in psychology which set the stage for how mood can affect how people behave in a variety of settings.</p></li>
+<li><p>The idea is that, if people are in a bad mood, they are more likely to remember negative events and attribute them to the source of their mood.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 
-<img data-src="presentation-research-paper_files/figure-revealjs/dag-1.png" width="960" class="r-stretch"></section>
+<section id="documented-weather-effects" class="title-slide slide level1 center">
+<h1>Documented weather effects</h1>
+<ul>
+<li class="fragment"><p>Existing research has found significant effects of weather on self-reported well-being and life satisfaction <span class="citation" data-cites="barrington-leigh08 barrington-leigh_behzadnejad17 lignier_etal23 keller_etal05 kampfer_mutz13 connolly13">(<a href="#/conclusion" role="doc-biblioref" onclick="">Barrington-Leigh, 2008</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Barrington-Leigh &amp; Behzadnejad, 2017</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Connolly, 2013</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Kämpfer &amp; Mutz, 2013</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Keller et al., 2005</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Lignier et al., 2023</a>)</span></p></li>
+<li class="fragment"><p>In some cases, effects are significant though small and not robust <span class="citation" data-cites="schmiedeberg_schroder14 lucas_lawless13">(<a href="#/conclusion" role="doc-biblioref" onclick="">Lucas &amp; Lawless, 2013</a>; <a href="#/conclusion" role="doc-biblioref" onclick="">Schmiedeberg &amp; Schröder, 2014</a>)</span>.</p></li>
+<li class="fragment"><p><span class="citation" data-cites="feddersen_etal16">Feddersen et al. (<a href="#/conclusion" role="doc-biblioref" onclick="">2016</a>)</span> and <span class="citation" data-cites="quijano-ruiz23">Quijano-Ruiz (<a href="#/conclusion" role="doc-biblioref" onclick="">2023</a>)</span> find small negative effects of temperature changes on self-rated health; <span class="citation" data-cites="li_etal20">M. Li et al. (<a href="#/conclusion" role="doc-biblioref" onclick="">2020</a>)</span> and <span class="citation" data-cites="mullins_white19">Mullins &amp; White (<a href="#/conclusion" role="doc-biblioref" onclick="">2019</a>)</span> find significant impacts on mental health.</p></li>
+<li class="fragment"><p><span class="citation" data-cites="deller_michels22">Deller &amp; Michels (<a href="#/conclusion" role="doc-biblioref" onclick="">2022</a>)</span> find that rain impacts the way that managers evaluate subordinates and <span class="citation" data-cites="li_patel21">X. Li &amp; Patel (<a href="#/conclusion" role="doc-biblioref" onclick="">2021</a>)</span> find that students are only marginally sensitive to higher temperatures during exams.</p></li>
+</ul>
+</section>
 
+<section>
 <section id="empirical-strategy" class="title-slide slide level1 center">
 <h1>Empirical strategy</h1>
 
 </section>
-
+<section id="data" class="slide level2">
+<h2>Data</h2>
+<ul>
+<li class="fragment">Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration (NOAA) Climate Prediction Center (CPC)</li>
+</ul>
+</section></section>
 <section id="results" class="title-slide slide level1 center">
 <h1>Results</h1>
 
@@ -415,20 +458,62 @@ Daniel Sánchez Pazmiño
 </div>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-achenBlindretrospectionelectoral2017" class="csl-entry" role="listitem">
+<div id="ref-achen_bartels17" class="csl-entry" role="listitem">
 Achen, C. H., &amp; Bartels, L. M. (2017). Blind retrospection: Electoral responses to droughts, floods, and shark attacks. In <em>Democracy for <span>Realists</span>: <span>Why Elections Do Not Produce Responsive Government</span></em> (REV - Revised). Princeton University Press. <a href="https://doi.org/10.2307/j.ctvc7770q">https://doi.org/10.2307/j.ctvc7770q</a>
 </div>
-<div id="ref-besleyPrincipledagentspolitical2006" class="csl-entry" role="listitem">
-Besley, T. (2006). <em>Principled agents?: The political economy of good government</em> (1st ed.). Oxford University Press.
+<div id="ref-barrington-leigh08" class="csl-entry" role="listitem">
+Barrington-Leigh, C. (2008). Weather as a transient influence on survey-reported satisfaction with life. <em>MPRA Paper</em>, <em>25736</em>.
 </div>
-<div id="ref-healyIrrelevanteventsaffect2010" class="csl-entry" role="listitem">
+<div id="ref-barrington-leigh_behzadnejad17" class="csl-entry" role="listitem">
+Barrington-Leigh, C., &amp; Behzadnejad, F. (2017). The impact of daily weather conditions on life satisfaction evidence from <span>Canadian</span> cross-sectional and panel data. <em>Journal of Economic Psychology</em>, <em>59</em>, 145–163. <a href="https://doi.org/10.1016/j.joep.2017.01.003">https://doi.org/10.1016/j.joep.2017.01.003</a>
+</div>
+<div id="ref-bower81" class="csl-entry" role="listitem">
+Bower, G. H. (1981). Mood and memory. <em>American Psychologist</em>, <em>36</em>(2), 129–148. <a href="https://doi.org/10.1037/0003-066X.36.2.129">https://doi.org/10.1037/0003-066X.36.2.129</a>
+</div>
+<div id="ref-connolly13" class="csl-entry" role="listitem">
+Connolly, M. (2013). Some like it mild and not too wet: The influence of weather on subjective well-being. <em>Journal of Happiness Studies</em>, <em>14</em>(2), 457–473. <a href="https://doi.org/10.1007/s10902-012-9338-2">https://doi.org/10.1007/s10902-012-9338-2</a>
+</div>
+<div id="ref-deller_michels22" class="csl-entry" role="listitem">
+Deller, C., &amp; Michels, J. (2022). <em>The effect of weather on subjective performance evaluation</em> ({{SSRN Scholarly Paper}} 3780405). <a href="https://doi.org/10.2139/ssrn.3780405">https://doi.org/10.2139/ssrn.3780405</a>
+</div>
+<div id="ref-feddersen_etal16" class="csl-entry" role="listitem">
+Feddersen, J., Metcalfe, R., &amp; Wooden, M. (2016). Subjective wellbeing: Why weather matters. <em>Journal of the Royal Statistical Society Series A: Statistics in Society</em>, <em>179</em>(1), 203–228. <a href="https://doi.org/10.1111/rssa.12118">https://doi.org/10.1111/rssa.12118</a>
+</div>
+<div id="ref-healy_etal10" class="csl-entry" role="listitem">
 Healy, A. J., Malhotra, N., Mo, C. H., &amp; Laitin, D. (2010). Irrelevant events affect voters’ evaluations of government performance. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, <em>107</em>(29), 12804–12809. <a href="https://www.jstor.org/stable/25708619">https://www.jstor.org/stable/25708619</a>
 </div>
-<div id="ref-healyRandomeventseconomic2010" class="csl-entry" role="listitem">
+<div id="ref-healy_malhotra10" class="csl-entry" role="listitem">
 Healy, A., &amp; Malhotra, N. (2010). Random events, economic losses, and retrospective voting: Implications for democratic competence. <em>Quarterly Journal of Political Science</em>, <em>5</em>(2), 193–208. <a href="https://doi.org/10.1561/100.00009057">https://doi.org/10.1561/100.00009057</a>
 </div>
-<div id="ref-perssonPoliticaleconomicsexplaining2002" class="csl-entry" role="listitem">
-Persson, T., &amp; Tabellini, G. (2002). <em>Political economics: Explaining economic policy</em>. MIT press.
+<div id="ref-kampfer_mutz13" class="csl-entry" role="listitem">
+Kämpfer, S., &amp; Mutz, M. (2013). On the sunny side of life: Sunshine effects on life satisfaction. <em>Social Indicators Research</em>, <em>110</em>(2), 579–595. <a href="https://www.jstor.org/stable/24718723">https://www.jstor.org/stable/24718723</a>
+</div>
+<div id="ref-keller_etal05" class="csl-entry" role="listitem">
+Keller, M. C., Fredrickson, B. L., Ybarra, O., Côté, S., Johnson, K., Mikels, J., Conway, A., &amp; Wager, T. (2005). A warm heart and a clear head: The contingent effects of weather on mood and cognition. <em>Psychological Science</em>, <em>16</em>(9), 724–731. <a href="https://doi.org/10.1111/j.1467-9280.2005.01602.x">https://doi.org/10.1111/j.1467-9280.2005.01602.x</a>
+</div>
+<div id="ref-li_etal20" class="csl-entry" role="listitem">
+Li, M., Ferreira, S., &amp; Smith, T. A. (2020). Temperature and self-reported mental health in the <span>United States</span>. <em>PLOS ONE</em>, <em>15</em>(3), e0230316. <a href="https://doi.org/10.1371/journal.pone.0230316">https://doi.org/10.1371/journal.pone.0230316</a>
+</div>
+<div id="ref-li_patel21" class="csl-entry" role="listitem">
+Li, X., &amp; Patel, P. C. (2021). Weather and high-stakes exam performance: <span>Evidence</span> from student-level administrative data in <span>Brazil</span>. <em>Economics Letters</em>, <em>199</em>, 109698. <a href="https://doi.org/10.1016/j.econlet.2020.109698">https://doi.org/10.1016/j.econlet.2020.109698</a>
+</div>
+<div id="ref-lignier_etal23" class="csl-entry" role="listitem">
+Lignier, P., Jarvis, D., Grainger, D., &amp; Chaiechi, T. (2023). Does the climate impact satisfaction with life? <span>An Australian</span> spatial study. <em>Weather, Climate, and Society</em>, <em>15</em>(1), 159–175. <a href="https://doi.org/10.1175/WCAS-D-22-0063.1">https://doi.org/10.1175/WCAS-D-22-0063.1</a>
+</div>
+<div id="ref-lucas_lawless13" class="csl-entry" role="listitem">
+Lucas, R. E., &amp; Lawless, N. M. (2013). Does life seem better on a sunny day? <span>Examining</span> the association between daily weather conditions and life satisfaction judgments. <em>Journal of Personality and Social Psychology</em>, <em>104</em>(5), 872–884. <a href="https://doi.org/10.1037/a0032124">https://doi.org/10.1037/a0032124</a>
+</div>
+<div id="ref-mullins_white19" class="csl-entry" role="listitem">
+Mullins, J. T., &amp; White, C. (2019). Temperature and mental health: <span>Evidence</span> from the spectrum of mental health outcomes. <em>Journal of Health Economics</em>, <em>68</em>, 102240. <a href="https://doi.org/10.1016/j.jhealeco.2019.102240">https://doi.org/10.1016/j.jhealeco.2019.102240</a>
+</div>
+<div id="ref-quijano-ruiz23" class="csl-entry" role="listitem">
+Quijano-Ruiz, A. (2023). <em><span>Assessing the reliability of self-rated health: the effects of transient weather fluctuations on perceived health</span></em> [{Working Paper}].
+</div>
+<div id="ref-schmiedeberg_schroder14" class="csl-entry" role="listitem">
+Schmiedeberg, C., &amp; Schröder, J. (2014). Does weather really influence the measurement of life satisfaction? <em>Social Indicators Research</em>, <em>117</em>(2), 387–399. <a href="https://www.jstor.org/stable/24720831">https://www.jstor.org/stable/24720831</a>
+</div>
+<div id="ref-schwarz_clore83" class="csl-entry" role="listitem">
+Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of well-being: Informative and directive-effects of affective states. <em>Journal of Personality and Social Psychology</em>, <em>45</em>(3), 513–523.
 </div>
 </div>
 </section>
