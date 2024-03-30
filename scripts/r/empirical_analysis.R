@@ -42,6 +42,7 @@ stars <- c("*" = 0.1,
 # Descriptive statistics --------------------------------------------------
 
 
+
 # Validity checks ----------------------------------------------------------
 
 # Regressions of weather variables on individual-level explanatory variables
