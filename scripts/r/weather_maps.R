@@ -103,7 +103,7 @@ map <-
          y = "Latitude", 
          fill = "Average temperatures (\u00B0C)") + 
     theme_minimal() + 
-    theme(text = element_text(size = 12, family = "serif"),
+    theme(text = element_text(family = "serif"),
           plot.title = element_text(size = 16, hjust = 0.5, face = "bold"),
           legend.position = "bottom",
           legend.direction = "horizontal",
