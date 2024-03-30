@@ -19,7 +19,7 @@ knitr:
 ---
 
 ```{r setup}
-#| label: setupq
+#| label: setup
 #| include: false
 library(ggplot2, warn.conflicts = F)
 ```
@@ -44,16 +44,18 @@ library(ggplot2, warn.conflicts = F)
 
 # Theoretical framework
 
-::: {.callout-tip icon=false}
-### Hypothesis
-Respondents who had their survey on days with higher temperatures are less likely to approve of the president.
-:::
-
 - @schwarz_clore83 show that, when induced negative moods, individuals are more likely to search for outside factors which justify their feelings. 
 
 - A "higher than normal" temperature would then induce a negative mood, leading to citizens looking for reasons to justify their feelings of discontent. 
 
 - @bower81 show that individuals are more likely to remember negative events when in a negative mood.
+
+. . . 
+
+::: {.callout-tip icon=false}
+### Hypothesis
+Respondents who had their survey on days with higher temperatures are less likely to approve of the president.
+:::
 
 ::: {.notes}
 - These are studies in psychology which set the stage for how mood can affect how people behave in a variety of settings. 
@@ -73,12 +75,15 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 # Empirical strategy
 
-## Data
-:::{#fig-temperature-map}
-![](/figures/temperature_map.png)
-:::
+## Data {.smaller}
 
 - Global daily gridded temperature data from the U.S. National Oceanic and Atmospheric Administration Climate Prediction Center [-@NOAADatasets].
+
+- Collects temperature of 50x50 km grids across the world mapped to Ecuadorian municipalities (cantons).
+
+. . .
+
+![Average daily temperature for 2023, cantons map](/figures/temperature_map.jpg){fig-align="center", height=80%}
 
 :::{.notes}
 
@@ -88,6 +93,14 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 - I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.
 :::
+
+## Data {.smaller}
+
+- Pooled cross section of public opinion data from the AmericasBarometer survey from [@ABEcuadorMerged]
+
+. . . 
+
+![](/figures/approval_rating_by_year.jpg){fig-align="center"}
 
 # Results
 

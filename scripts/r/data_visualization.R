@@ -17,6 +17,8 @@ library(ggplot2)
 library(patchwork)
 library(lubridate)
 library(scales)
+library(haven)
+library(survey)
 
 # Load the full dataset
 
@@ -187,6 +189,74 @@ ecuador_monthly_mean_temps_fig <-
   )
 
 ecuador_monthly_mean_temps_fig
+
+# Survey-robust data viz ----------------------------------------------------
+
+# Presidencial approval rating ------------------------------------------------
+
+# Using the approval rating variable and the survey design weights, calculate the mean approval rating for each wave
+
+# Create the survey design 
+
+df_des <-
+  df %>%
+  filter(!is.na(upm), !is.na(estratopri))
+
+ab_des <- svydesign(ids = ~ upm,
+                    strata = ~ estratopri,
+                    weights = ~ weight1500, 
+                    data = df_des,
+                    nest = T,
+                    na.action = "na.exclude")
+
+# Approval rating by year
+
+approval_rating_by_year <-
+  svyby(~ approves_president, ~ year, design = ab_des, svymean, na.rm = T)
+
+# Create the plot with the second column (se) as the 95% confidence interval error bars
+
+approval_rating_by_year_fig <- 
+  approval_rating_by_year %>% 
+  ggplot(aes(x = year, 
+             y = approves_president, 
+             ymin = approves_president - 1.96 * se, 
+             ymax = approves_president + 1.96 * se)) +
+  geom_point() + 
+  geom_errorbar(width = 0.5) +
+  geom_line(linetype = "dotted") + 
+  scale_x_continuous(breaks = seq(2008, 2023, by = 2)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(title = "Presidential Approval Rating by Year",
+       x = "Year",
+       y = "Approval Rating",
+       caption = "Note: Error bars represent 95% confidence intervals adjusted for survey design effects.") +
+  theme_bw() +
+  annotate("rect", xmin = 2007.5, xmax = 2017, ymin = 0.05, ymax = 0.8, fill = "green", alpha = 0.2) +
+  annotate("label", x= 2013, y = 0.55, label = "Rafael Correa tenure", color = "black", size = 3) +
+  annotate("rect", xmin = 2017, xmax = 2020.5, ymin = 0.05, ymax = 0.8, fill = "gray60", alpha = 0.2) +
+  annotate("label", x= 2018.8, y = 0.55, label = "Lenín Moreno\ntenure", color = "black", size = 3) +
+  annotate("rect", xmin = 2020.5, xmax = 2023.5, ymin = 0.05, ymax = 0.8, fill = "blue", alpha = 0.2) +
+  annotate("label", x= 2022, y = 0.7, label = "Guillermo Lasso\ntenure", color = "black", size = 3) +
+  theme(axis.text.x = element_text(color = "black"),
+        text = element_text(color = "black"),
+        plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+        plot.background = element_rect(fill = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
+        plot.caption = element_text(hjust = 0),
+        panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
+        panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
+        strip.background = element_rect(fill = "grey80", colour = "black", linewidth = 1)
+  )
+
+approval_rating_by_year_fig
+
+ggsave("figures/approval_rating_by_year.jpg", 
+        plot = approval_rating_by_year_fig, 
+        width = 17, 
+        height = 10,
+        units = "cm", 
+        dpi = 800)
 
 # Exporting relevant figures ------------------------------------------------
 

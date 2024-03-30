@@ -66,13 +66,7 @@ mean_precip_ecu <-
 
 # Maps ------------------------------------------------------------------------
 
-# Maximum temperature
-
-plot(mean_tmax_ecu, main = "Average Maximum Temperature (°C)", axes = T, col = terrain.colors(100), legend = T)
-plot(canton_shp$geometry, add = T)
-
-
-# In ggplot ------------------------------------------------------------------
+## In ggplot ------------------------------------------------------------------
 
 # Convert the raster to a data frame
 
@@ -98,23 +92,22 @@ map <-
     scale_fill_gradientn(colors = terrain.colors(100)) +
     geom_sf(data = canton_shp, color = "black", fill = "transparent") +
     facet_wrap(~type) +
-    labs(title = "Average daily temperatures for 2023",
-         x = "Longitude", 
+    labs(x = "Longitude", 
          y = "Latitude", 
-         fill = "Average temperatures (\u00B0C)") + 
+         fill = "\u00B0C") + 
     theme_minimal() + 
-    theme(text = element_text(family = "serif"),
-          plot.title = element_text(size = 16, hjust = 0.5, face = "bold"),
-          legend.position = "bottom",
-          legend.direction = "horizontal",
+    theme(axis.text = element_text(size = 8),
+          plot.title = element_text(size = 10, hjust = 0.5, face = "bold"),
+          legend.position = "right",
+          legend.direction = "vertical",
           panel.grid = element_blank(),
           panel.border = element_rect(color = "black", fill = "transparent"))
 
 map
 
-ggsave("figures/temperature_map.png", 
+ggsave("figures/temperature_map.jpg", 
        plot = map,
-       height = 10,
+       height = 8,
        width = 17,
        units = "cm",
        dpi = 800)
