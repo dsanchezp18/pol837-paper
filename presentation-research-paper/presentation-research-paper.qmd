@@ -28,7 +28,7 @@ library(ggplot2, warn.conflicts = F)
 
 - Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.
 
-- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healy_etal10; @healy_malhotra10; @achen_bartels17]
+- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healy_etal10; @healy_malhotra10; @achen_bartels17].
 
 - I investigate whether transient temperature changes affect presidential approval in Ecuador.
 
@@ -48,7 +48,7 @@ library(ggplot2, warn.conflicts = F)
 
 - A "higher than normal" temperature would then induce a negative mood, leading to citizens looking for reasons to justify their feelings of discontent. 
 
-- @bower81 show that individuals are more likely to remember negative events when in a negative mood.
+- @bower81 shows that individuals are more likely to remember unfavorable events when in a negative mood.
 
 . . . 
 
@@ -65,7 +65,7 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 # Documented weather effects
 
-- Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13] 
+- Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13].
 
 - In some cases, effects are significant though small and not robust [@schmiedeberg_schroder14;@lucas_lawless13]. 
 
@@ -98,7 +98,7 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 ## Data: The AmericasBarometer Survey {.smaller}
 
-- Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50-60 cantons every year [@ABEcuadorMerged].
+- Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50 - 60 cantons every year [@ABEcuadorMerged].
 
 - Daily weather data is joined with the survey by interview date, observed since 2008 wave, and canton of the survey respondent.
 
@@ -119,13 +119,19 @@ $$
 
 - $\tau_t$ and $\theta_j$ are day and canton fixed effects, $\text{temp}_{jt}$ is a daily temperature measure in canton $j$ on day $t$, and $\mathbb{X'}_{ijt}$ is a vector of control variables for presidential approval. 
 
-- Short-term temperature changes can been seen as random and thus unrelated to variables that affect presidential approval.
+- Short-term temperature changes can be seen as random and thus unrelated to variables that affect presidential approval.
 
 - $\hat{\beta}$ is consistent and measures the causal effect of temperature on presidential approval.
 
+:::{.notes}
+- The fixed effects control for time-invariant characteristics of cantons and time-varying characteristics of days.
+
+- The control variables include demographic, economic and political behaviour characteristics of the respondent. While my design would technically allow me to not include these controls, I do so to increase the precision of my estimates, and test for potential confounding effects.
+:::
+
 ## Explained variable: presidential approval {.smaller}
 
-- The AmericasBaromter asks a slight variation of the common Gallup poll question [@berlemann_enkelmann14a], with a 5-point scale (5 being full disapproval).
+- The AmericasBarometer asks a slight variation of the common Gallup poll question [@berlemann_enkelmann14a], with a 5-point scale, five being full disapproval.
 
 - Dichotomized the variable to a binary indicator of approval, grouping responses of 1 and 2 into approval and 0 otherwise. 
 
@@ -152,6 +158,45 @@ $$
 
 - Spread between maximum and minimum temperatures is consistent over the years.
 :::
+
 # Results
 
+## Baseline results {.smaller}
+
+- Four specifications with no controls other than fixed effects.
+
+- Statistically significant and negative effect of **maximum temperature**, average marginal effect (AME) of **1.1%**.
+
+. . . 
+
+![Coefficient plot of average partial effects of baseline specifications](/figures/model_plot_baseline.jpg)
+
+## Models with controls {.smaller}
+
+- The same four specifications with controls for respondent characteristics.
+
+- Statistically significant and negative effect of **maximum temperature**, AME of **-2%**.
+
+- Results are robust to different clustering levels and a non-linear temperature specification (natural log).
+
+. . .
+
+![Coefficient plot of average partial effects of specifications with controls](/figures/logit_marginal_effects_controls.jpg)
+
 # Conclusion
+
+# References {.smaller .scrollable}
+
+:::{#refs}
+
+:::
+
+# Appendices
+
+## Descriptive Statistics {.smaller .scrollable}
+
+{{< include /data/output/descriptive_statistics.md >}}
+
+## Baseline average marginal effects {.smaller}
+
+{{< include /data/output/marginal_effects_baseline.md >}}

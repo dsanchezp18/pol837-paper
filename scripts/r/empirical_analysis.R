@@ -12,11 +12,13 @@
 # Load libraries
 
 library(readr)
+library(haven)
 library(dplyr)
 library(fixest)
 library(forcats)
 library(modelsummary)
 library(forcats)
+library(kableExtra)
 library(marginaleffects)
 
 # Load the full dataset
@@ -29,19 +31,9 @@ full_df <- df
 
 # The "main" dataset for the analysis is the full dataset without the 2021 observations
  
-df <- full_df  %>% filter(year != 2021)
-
-# Table presentation parameters (modelsummary) -----------------------------
-
-# Set the modelsummary parameters for the tables
-
-stars <- c("*" = 0.1,
-           "**" = 0.05,
-           "***" = 0.01)
-
-# Descriptive statistics --------------------------------------------------
-
-
+df <- 
+    full_df  %>% 
+    filter(year != 2021)
 
 # Validity checks ----------------------------------------------------------
 
@@ -150,7 +142,7 @@ summary(validity_precipitation_fe_controls)
 
 validity_results <- list(validity_max_temp_fe_controls, validity_min_temp_fe_controls, validity_precipitation_fe_controls)
 
-modelsummary(validity_results, stars = stars, output = "markdown")
+modelsummary(validity_results, stars = T, output = "markdown")
 
 # Empirical models ---------------------------------------------------------
 
@@ -220,15 +212,12 @@ modelsummary(simple_models, stars = stars, output = "markdown")
 # Define a formula object with all the controls
 
 controls_formula <- 
-    "+ sex + age + ethnicity + urban_rural + non_religious + education + civil_status + labour_market + country_econ_situation + personal_econ_situation + incumbent_vote + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov + external_efficacy + internal_efficacy"
-
-# controls_formula <- 
-#     "+ sex + age + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov | canton_dpa + interview_date"
+    "+ sex + age + ethnicity + urban_rural + non_religious + education + civil_status + labour_market + country_econ_situation + personal_econ_situation + ideology + corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_police + confidence_local_gov + internal_efficacy + external_efficacy + incumbent_vote"
 
 # Model 1: Min temperature
 
 model1_controls <- 
-    feglm(paste("approves_president ~ min_temperature + ", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ min_temperature", controls_formula) %>% as.formula(), 
           data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
@@ -237,7 +226,7 @@ model1_controls <-
 # Model 2: Max temperature
 
 model2_controls <- 
-    feglm(paste("approves_president ~ max_temperature + ", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ max_temperature", controls_formula) %>% as.formula(), 
           data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
@@ -246,7 +235,7 @@ model2_controls <-
 # Model 3: Average temperature
 
 model3_controls <- 
-    feglm(paste("approves_president ~ avg_temperature + ", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ avg_temperature", controls_formula) %>% as.formula(), 
           data = df,
           fixef = c("canton_dpa", "interview_date"),
           family = binomial(link = "logit"),
@@ -401,7 +390,7 @@ modelsummary(non_linear_models, stars = stars, output = "markdown")
 # Model 1: Region (Amazon/Sierra(Mountains)/Coast), max temperature interaction
 
 model1_hetero <- 
-    feglm(paste("approves_president ~ i(region, ref = 'Sierra', max_temperature) + max_temperature", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ i(region, ref = 'Sierra', max_temperature) + max_temperature +", controls_formula) %>% as.formula(), 
           fixef = c("canton_dpa", "interview_date"),
           data = df,
           family = binomial(link = "logit"),
@@ -412,7 +401,7 @@ summary(model1_hetero)
 # Model 2: Region (Amazon/Sierra(Mountains)/Coast), min temperature interaction
 
 model2_hetero <- 
-    feglm(paste("approves_president ~ i(region, ref = 'Sierra', min_temperature) + min_temperature", controls_formula) %>% as.formula(), 
+    feglm(paste("approves_president ~ i(region, ref = 'Sierra', min_temperature) + min_temperature +", controls_formula) %>% as.formula(), 
           fixef = c("canton_dpa", "interview_date"),
           data = df,
           family = binomial(link = "logit"),

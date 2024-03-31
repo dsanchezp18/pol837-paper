@@ -153,7 +153,7 @@ ecu_ab <-
             confidence_justice = zap_labels(b10a),
             confidence_police = zap_labels(b18),
             confidence_local_gov = zap_labels(b32),
-            ethnicity = as_factor(etid),
+            ethnicity = zap_missing(etid) %>% forcats::as_factor() %>% fct_drop() %>% fct_relevel("Mestizo"),
             q3 = zap_labels(q3) %>% zap_missing(),
             q3c = zap_labels(q3c) %>% zap_missing(),
             q3cn = zap_labels(q3cn) %>% zap_missing(),
@@ -192,8 +192,7 @@ ecu_ab <-
                 year == 2023 & vb3n != 901 ~ "No") %>% forcats::as_factor() %>% fct_relevel("No"),
             incumbent_vote = case_when(
                 voted == "Yes" & voted_for_incumbent == "Yes" ~ "Incumbent",
-                voted == "Yes" & voted_for_incumbent == "No" ~ "Not incumbent",
-                voted == "No" ~ "Did not vote") %>% forcats::as_factor() %>% fct_relevel("Did not vote"),
+                voted == "Yes" & voted_for_incumbent == "No" | voted == "No" ~ "Did not vote for incumbent") %>% forcats::as_factor() %>% fct_relevel("Did not vote for incumbent"),
             prospective_incumbent_vote = if_else(vb20 == 2, "Yes", "No") %>% forcats::as_factor() %>% fct_relevel("No"),
             external_efficacy = zap_labels(eff1) %>% zap_missing(), # Higher means agree
             internal_efficacy = zap_labels(eff2) %>% zap_missing(), # Higher means agree
