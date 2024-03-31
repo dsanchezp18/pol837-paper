@@ -67,11 +67,21 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 - Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13].
 
+- Individuals are affected with **unpleasant weather**, which is highly dependent on the regional and seasonal context. 
+
 - In some cases, effects are significant though small and not robust [@schmiedeberg_schroder14;@lucas_lawless13]. 
+
+- @bassi19 also proposes that bad weather negatively impacts individuals' mood, finding that individuals are less likely to vote by risky candidates when faced with bad weather.
+
+:::{.notes}
+
+- For instance, papers which find effects in Canada find that individuals are negatively to be affected by cold weather. In Australia, the opposite is true.
 
 - @feddersen_etal16 and @quijano-ruiz23 find small negative effects of temperature changes on self-rated health; @li_etal20 and @mullins_white19 find significant impacts on mental health. 
 
 - @deller_michels22 find that rain impacts the way that managers evaluate subordinates and @li_patel21 find that students are only marginally sensitive to higher temperatures during exams. 
+
+:::
 
 # Empirical strategy
 
@@ -184,6 +194,26 @@ $$
 ![Coefficient plot of average partial effects of specifications with controls](/figures/logit_marginal_effects_controls.jpg)
 
 # Conclusion
+
+- Important to consider the implications of weather for retrospective voting, especially for developing countries. 
+
+- Survey respondents are between 1.1 to 2.0% less likely to approve of the president on days with higher temperatures.
+
+- A natural log transformation of temperature yields similar results, suggesting that the effect is non-linear.
+
+- The evidence supports the theory of poor retrospective voters due to mood-induced attribution errors. 
+
+- The effect doubles when controlling for respondent characteristics, suggesting that weather is not fully random across individuals.
+
+- The CPC weather data could be subject to measurement error, which would downward bias my estimates.
+
+:::{.notes}
+
+- A negative mood induced by higher temperatures could first lead to a negative attitude to members in Congress, which could extend to a positive attitude towards the president.
+
+- In this case, I am not estimating the direct effect of weather on mood, but the indirect effect of weather on presidential approval through mood.
+
+:::
 
 # References {.smaller .scrollable}
 
