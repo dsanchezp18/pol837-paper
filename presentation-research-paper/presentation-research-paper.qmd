@@ -87,14 +87,16 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 :::{.notes}
 
+- While daily weather data would typically be available from weather stations, the data is not available for Ecuador, which is why I use data from satellite observations. 
+
 - Data collected for grids in the whole world, but I focus on Ecuador. 
 
 - The data is available at a 0.5° x 0.5° resolution, which is approximately 50 km x 50 km at the equator.
 
-- I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.
+- I compute weighted averages for every canton in Ecuador, assigning weights based on canton boundaries
 :::
 
-## Data: The AmericasBarometer {.smaller}
+## Data: The AmericasBarometer Survey {.smaller}
 
 - Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50-60 cantons every year [@ABEcuadorMerged].
 
@@ -125,16 +127,31 @@ $$
 
 - The AmericasBaromter asks a slight variation of the common Gallup poll question [@berlemann_enkelmann14a], with a 5-point scale (5 being full disapproval).
 
-- Dichotomized the variable to a binary indicator of approval (1 or 2 responses) and (indifferent or disapproval).
+- Dichotomized the variable to a binary indicator of approval, grouping responses of 1 and 2 into approval and 0 otherwise. 
 
 . . . 
+
+![Presidential Approval Rating from 2008-2023](/figures/approval_rating_by_year.jpg)
 
 :::{.notes}
 - "Do you approve or disapprove of the way [name of the president] is handling his job as president?"
 :::
 
-![Presidential Approval Ratings](/figures/approval_rating_by_year.jpg)
+## Treatment: daily temperature
 
+- I observe daily maximum and minimum temperature for cantons in the interview dates of the AB.
+
+. . .
+
+![Monthly mean temperatures 2008 - 2023](/figures/ecuador_monthly_mean_temps_fig.jpg)
+
+:::{.notes}
+- No notable upward or downward trend in temperature over the years.
+
+- Some periods show higher temperatures than others, but no clear pattern.
+
+- Spread between maximum and minimum temperatures is consistent over the years.
+:::
 # Results
 
 # Conclusion

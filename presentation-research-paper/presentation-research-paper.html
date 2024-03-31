@@ -456,9 +456,10 @@ Daniel Sánchez Pazmiño
 </div>
 <aside class="notes">
 <ul>
+<li><p>While daily weather data would typically be available from weather stations, the data is not available for Ecuador, which is why I use data from satellite observations.</p></li>
 <li><p>Data collected for grids in the whole world, but I focus on Ecuador.</p></li>
 <li><p>The data is available at a 0.5° x 0.5° resolution, which is approximately 50 km x 50 km at the equator.</p></li>
-<li><p>I compute weighted averages for every canton in Ecuador, assigning weights based on the boundaries of cantons and the area of each grid cell that falls within each canton.</p></li>
+<li><p>I compute weighted averages for every canton in Ecuador, assigning weights based on canton boundaries</p></li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -473,8 +474,8 @@ Daniel Sánchez Pazmiño
       }</style></aside>
 </div>
 </section>
-<section id="data-the-americasbarometer" class="slide level2 smaller">
-<h2>Data: The AmericasBarometer</h2>
+<section id="data-the-americasbarometer-survey" class="slide level2 smaller">
+<h2>Data: The AmericasBarometer Survey</h2>
 <ul>
 <li class="fragment"><p>Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50-60 cantons every year <span class="citation" data-cites="ABEcuadorMerged">(<a href="#/conclusion" role="doc-biblioref" onclick="">LAPOP, n.d.</a>)</span>.</p></li>
 <li class="fragment"><p>Daily weather data is joined with the survey by interview date, observed since 2008 wave, and canton of the survey respondent.</p></li>
@@ -508,9 +509,15 @@ Daniel Sánchez Pazmiño
 <h2>Explained variable: presidential approval</h2>
 <ul>
 <li class="fragment"><p>The AmericasBaromter asks a slight variation of the common Gallup poll question <span class="citation" data-cites="berlemann_enkelmann14a">(<a href="#/conclusion" role="doc-biblioref" onclick="">Berlemann &amp; Enkelmann, 2014</a>)</span>, with a 5-point scale (5 being full disapproval).</p></li>
-<li class="fragment"><p>Dichotomized the variable to a binary indicator of approval (1 or 2 responses) and (indifferent or disapproval).</p></li>
+<li class="fragment"><p>Dichotomized the variable to a binary indicator of approval, grouping responses of 1 and 2 into approval and 0 otherwise.</p></li>
 </ul>
 <div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<figcaption>Presidential Approval Rating from 2008-2023</figcaption>
+<p><img data-src="..\figures/approval_rating_by_year.jpg"></p>
+</figure>
+</div>
 <aside class="notes">
 <ul>
 <li>“Do you approve or disapprove of the way [name of the president] is handling his job as president?”</li>
@@ -526,12 +533,37 @@ Daniel Sánchez Pazmiño
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</div>
+</section>
+<section id="treatment-daily-temperature" class="slide level2">
+<h2>Treatment: daily temperature</h2>
+<ul>
+<li class="fragment">I observe daily maximum and minimum temperature for cantons in the interview dates of the AB.</li>
+</ul>
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<figcaption>Presidential Approval Ratings</figcaption>
-<p><img data-src="..\figures/approval_rating_by_year.jpg"></p>
+<figcaption>Monthly mean temperatures 2008 - 2023</figcaption>
+<p><img data-src="..\figures/ecuador_monthly_mean_temps_fig.jpg"></p>
 </figure>
 </div>
+<aside class="notes">
+<ul>
+<li><p>No notable upward or downward trend in temperature over the years.</p></li>
+<li><p>Some periods show higher temperatures than others, but no clear pattern.</p></li>
+<li><p>Spread between maximum and minimum temperatures is consistent over the years.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section></section>
 <section id="results" class="title-slide slide level1 center">

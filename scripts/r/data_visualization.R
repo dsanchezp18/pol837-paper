@@ -50,18 +50,7 @@ precipitation_df <-
 
 # Survey responses --------------------------------------------------------
 
-# Plotting survey responses through time
-
-df %>% 
-  group_by(interview_date, wave) %>% 
-  summarise(count_of_responses = n()) %>%
-  ggplot(aes(x = interview_date, y = count_of_responses, fill = as.factor(wave))) +
-  geom_col() +
-  scale_x_date(date_labels = "%b %Y", date_breaks = "1 year") + 
-  scale_color_discrete(palette = "Set4") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Same but facetting for the waves (free scales)
+# Plotting survey responses through time with facets
 
 interview_dates_barchart <-
   df %>% 
@@ -77,8 +66,8 @@ interview_dates_barchart <-
   geom_vline(xintercept = as.Date("2017-01-02"), linetype = "dashed", color = "blue", linewidth = 0.1) +
   facet_wrap(~wave, nrow = 2, scales = "free") +
   scale_x_date(date_labels = "%Y-%m-%d", date_breaks = "1 week") +
- labs(x = "Survey Interview Date",
-      y = "Count of Responses") +
+  labs(x = "Survey Interview Date",
+       y = "Count of Responses") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 6, color = "black"),
         text = element_text(color = "black"),
@@ -184,17 +173,24 @@ ecuador_monthly_mean_temps_fig <-
   scale_color_manual(values = c("#E60F2D", "#56589e")) +
   theme_minimal() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1, color = "black"),
-        text = element_text(family = 'serif', color = "black", size = 8),
-        plot.background = element_rect(fill = "white"),
+        text = element_text(color = "black", size = 8),
+        plot.background = element_rect(fill = "white", colour = NA),
         panel.border = element_rect(colour = "black", fill = NA, linewidth = 1, linetype = "solid"),
         plot.caption = element_text(hjust = 0),
         panel.grid.major = element_line(linetype = "dashed", linewidth = 0.3),
         panel.grid.minor = element_line(linetype = "dashed", linewidth = 0.3),
         strip.background = element_rect(fill = "grey80", colour = "black", linewidth = 1),
-        legend.position = c(0.9, 0.5)
+        legend.position = "bottom"
   )
 
 ecuador_monthly_mean_temps_fig
+
+ggsave("figures/ecuador_monthly_mean_temps_fig.jpg", 
+       plot = ecuador_monthly_mean_temps_fig,
+       width = 17,
+       height = 8,
+       units = "cm", 
+       dpi = 800)
 
 # Survey-robust data viz ----------------------------------------------------
 
