@@ -154,23 +154,8 @@ coefficients_baseline_models <- c(
 
 notes_baseline_models <- list(
   "Baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.",
-  "***p<0.01, **p<0.05, *p<0.1."
+  "`***`p < 0.01, `**`p < 0.05, `*` p < 0.1."
 )
-
-# Modelsummary table of coefficients (for display)
-
-modelsummary(simple_models,
-             coef_map = coefficients_baseline_models,
-             stars = stars,
-             output = "default",
-             estimate = "{estimate}{stars}",
-             booktabs = TRUE,
-             align = "lrrrr", 
-             threeparttable = TRUE,
-             title = "Logit coefficients for baseline specifications",
-             vcov = ~ canton_dpa,
-             notes = notes_baseline_models,
-             gof_map = gf_map)
 
 # Modelsummary table of coefficients (to markdown file)
 
@@ -179,33 +164,19 @@ modelsummary(simple_models,
              stars = stars,
              output = "data/output/logit_coefficients_baseline.md",
              estimate = "{estimate}{stars}",
-             booktabs = TRUE,
+             booktabs = T,
              align = "lrrrr", 
-             threeparttable = TRUE,
+             threeparttable = T,
              title = "Logit coefficients for baseline specifications",
              vcov = ~ canton_dpa,
              notes = notes_baseline_models,
              gof_map = gf_map)
-`
+
 # Notes for marginal effects table
 
 notes_baseline_models_ame <- list(
   "Average partial effects for baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.",
-  "***p<0.01, **p<0.05, *p<0.1.")
-
-# Modelsummary table of marginal effects (for display)
-
-modelsummary(apes_baseline,
-             output = "default",
-             coef_map = coefficients_baseline_models,
-             stars = stars,
-             align = "lrrrr",
-             estimate = "{estimate}{stars}",
-             title = "Average marginal effects for baseline models",
-             threeparttable = TRUE,
-             booktabs = TRUE,
-             notes = notes_baseline_models_ame,
-             gof_map = gf_map)
+  "`***` p < 0.01, `**` p < 0.05, `*` p < 0.1.")
 
 # Modelsummary table of marginal effects (to markdown file)
 
@@ -223,7 +194,7 @@ modelsummary(apes_baseline,
 
 # Modelplot of marginal effects for the baseline models
 
-# Rename the objects within the list apes_baseline for better labelling in the legend
+# Rename the objects within the list apes_baseline for better labeling in the legend
 
 names(apes_baseline) <- c("Min. temperature",
                           "Max. temperature",
@@ -243,8 +214,6 @@ model_plot_baseline <-
     theme(legend.position = "bottom",
           legend.direction = "horizontal") +
     guides(color = guide_legend(nrow = 2))
-
-model_plot_baseline
 
 # Save the model plot
 
@@ -330,24 +299,8 @@ coefficients_controls <- c(
 
 notes_control_models <- list(
   "Models explaining presidential approval through daily weather variables and controls. Standard errors shown in parentheses are clustered by canton.",
-  "***p<0.01, **p<0.05, *p<0.1."
+  "`***` p < 0.01, `**` p < 0.05, `*` p < 0.1."
 )
-
-# Modelsummary table of coefficients (for display)
-
-modelsummary(models_controls,
-             gof_map = gf_map,
-             coef_map = coefficients_controls,
-             stars = stars,
-             estimate = "{estimate}{stars}",
-             booktabs = TRUE,
-             align = "lrrrr", 
-             threeparttable = TRUE,
-             title = "Logit coefficients for specifications with controls",
-             notes = notes_control_models,
-             output = "default",
-             threeparttable = TRUE,
-             longtable = T)
 
 # Modelsummary table of coefficients (to markdown file)
 
@@ -368,7 +321,7 @@ modelsummary(models_controls,
 
 notes_control_models_apes <- list(
   "Average partial effects for models explaining presidential approval through daily weather variables, canton and interview date fixed effects, and political behaviour controls. Standard errors shown in parentheses are clustered by canton.",
-  "***p<0.01, **p<0.05, *p<0.1."
+  "`***` p < 0.01, `**` p < 0.05, `* p < 0.1."
 )
 
 # Coefficient mapping for marginal effects table
@@ -549,28 +502,3 @@ modelplot_controls <-
 modelplot_controls
 
 ggsave("figures/logit_marginal_effects_controls.jpg", modelplot_controls, width = 12, height = 6, dpi = 800)
-
-# Heterogeneous effects ---------------------------------------------------
-
-# Models
-
-model1_hetero <- 
-    feglm(paste("approves_president ~ i(region, ref = 'Sierra', max_temperature) + max_temperature +", controls_formula) %>% as.formula(), 
-          fixef = c("canton_dpa", "interview_date"),
-          data = df,
-          family = binomial(link = "logit"),
-          cluster = ~ canton_dpa)
-
-model5_hetero <- 
-    feglm(approves_president ~ i(incumbent_vote, ref = "Did not vote", max_temperature) + incumbent_vote + max_temperature + age + non_religious + civil_status + urban_rural + education + labour_market + country_econ_situation + personal_econ_situation + ideology + 
-          corruption_perception + corruption_tolerance + democracy_support + political_pride + confidence_police + confidence_local_gov,
-            fixef = c("canton_dpa", "interview_date"),
-            data = df,
-            family = binomial(link = "logit"),
-            cluster = ~canton_dpa)
-  
-# Plots of slopes
-
-plot_slopes(model5_hetero, variables = "max_temperature", by = "incumbent_vote", slope = "dydx")
-
-plot_comparisons(model5_hetero, variables = "max_temperature", by = "incumbent_vote", comparison = "dydxavg")

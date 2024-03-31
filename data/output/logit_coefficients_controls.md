@@ -76,4 +76,4 @@ __Note:__
 ^^ Models explaining presidential approval through daily weather variables and controls. Standard errors shown in parentheses are clustered by canton.
 
 __Note:__
-^^ ***p<0.01, **p<0.05, *p<0.1.
+^^ `***` p < 0.01, `**` p < 0.05, `*` p < 0.1.

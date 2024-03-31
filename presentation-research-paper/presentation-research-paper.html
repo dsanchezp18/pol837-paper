@@ -506,7 +506,7 @@ Daniel Sánchez Pazmiño
 </div>
 </div>
 </section>
-<section id="identification-strategy" class="slide level2">
+<section id="identification-strategy" class="slide level2 smaller">
 <h2>Identification strategy</h2>
 <ul>
 <li class="fragment">I use fixed effects logistic regression to estimate presidential popularity functions:</li>
@@ -519,11 +519,13 @@ Daniel Sánchez Pazmiño
 <li class="fragment"><p><span class="math inline">\(\tau_t\)</span> and <span class="math inline">\(\theta_j\)</span> are day and canton fixed effects, <span class="math inline">\(\text{temp}_{jt}\)</span> is a daily temperature measure in canton <span class="math inline">\(j\)</span> on day <span class="math inline">\(t\)</span>, and <span class="math inline">\(\mathbb{X'}_{ijt}\)</span> is a vector of control variables for presidential approval.</p></li>
 <li class="fragment"><p>Short-term temperature changes can be seen as random and thus unrelated to variables that affect presidential approval.</p></li>
 <li class="fragment"><p><span class="math inline">\(\hat{\beta}\)</span> is consistent and measures the causal effect of temperature on presidential approval.</p></li>
+<li class="fragment"><p>Clusterer standard errors at the canton level.</p></li>
 </ul>
 <aside class="notes">
 <ul>
 <li><p>The fixed effects control for time-invariant characteristics of cantons and time-varying characteristics of days.</p></li>
 <li><p>The control variables include demographic, economic and political behaviour characteristics of the respondent. While my design would technically allow me to not include these controls, I do so to increase the precision of my estimates, and test for potential confounding effects.</p></li>
+<li><p>Perform robustness checks by running regressions with different clustering levels.</p></li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -607,8 +609,12 @@ Daniel Sánchez Pazmiño
 <section id="baseline-results" class="slide level2 smaller">
 <h2>Baseline results</h2>
 <ul>
-<li class="fragment"><p>Four specifications with no controls other than fixed effects.</p></li>
-<li class="fragment"><p>Statistically significant and negative effect of <strong>maximum temperature</strong>, average marginal effect (AME) of <strong>1.1%</strong>.</p></li>
+<li class="fragment"><p>Four specifications with no controls other than fixed effects.</p>
+<ul>
+<li class="fragment">Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation.</li>
+</ul></li>
+<li class="fragment"><p>Statistically significant and negative effect of <strong>maximum temperature</strong></p></li>
+<li class="fragment"><p>Average marginal effect (AME) of <strong>-1.1%</strong>.</p></li>
 </ul>
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
@@ -617,13 +623,32 @@ Daniel Sánchez Pazmiño
 <p><img data-src="..\figures/model_plot_baseline.jpg"></p>
 </figure>
 </div>
+<aside class="notes">
+<ul>
+<li><p>The effect of minimum temperature is not statistically significant.</p></li>
+<li><p>Precipitation is not statistically significant either.</p></li>
+<li><p>Logistic regression gives coefficients which are not interpretable, so what I’m plotting are average marginal effects.</p></li>
+<li><p>These give you interpretable results, such as the ones you’d get from a linear probability model, however, they are only average effects for the sample.</p></li>
+<li><p>The negative and statistically significant effect of maximum temperature of 1.1% means that respondents are 1.1% less likely to approve of the president on days with higher temperatures.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section>
 <section id="models-with-controls" class="slide level2 smaller">
 <h2>Models with controls</h2>
 <ul>
 <li class="fragment"><p>The same four specifications with controls for respondent characteristics.</p></li>
-<li class="fragment"><p>Statistically significant and negative effect of <strong>maximum temperature</strong>, AME of <strong>-2%</strong>.</p></li>
+<li class="fragment"><p>Statistically significant and negative effect of <strong>maximum temperature</strong>; AME of <strong>-2%</strong>.</p></li>
 <li class="fragment"><p>Results are robust to different clustering levels and a non-linear temperature specification (natural log).</p></li>
 </ul>
 <div class="fragment">
@@ -633,6 +658,24 @@ Daniel Sánchez Pazmiño
 <p><img data-src="..\figures/logit_marginal_effects_controls.jpg"></p>
 </figure>
 </div>
+<aside class="notes">
+<ul>
+<li><p>Again, neither minimum temperature or precipitation are statistically significant.</p></li>
+<li><p>Note how my average marginal effects do change after controlling for respondent characteristics. This is evidence against the randomness of temperature, but I’ll discuss that in a few more minutes.</p></li>
+<li><p>The 2.2% effect of maximum temperature means that respondents are 2.2% less likely to approve of the president on days with higher temperatures.</p></li>
+<li><p>Including a natural logarithm transformation is equivalent to consider percentage increases of temperature, meaning that the effect of temperature is non-linear: as temperature increases, the effect on presidential approval increases faster. Your mood might make you disapprove more of the president at 25°C than at 20°C, but even more at 30°C.</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </div>
 </section></section>
 <section id="conclusion" class="title-slide slide level1 center">
@@ -1131,10 +1174,17 @@ Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of w
 </table>
 <p><strong>Note:</strong> ^^ Note: Descriptive statistics for variables used in the empirical analysis. For categorical variables, the percent of observations in the category out of the total sample is presented. For numerical (either ordinal or continuous) variables, the mean, standard deviation, minimum and maximum are presented. For both, the number of observations and the percentage of missing values.</p>
 </section>
-<section id="baseline-average-marginal-effects" class="slide level2 smaller">
-<h2>Baseline average marginal effects</h2>
+<section id="baseline-logit-coefficients" class="slide level2 smaller">
+<h2>Baseline logit coefficients</h2>
 <table>
-<caption>Average marginal effects for baseline models</caption>
+<caption>Logit coefficients for baseline specifications</caption>
+<colgroup>
+<col style="width: 43%">
+<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 13%">
+<col style="width: 15%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -1142,6 +1192,123 @@ Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of w
 <th style="text-align: right;">(2)</th>
 <th style="text-align: right;">(3)</th>
 <th style="text-align: right;">(4)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Min. temperature (°C)</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.029</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.027)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Max. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.044**</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.051***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.019)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.018)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Avg. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.023</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.035)</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation (mm)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.004</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.004)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N</td>
+<td style="text-align: right;">14118</td>
+<td style="text-align: right;">14118</td>
+<td style="text-align: right;">14118</td>
+<td style="text-align: right;">14118</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AIC</td>
+<td style="text-align: right;">18302</td>
+<td style="text-align: right;">18297</td>
+<td style="text-align: right;">18302</td>
+<td style="text-align: right;">18297</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: right;">0.465</td>
+<td style="text-align: right;">0.465</td>
+<td style="text-align: right;">0.465</td>
+<td style="text-align: right;">0.465</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canton fixed effects</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Interview date fixed effects</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> ^^ Baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.</p>
+<p><strong>Note:</strong> ^^ <code>***</code>p &lt; 0.01, <code>**</code>p &lt; 0.05, <code>*</code> p &lt; 0.1.</p>
+</section>
+<section id="baseline-average-marginal-effects" class="slide level2 smaller">
+<h2>Baseline average marginal effects</h2>
+<table>
+<caption>Average marginal effects for baseline models</caption>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Min. temperature</th>
+<th style="text-align: right;">Max. temperature</th>
+<th style="text-align: right;">Avg. temperature</th>
+<th style="text-align: right;">Temperatures and precipitation</th>
 </tr>
 </thead>
 <tbody>
@@ -1225,7 +1392,997 @@ Schwarz, N., &amp; Clore, G. L. (1983). Mood, misattribution, and judgments of w
 </tbody>
 </table>
 <p><strong>Note:</strong> ^^ Average partial effects for baseline models explaining presidential approval through daily weather variables and canton and interview date fixed effects. Standard errors shown in parentheses are clustered by canton.</p>
-<p><strong>Note:</strong> ^^ <em><strong>p&lt;0.01, </strong>p&lt;0.05, </em>p&lt;0.1.</p>
+<p><strong>Note:</strong> ^^ <code>***</code> p &lt; 0.01, <code>**</code> p &lt; 0.05, <code>*</code> p &lt; 0.1.</p>
+</section>
+<section id="logit-coefficients-with-controls" class="slide level2 smaller scrollable">
+<h2>Logit coefficients with controls</h2>
+<table>
+<caption>Logit coefficients for specifications with controls</caption>
+<colgroup>
+<col style="width: 46%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">(1)</th>
+<th style="text-align: right;">(2)</th>
+<th style="text-align: right;">(3)</th>
+<th style="text-align: right;">(4)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Min. temperature (°C)</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.059)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.060)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Max. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.107**</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.106**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.048)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.048)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Avg. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.117</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.075)</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation (mm)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.009)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Female</td>
+<td style="text-align: right;">-0.242***</td>
+<td style="text-align: right;">-0.246***</td>
+<td style="text-align: right;">-0.248***</td>
+<td style="text-align: right;">-0.246***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.072)</td>
+<td style="text-align: right;">(0.071)</td>
+<td style="text-align: right;">(0.071)</td>
+<td style="text-align: right;">(0.072)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.004</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.003)</td>
+<td style="text-align: right;">(0.003)</td>
+<td style="text-align: right;">(0.003)</td>
+<td style="text-align: right;">(0.003)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">White (ref. Mestizo)</td>
+<td style="text-align: right;">-0.129</td>
+<td style="text-align: right;">-0.118</td>
+<td style="text-align: right;">-0.115</td>
+<td style="text-align: right;">-0.119</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.154)</td>
+<td style="text-align: right;">(0.153)</td>
+<td style="text-align: right;">(0.154)</td>
+<td style="text-align: right;">(0.152)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indigenous</td>
+<td style="text-align: right;">0.439</td>
+<td style="text-align: right;">0.403</td>
+<td style="text-align: right;">0.421</td>
+<td style="text-align: right;">0.403</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.277)</td>
+<td style="text-align: right;">(0.279)</td>
+<td style="text-align: right;">(0.280)</td>
+<td style="text-align: right;">(0.279)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.012</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.012</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.268)</td>
+<td style="text-align: right;">(0.271)</td>
+<td style="text-align: right;">(0.273)</td>
+<td style="text-align: right;">(0.267)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mulatto</td>
+<td style="text-align: right;">-0.044</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">-0.031</td>
+<td style="text-align: right;">-0.024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.308)</td>
+<td style="text-align: right;">(0.311)</td>
+<td style="text-align: right;">(0.310)</td>
+<td style="text-align: right;">(0.308)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Other ethnicity</td>
+<td style="text-align: right;">0.177</td>
+<td style="text-align: right;">0.180</td>
+<td style="text-align: right;">0.204</td>
+<td style="text-align: right;">0.179</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(1.091)</td>
+<td style="text-align: right;">(1.100)</td>
+<td style="text-align: right;">(1.098)</td>
+<td style="text-align: right;">(1.093)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rural area</td>
+<td style="text-align: right;">-0.075</td>
+<td style="text-align: right;">-0.094</td>
+<td style="text-align: right;">-0.086</td>
+<td style="text-align: right;">-0.095</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.135)</td>
+<td style="text-align: right;">(0.136)</td>
+<td style="text-align: right;">(0.134)</td>
+<td style="text-align: right;">(0.135)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Religious</td>
+<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">0.088</td>
+<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">0.088</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.161)</td>
+<td style="text-align: right;">(0.162)</td>
+<td style="text-align: right;">(0.162)</td>
+<td style="text-align: right;">(0.161)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Married (ref. single)</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.015</td>
+<td style="text-align: right;">0.010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.095)</td>
+<td style="text-align: right;">(0.094)</td>
+<td style="text-align: right;">(0.094)</td>
+<td style="text-align: right;">(0.094)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Divorced/Separated/Widowed</td>
+<td style="text-align: right;">0.178</td>
+<td style="text-align: right;">0.172</td>
+<td style="text-align: right;">0.176</td>
+<td style="text-align: right;">0.172</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.209)</td>
+<td style="text-align: right;">(0.207)</td>
+<td style="text-align: right;">(0.208)</td>
+<td style="text-align: right;">(0.207)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Primary education (ref. No education)</td>
+<td style="text-align: right;">0.419</td>
+<td style="text-align: right;">0.397</td>
+<td style="text-align: right;">0.409</td>
+<td style="text-align: right;">0.397</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.828)</td>
+<td style="text-align: right;">(0.836)</td>
+<td style="text-align: right;">(0.831)</td>
+<td style="text-align: right;">(0.835)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Secondary education</td>
+<td style="text-align: right;">0.553</td>
+<td style="text-align: right;">0.528</td>
+<td style="text-align: right;">0.540</td>
+<td style="text-align: right;">0.528</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.812)</td>
+<td style="text-align: right;">(0.820)</td>
+<td style="text-align: right;">(0.816)</td>
+<td style="text-align: right;">(0.819)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Higher education</td>
+<td style="text-align: right;">0.468</td>
+<td style="text-align: right;">0.440</td>
+<td style="text-align: right;">0.454</td>
+<td style="text-align: right;">0.439</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.796)</td>
+<td style="text-align: right;">(0.804)</td>
+<td style="text-align: right;">(0.800)</td>
+<td style="text-align: right;">(0.803)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Not in Labour Force</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">0.143</td>
+<td style="text-align: right;">0.146</td>
+<td style="text-align: right;">0.143</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.091)</td>
+<td style="text-align: right;">(0.091)</td>
+<td style="text-align: right;">(0.091)</td>
+<td style="text-align: right;">(0.091)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Unemployed</td>
+<td style="text-align: right;">-0.202</td>
+<td style="text-align: right;">-0.202</td>
+<td style="text-align: right;">-0.205</td>
+<td style="text-align: right;">-0.201</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.219)</td>
+<td style="text-align: right;">(0.222)</td>
+<td style="text-align: right;">(0.222)</td>
+<td style="text-align: right;">(0.221)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceived worse personal economy</td>
+<td style="text-align: right;">-0.386***</td>
+<td style="text-align: right;">-0.385***</td>
+<td style="text-align: right;">-0.387***</td>
+<td style="text-align: right;">-0.385***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.102)</td>
+<td style="text-align: right;">(0.104)</td>
+<td style="text-align: right;">(0.103)</td>
+<td style="text-align: right;">(0.103)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceived worse country economy</td>
+<td style="text-align: right;">-0.601***</td>
+<td style="text-align: right;">-0.597***</td>
+<td style="text-align: right;">-0.599***</td>
+<td style="text-align: right;">-0.597***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.103)</td>
+<td style="text-align: right;">(0.105)</td>
+<td style="text-align: right;">(0.104)</td>
+<td style="text-align: right;">(0.105)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Voted for incumbent</td>
+<td style="text-align: right;">1.228***</td>
+<td style="text-align: right;">1.226***</td>
+<td style="text-align: right;">1.228***</td>
+<td style="text-align: right;">1.225***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.115)</td>
+<td style="text-align: right;">(0.113)</td>
+<td style="text-align: right;">(0.114)</td>
+<td style="text-align: right;">(0.114)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ideology score (0-10)</td>
+<td style="text-align: right;">-0.062***</td>
+<td style="text-align: right;">-0.062***</td>
+<td style="text-align: right;">-0.062***</td>
+<td style="text-align: right;">-0.062***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.021)</td>
+<td style="text-align: right;">(0.021)</td>
+<td style="text-align: right;">(0.021)</td>
+<td style="text-align: right;">(0.021)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Supports democracy</td>
+<td style="text-align: right;">0.319***</td>
+<td style="text-align: right;">0.317***</td>
+<td style="text-align: right;">0.319***</td>
+<td style="text-align: right;">0.317***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.095)</td>
+<td style="text-align: right;">(0.097)</td>
+<td style="text-align: right;">(0.096)</td>
+<td style="text-align: right;">(0.097)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Political pride score (0-7)</td>
+<td style="text-align: right;">0.179***</td>
+<td style="text-align: right;">0.179***</td>
+<td style="text-align: right;">0.177***</td>
+<td style="text-align: right;">0.179***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.033)</td>
+<td style="text-align: right;">(0.034)</td>
+<td style="text-align: right;">(0.034)</td>
+<td style="text-align: right;">(0.034)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">External efficacy score (0-7)</td>
+<td style="text-align: right;">0.182***</td>
+<td style="text-align: right;">0.180***</td>
+<td style="text-align: right;">0.180***</td>
+<td style="text-align: right;">0.180***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.024)</td>
+<td style="text-align: right;">(0.024)</td>
+<td style="text-align: right;">(0.024)</td>
+<td style="text-align: right;">(0.025)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Internal efficacy score (0-7)</td>
+<td style="text-align: right;">0.030</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">0.031</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceives corruption</td>
+<td style="text-align: right;">0.185*</td>
+<td style="text-align: right;">0.192**</td>
+<td style="text-align: right;">0.193**</td>
+<td style="text-align: right;">0.192**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.095)</td>
+<td style="text-align: right;">(0.094)</td>
+<td style="text-align: right;">(0.095)</td>
+<td style="text-align: right;">(0.096)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tolerates bribes</td>
+<td style="text-align: right;">-0.210</td>
+<td style="text-align: right;">-0.215</td>
+<td style="text-align: right;">-0.216</td>
+<td style="text-align: right;">-0.215</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.130)</td>
+<td style="text-align: right;">(0.131)</td>
+<td style="text-align: right;">(0.131)</td>
+<td style="text-align: right;">(0.131)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trust in police score (0-7)</td>
+<td style="text-align: right;">0.118***</td>
+<td style="text-align: right;">0.120***</td>
+<td style="text-align: right;">0.120***</td>
+<td style="text-align: right;">0.120***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.030)</td>
+<td style="text-align: right;">(0.031)</td>
+<td style="text-align: right;">(0.031)</td>
+<td style="text-align: right;">(0.031)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trust in local gov. (0-7)</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.035</td>
+<td style="text-align: right;">0.033</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.046)</td>
+<td style="text-align: right;">(0.045)</td>
+<td style="text-align: right;">(0.046)</td>
+<td style="text-align: right;">(0.045)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AIC</td>
+<td style="text-align: right;">4330</td>
+<td style="text-align: right;">4325</td>
+<td style="text-align: right;">4328</td>
+<td style="text-align: right;">4329</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canton fixed effects</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Interview date fixed effects</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+<td style="text-align: right;">X</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> ^^ Models explaining presidential approval through daily weather variables and controls. Standard errors shown in parentheses are clustered by canton.</p>
+<p><strong>Note:</strong> ^^ <code>***</code> p &lt; 0.01, <code>**</code> p &lt; 0.05, <code>*</code> p &lt; 0.1.</p>
+</section>
+<section id="average-marginal-effects-with-controls" class="slide level2 smaller scrollable">
+<h2>Average marginal effects with controls</h2>
+<table>
+<caption>Average marginal effects for models with controls</caption>
+<colgroup>
+<col style="width: 31%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Min. temperature</th>
+<th style="text-align: right;">Max. temperature</th>
+<th style="text-align: right;">Avg. temperature</th>
+<th style="text-align: right;">Temperatures and precipitation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Min. temperature (°C)</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.011)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.011)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Max. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.020**</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.020**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.010)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.010)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Avg. temperature (°C)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.015)</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation (mm)</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">(0.002)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Female</td>
+<td style="text-align: right;">-0.045***</td>
+<td style="text-align: right;">-0.045***</td>
+<td style="text-align: right;">-0.046***</td>
+<td style="text-align: right;">-0.045***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.014)</td>
+<td style="text-align: right;">(0.013)</td>
+<td style="text-align: right;">(0.014)</td>
+<td style="text-align: right;">(0.013)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.001)</td>
+<td style="text-align: right;">(0.001)</td>
+<td style="text-align: right;">(0.001)</td>
+<td style="text-align: right;">(0.001)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">White (ref. Mestizo)</td>
+<td style="text-align: right;">-0.024</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">-0.022</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+<td style="text-align: right;">(0.028)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indigenous</td>
+<td style="text-align: right;">0.080</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">0.073</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.049)</td>
+<td style="text-align: right;">(0.051)</td>
+<td style="text-align: right;">(0.050)</td>
+<td style="text-align: right;">(0.051)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mulatto</td>
+<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: right;">-0.006</td>
+<td style="text-align: right;">-0.004</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.057)</td>
+<td style="text-align: right;">(0.057)</td>
+<td style="text-align: right;">(0.057)</td>
+<td style="text-align: right;">(0.057)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Black</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.005</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.049)</td>
+<td style="text-align: right;">(0.050)</td>
+<td style="text-align: right;">(0.050)</td>
+<td style="text-align: right;">(0.049)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Other</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">0.033</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.199)</td>
+<td style="text-align: right;">(0.200)</td>
+<td style="text-align: right;">(0.199)</td>
+<td style="text-align: right;">(0.198)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Married (ref. Single)</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Divorced/Separated/Widowed</td>
+<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">0.032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.038)</td>
+<td style="text-align: right;">(0.038)</td>
+<td style="text-align: right;">(0.038)</td>
+<td style="text-align: right;">(0.038)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rural area</td>
+<td style="text-align: right;">-0.014</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">-0.016</td>
+<td style="text-align: right;">-0.017</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.025)</td>
+<td style="text-align: right;">(0.025)</td>
+<td style="text-align: right;">(0.025)</td>
+<td style="text-align: right;">(0.025)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Primary education (ref. No education)</td>
+<td style="text-align: right;">0.077</td>
+<td style="text-align: right;">0.073</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: right;">0.073</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.153)</td>
+<td style="text-align: right;">(0.154)</td>
+<td style="text-align: right;">(0.154)</td>
+<td style="text-align: right;">(0.154)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Secondary education</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">0.097</td>
+<td style="text-align: right;">0.100</td>
+<td style="text-align: right;">0.097</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.150)</td>
+<td style="text-align: right;">(0.151)</td>
+<td style="text-align: right;">(0.150)</td>
+<td style="text-align: right;">(0.151)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Higher education</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">0.081</td>
+<td style="text-align: right;">0.084</td>
+<td style="text-align: right;">0.081</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.147)</td>
+<td style="text-align: right;">(0.148)</td>
+<td style="text-align: right;">(0.148)</td>
+<td style="text-align: right;">(0.148)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Not in Labour Force</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">0.026</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.016)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Unemployed</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">-0.038</td>
+<td style="text-align: right;">-0.037</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.041)</td>
+<td style="text-align: right;">(0.041)</td>
+<td style="text-align: right;">(0.041)</td>
+<td style="text-align: right;">(0.041)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceived worse personal economy</td>
+<td style="text-align: right;">-0.072***</td>
+<td style="text-align: right;">-0.072***</td>
+<td style="text-align: right;">-0.073***</td>
+<td style="text-align: right;">-0.072***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.019)</td>
+<td style="text-align: right;">(0.020)</td>
+<td style="text-align: right;">(0.019)</td>
+<td style="text-align: right;">(0.019)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceived worse country economy</td>
+<td style="text-align: right;">-0.115***</td>
+<td style="text-align: right;">-0.114***</td>
+<td style="text-align: right;">-0.114***</td>
+<td style="text-align: right;">-0.114***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.020)</td>
+<td style="text-align: right;">(0.019)</td>
+<td style="text-align: right;">(0.020)</td>
+<td style="text-align: right;">(0.020)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Voted for incumbent</td>
+<td style="text-align: right;">0.241***</td>
+<td style="text-align: right;">0.241***</td>
+<td style="text-align: right;">0.241***</td>
+<td style="text-align: right;">0.241***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.022)</td>
+<td style="text-align: right;">(0.021)</td>
+<td style="text-align: right;">(0.022)</td>
+<td style="text-align: right;">(0.022)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ideology score (0-10)</td>
+<td style="text-align: right;">-0.011***</td>
+<td style="text-align: right;">-0.011***</td>
+<td style="text-align: right;">-0.011***</td>
+<td style="text-align: right;">-0.011***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.004)</td>
+<td style="text-align: right;">(0.004)</td>
+<td style="text-align: right;">(0.004)</td>
+<td style="text-align: right;">(0.004)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Internal efficacy score (0-7)</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.005)</td>
+<td style="text-align: right;">(0.005)</td>
+<td style="text-align: right;">(0.005)</td>
+<td style="text-align: right;">(0.005)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">External efficacy score (0-7)</td>
+<td style="text-align: right;">0.034***</td>
+<td style="text-align: right;">0.033***</td>
+<td style="text-align: right;">0.033***</td>
+<td style="text-align: right;">0.033***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.004)</td>
+<td style="text-align: right;">(0.004)</td>
+<td style="text-align: right;">(0.005)</td>
+<td style="text-align: right;">(0.005)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Supports democracy</td>
+<td style="text-align: right;">0.060***</td>
+<td style="text-align: right;">0.059***</td>
+<td style="text-align: right;">0.059***</td>
+<td style="text-align: right;">0.059***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.017)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Political pride score (0-7)</td>
+<td style="text-align: right;">0.033***</td>
+<td style="text-align: right;">0.033***</td>
+<td style="text-align: right;">0.033***</td>
+<td style="text-align: right;">0.033***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Perceives corruption</td>
+<td style="text-align: right;">0.034*</td>
+<td style="text-align: right;">0.036**</td>
+<td style="text-align: right;">0.036**</td>
+<td style="text-align: right;">0.036**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.018)</td>
+<td style="text-align: right;">(0.017)</td>
+<td style="text-align: right;">(0.018)</td>
+<td style="text-align: right;">(0.018)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tolerates bribes</td>
+<td style="text-align: right;">-0.039</td>
+<td style="text-align: right;">-0.040</td>
+<td style="text-align: right;">-0.040</td>
+<td style="text-align: right;">-0.040</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.024)</td>
+<td style="text-align: right;">(0.025)</td>
+<td style="text-align: right;">(0.024)</td>
+<td style="text-align: right;">(0.024)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trust in police score (0-7)</td>
+<td style="text-align: right;">0.022***</td>
+<td style="text-align: right;">0.022***</td>
+<td style="text-align: right;">0.022***</td>
+<td style="text-align: right;">0.022***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+<td style="text-align: right;">(0.006)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Trust in local gov. (0-7)</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">(0.009)</td>
+<td style="text-align: right;">(0.009)</td>
+<td style="text-align: right;">(0.009)</td>
+<td style="text-align: right;">(0.008)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+<td style="text-align: right;">3553</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AIC</td>
+<td style="text-align: right;">4330</td>
+<td style="text-align: right;">4325</td>
+<td style="text-align: right;">4328</td>
+<td style="text-align: right;">4329</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+<td style="text-align: right;">0.430</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> ^^ Average partial effects for models explaining presidential approval through daily weather variables, canton and interview date fixed effects, and political behaviour controls. Standard errors shown in parentheses are clustered by canton.</p>
+<p><strong>Note:</strong> ^^ <code>***</code> p &lt; 0.01, <code>**</code> p &lt; 0.05, `* p &lt; 0.1.</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 

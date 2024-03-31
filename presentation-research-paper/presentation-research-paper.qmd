@@ -116,7 +116,7 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 ![AmericasBarometer Interview Dates](/figures/interview_dates_barchart.png)
 
-## Identification strategy
+## Identification strategy {.smaller}
 
 - I use fixed effects logistic regression to estimate presidential popularity functions:
 
@@ -133,10 +133,14 @@ $$
 
 - $\hat{\beta}$ is consistent and measures the causal effect of temperature on presidential approval.
 
+- Clusterer standard errors at the canton level. 
+
 :::{.notes}
 - The fixed effects control for time-invariant characteristics of cantons and time-varying characteristics of days.
 
 - The control variables include demographic, economic and political behaviour characteristics of the respondent. While my design would technically allow me to not include these controls, I do so to increase the precision of my estimates, and test for potential confounding effects.
+
+- Perform robustness checks by running regressions with different clustering levels. 
 :::
 
 ## Explained variable: presidential approval {.smaller}
@@ -175,23 +179,51 @@ $$
 
 - Four specifications with no controls other than fixed effects.
 
-- Statistically significant and negative effect of **maximum temperature**, average marginal effect (AME) of **1.1%**.
+  - Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation. 
+
+- Statistically significant and negative effect of **maximum temperature**
+
+- Average marginal effect (AME) of **-1.1%**.
 
 . . . 
 
 ![Coefficient plot of average partial effects of baseline specifications](/figures/model_plot_baseline.jpg)
 
+:::{.notes}
+
+- The effect of minimum temperature is not statistically significant.
+
+- Precipitation is not statistically significant either.
+
+- Logistic regression gives coefficients which are not interpretable, so what I'm plotting are average marginal effects.
+
+- These give you interpretable results, such as the ones you'd get from a linear probability model, however, they are only average effects for the sample. 
+
+- The negative and statistically significant effect of maximum temperature of 1.1% means that respondents are 1.1% less likely to approve of the president on days with higher temperatures.
+:::
+
 ## Models with controls {.smaller}
 
 - The same four specifications with controls for respondent characteristics.
 
-- Statistically significant and negative effect of **maximum temperature**, AME of **-2%**.
+- Statistically significant and negative effect of **maximum temperature**; AME of **-2%**.
 
 - Results are robust to different clustering levels and a non-linear temperature specification (natural log).
 
 . . .
 
 ![Coefficient plot of average partial effects of specifications with controls](/figures/logit_marginal_effects_controls.jpg)
+
+:::{.notes}
+- Again, neither minimum temperature or precipitation are statistically significant.
+
+- Note how my average marginal effects do change after controlling for respondent characteristics. This is evidence against the randomness of temperature, but I'll discuss that in a few more minutes.
+
+- The 2.2% effect of maximum temperature means that respondents are 2.2% less likely to approve of the president on days with higher temperatures.
+
+- Including a natural logarithm transformation is equivalent to consider percentage increases of temperature, meaning that the effect of temperature is non-linear: as temperature increases, the effect on presidential approval increases faster. Your mood might make you disapprove more of the president at 25°C than at 20°C, but even more at 30°C.
+
+:::
 
 # Conclusion
 
@@ -227,6 +259,18 @@ $$
 
 {{< include /data/output/descriptive_statistics.md >}}
 
+## Baseline logit coefficients {.smaller}
+
+{{< include /data/output/logit_coefficients_baseline.md >}}
+
 ## Baseline average marginal effects {.smaller}
 
 {{< include /data/output/marginal_effects_baseline.md >}}
+
+## Logit coefficients with controls {.smaller .scrollable} 
+
+{{< include /data/output/logit_coefficients_controls.md >}}
+
+## Average marginal effects with controls {.smaller .scrollable}  
+
+{{< include /data/output/logit_marginal_effects_controls.md >}}
