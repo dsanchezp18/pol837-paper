@@ -4,6 +4,7 @@ subtitle: POL837 Issues in Comparative Politics Research Paper
 format: 
   clean-revealjs:
     incremental: true
+    embed-resources: true
 author:
   - name: Daniel Sánchez Pazmiño
     affiliations: Simon Fraser University
@@ -32,7 +33,7 @@ library(ggplot2, warn.conflicts = F)
 
 - I investigate whether transient temperature changes affect presidential approval in Ecuador.
 
-- Results show that a 1°C increase in maximum temperature leads to a **1.9 - 2.2 p.p.** decrease in the likelihood of presidential approval. 
+- Results show that a 1°C increase in maximum temperature leads to a **1.1 - 2.0** percentage points decrease in the likelihood of presidential approval. 
 
 ::: {.notes}
 - The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes

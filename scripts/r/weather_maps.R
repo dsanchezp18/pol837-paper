@@ -107,15 +107,7 @@ map
 
 ggsave("figures/temperature_map.jpg", 
        plot = map,
-       height = 8,
+       height = 7.5,
        width = 17,
        units = "cm",
        dpi = 800)
-
-# Precipitation chart
-
-ggplot() +
-    geom_raster(data = mean_precip_ecu_df, aes(x = x, y = y, fill = mean)) + 
-    scale_fill_gradientn(colors = terrain.colors(100)) +
-    geom_sf(data = canton_shp, color = "black", fill = "transparent") +
-    labs(title = "Average Precipitation (mm)")

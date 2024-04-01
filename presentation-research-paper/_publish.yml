@@ -1,0 +1,4 @@
+- source: presentation-research-paper.qmd
+  quarto-pub:
+    - id: 2aa1a2b6-ee5e-49e7-95ac-c05145152471
+      url: 'https://dsanchezp18.quarto.pub/pol837-paper-presentation'

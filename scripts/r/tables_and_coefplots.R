@@ -213,11 +213,11 @@ model_plot_baseline <-
          color = "Model") +
     theme(legend.position = "bottom",
           legend.direction = "horizontal") +
-    guides(color = guide_legend(nrow = 2))
+    guides(color = guide_legend(nrow = 1))
 
 # Save the model plot
 
-ggsave("figures/model_plot_baseline.jpg", model_plot_baseline, width = 17, height = 8, units = "cm", dpi = 800)
+ggsave("figures/model_plot_baseline.jpg", model_plot_baseline, width = 17, height = 5, units = "cm", dpi = 800)
 
 # Models with controls ----------------------------------------------------
 
@@ -501,4 +501,4 @@ modelplot_controls <-
 
 modelplot_controls
 
-ggsave("figures/logit_marginal_effects_controls.jpg", modelplot_controls, width = 12, height = 6, dpi = 800)
+ggsave("figures/logit_marginal_effects_controls.jpg", modelplot_controls, width = 12, height = 5, dpi = 800)

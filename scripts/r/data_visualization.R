@@ -86,7 +86,7 @@ interview_dates_barchart
 ggsave("figures/interview_dates_barchart.png", 
         interview_dates_barchart, 
         width = 17, 
-        height = 8,
+        height = 7,
         units = "cm", 
         dpi = 800)
 
@@ -188,7 +188,7 @@ ecuador_monthly_mean_temps_fig
 ggsave("figures/ecuador_monthly_mean_temps_fig.jpg", 
        plot = ecuador_monthly_mean_temps_fig,
        width = 17,
-       height = 8,
+       height = 7,
        units = "cm", 
        dpi = 800)
 
@@ -255,7 +255,7 @@ approval_rating_by_year_fig
 ggsave("figures/approval_rating_by_year.jpg", 
         plot = approval_rating_by_year_fig, 
         width = 17, 
-        height = 8,
+        height = 7,
         units = "cm", 
         dpi = 800)
 
