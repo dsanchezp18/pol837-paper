@@ -217,7 +217,7 @@ model_plot_baseline <-
 
 # Save the model plot
 
-ggsave("figures/model_plot_baseline.jpg", model_plot_baseline, width = 17, height = 5, units = "cm", dpi = 800)
+ggsave("figures/model_plot_baseline.jpg", model_plot_baseline, width = 21, height = 5.5, units = "cm", dpi = 800)
 
 # Models with controls ----------------------------------------------------
 

@@ -29,11 +29,11 @@ library(ggplot2, warn.conflicts = F)
 
 - Ideally, voters can adequately assess the performance of elected officials to hold them accountable at the ballot box.
 
-- However, evaluations of political performance can be influenced by factors unrelated to politican performance [@healy_etal10; @healy_malhotra10; @achen_bartels17].
+- However, evaluations of political performance can be influenced by factors unrelated to politician performance [@healy_etal10; @healy_malhotra10; @achen_bartels17].
 
 - I investigate whether transient temperature changes affect presidential approval in Ecuador.
 
-- Results show that a 1°C increase in maximum temperature leads to a **1.1 - 2.0** percentage points decrease in the likelihood of presidential approval. 
+- Results show that a 1°C increase in maximum temperature leads to a 1.1 to 2.0 percentage points decrease in the likelihood of presidential approval. 
 
 ::: {.notes}
 - The literature suggests that efficient systems of retrospective voting can lead to greater democratic accountability and efficient political outcomes
@@ -45,42 +45,25 @@ library(ggplot2, warn.conflicts = F)
 
 # Theoretical framework
 
-- @schwarz_clore83 show that, when induced negative moods, individuals are more likely to search for outside factors which justify their feelings. 
+- @schwarz_clore83 and @bower81 show that, when induced negative moods, individuals are more likely to search for outside factors which justify their feelings. 
 
 - A "higher than normal" temperature would then induce a negative mood, leading to citizens looking for reasons to justify their feelings of discontent. 
 
-- @bower81 shows that individuals are more likely to remember unfavorable events when in a negative mood.
+- Existing research has found significant effects of weather on behaviour [@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13].
 
 . . . 
 
 ::: {.callout-tip icon=false}
 ### Hypothesis
-Respondents who had their survey on days with higher temperatures are less likely to approve of the president.
+Citizens will be more likely to disapprove of the president on days with higher temperatures.
 :::
 
 ::: {.notes}
 - These are studies in psychology which set the stage for how mood can affect how people behave in a variety of settings. 
 
 - The idea is that, if people are in a bad mood, they are more likely to remember negative events and attribute them to the source of their mood.
-:::
 
-# Documented weather effects
-
-- Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13].
-
-- Individuals are affected with **unpleasant weather**, which is highly dependent on the regional and seasonal context. 
-
-- In some cases, effects are significant though small and not robust [@schmiedeberg_schroder14;@lucas_lawless13]. 
-
-- @bassi19 also proposes that bad weather negatively impacts individuals' mood, finding that individuals are less likely to vote by risky candidates when faced with bad weather.
-
-:::{.notes}
-
-- For instance, papers which find effects in Canada find that individuals are negatively to be affected by cold weather. In Australia, the opposite is true.
-
-- @feddersen_etal16 and @quijano-ruiz23 find small negative effects of temperature changes on self-rated health; @li_etal20 and @mullins_white19 find significant impacts on mental health. 
-
-- @deller_michels22 find that rain impacts the way that managers evaluate subordinates and @li_patel21 find that students are only marginally sensitive to higher temperatures during exams. 
+- @bower81 shows that individuals are more likely to remember unfavorable events when in a negative mood.
 
 :::
 
@@ -109,9 +92,11 @@ Respondents who had their survey on days with higher temperatures are less likel
 
 ## Data: The AmericasBarometer Survey {.smaller}
 
-- Biennial public opinion survey conducted in Ecuador since 2004 surveying 1,500 - 3,000 individuals across 50 - 60 cantons every year [@ABEcuadorMerged].
+- Biennial public opinion survey conducted in Ecuador since 2004 [@ABEcuadorMerged].
 
-- Daily weather data is joined with the survey by interview date, observed since 2008 wave, and canton of the survey respondent.
+- I use a pooled cross-section of individuals from 2008 to 2023.
+
+- Daily weather data is joined with the survey by interview date and canton of the survey respondent.
 
 . . .
 
@@ -134,7 +119,7 @@ $$
 
 - $\hat{\beta}$ is consistent and measures the causal effect of temperature on presidential approval.
 
-- Clusterer standard errors at the canton level. 
+- Clustered standard errors at the canton level. 
 
 :::{.notes}
 - The fixed effects control for time-invariant characteristics of cantons and time-varying characteristics of days.
@@ -143,6 +128,106 @@ $$
 
 - Perform robustness checks by running regressions with different clustering levels. 
 :::
+
+# Results
+
+## Baseline results {.smaller}
+
+- Four specifications with no controls other than fixed effects.
+
+  - Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation. 
+
+- Statistically significant and negative effect of **maximum temperature**.
+
+- Average marginal effect (AME) of **-1.1%**.
+
+. . . 
+
+![Coefficient plot of average partial effects of baseline specifications](/figures/model_plot_baseline.jpg)
+
+:::{.notes}
+
+- The effect of minimum temperature is not statistically significant.
+
+- Precipitation is not statistically significant either.
+
+- Logistic regression gives coefficients which are not interpretable, so what I'm plotting are average marginal effects.
+
+- These give you interpretable results, such as the ones you'd get from a linear probability model, however, they are only average effects for the sample. 
+
+- The negative and statistically significant effect of maximum temperature of 1.1% means that respondents are 1.1% less likely to approve of the president on days with higher temperatures.
+:::
+
+## Models with controls {.smaller}
+
+- The same four specifications with controls for respondent characteristics.
+
+- Statistically significant and negative effect of **maximum temperature**; AME of **-2%**.
+
+. . .
+
+![Coefficient plot of average partial effects of specifications with controls](/figures/logit_marginal_effects_controls.jpg)
+
+:::{.notes}
+- Again, neither minimum temperature or precipitation are statistically significant.
+
+- Note how my average marginal effects do change after controlling for respondent characteristics. This is evidence against the randomness of temperature, but I'll discuss that in a few more minutes.
+
+- The 2.2% effect of maximum temperature means that respondents are 2.2% less likely to approve of the president on days with higher temperatures.
+
+- Including a natural logarithm transformation is equivalent to consider percentage increases of temperature, meaning that the effect of temperature is non-linear: as temperature increases, the effect on presidential approval increases faster. Your mood might make you disapprove more of the president at 25°C than at 20°C, but even more at 30°C.
+
+:::
+n
+# Conclusion
+
+- Important to consider the implications of weather for retrospective voting, especially for developing countries. 
+
+- Survey respondents are 1.1 to 2.0% less likely to approve of the president after 1\degree C increase in maximum temperature.
+
+- The evidence supports the theory of poor retrospective voters due to mood-induced attribution errors. 
+
+- The CPC weather data could be subject to measurement error, which would downward bias my estimates.
+
+:::{.notes}
+
+- A negative mood induced by higher temperatures could first lead to a negative attitude to members in Congress, which could extend to a positive attitude towards the president.
+
+- In this case, I am not estimating the direct effect of weather on mood, but the indirect effect of weather on presidential approval through mood.
+
+:::
+
+# References {.smaller .scrollable}
+
+:::{#refs}
+
+:::
+
+# Appendices
+
+## Documented weather effects
+
+- Existing research has found significant effects of weather on self-reported well-being and life satisfaction [@barrington-leigh08;@barrington-leigh_behzadnejad17;@lignier_etal23;@keller_etal05;@kampfer_mutz13;@connolly13].
+
+- Individuals are affected by **unpleasant weather**, which is highly dependent on the regional and seasonal context. 
+
+- In some cases, effects are significant though small and not robust [@schmiedeberg_schroder14;@lucas_lawless13]. 
+
+- @bassi19 also proposes that bad weather negatively impacts individuals' mood, finding that individuals are less likely to vote by risky candidates when faced with bad weather.
+
+- @feddersen_etal16 and @quijano-ruiz23 find small negative effects of temperature changes on self-rated health; @li_etal20 and @mullins_white19 find significant impacts on mental health. 
+
+- @deller_michels22 find that rain impacts the way that managers evaluate subordinates and @li_patel21 find that students are only marginally sensitive to higher temperatures during exams. 
+
+:::{.notes}
+
+- For instance, papers which find effects in Canada find that individuals are negatively to be affected by cold weather. In Australia, the opposite is true.
+
+:::
+
+## Descriptive Statistics {.smaller .scrollable}
+
+{{< include /data/output/descriptive_statistics.md >}}
 
 ## Explained variable: presidential approval {.smaller}
 
@@ -173,92 +258,6 @@ $$
 
 - Spread between maximum and minimum temperatures is consistent over the years.
 :::
-
-# Results
-
-## Baseline results {.smaller}
-
-- Four specifications with no controls other than fixed effects.
-
-  - Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation. 
-
-- Statistically significant and negative effect of **maximum temperature**
-
-- Average marginal effect (AME) of **-1.1%**.
-
-. . . 
-
-![Coefficient plot of average partial effects of baseline specifications](/figures/model_plot_baseline.jpg)
-
-:::{.notes}
-
-- The effect of minimum temperature is not statistically significant.
-
-- Precipitation is not statistically significant either.
-
-- Logistic regression gives coefficients which are not interpretable, so what I'm plotting are average marginal effects.
-
-- These give you interpretable results, such as the ones you'd get from a linear probability model, however, they are only average effects for the sample. 
-
-- The negative and statistically significant effect of maximum temperature of 1.1% means that respondents are 1.1% less likely to approve of the president on days with higher temperatures.
-:::
-
-## Models with controls {.smaller}
-
-- The same four specifications with controls for respondent characteristics.
-
-- Statistically significant and negative effect of **maximum temperature**; AME of **-2%**.
-
-- Results are robust to different clustering levels and a non-linear temperature specification (natural log).
-
-. . .
-
-![Coefficient plot of average partial effects of specifications with controls](/figures/logit_marginal_effects_controls.jpg)
-
-:::{.notes}
-- Again, neither minimum temperature or precipitation are statistically significant.
-
-- Note how my average marginal effects do change after controlling for respondent characteristics. This is evidence against the randomness of temperature, but I'll discuss that in a few more minutes.
-
-- The 2.2% effect of maximum temperature means that respondents are 2.2% less likely to approve of the president on days with higher temperatures.
-
-- Including a natural logarithm transformation is equivalent to consider percentage increases of temperature, meaning that the effect of temperature is non-linear: as temperature increases, the effect on presidential approval increases faster. Your mood might make you disapprove more of the president at 25°C than at 20°C, but even more at 30°C.
-
-:::
-
-# Conclusion
-
-- Important to consider the implications of weather for retrospective voting, especially for developing countries. 
-
-- Survey respondents are between 1.1 to 2.0% less likely to approve of the president on days with higher temperatures.
-
-- A natural log transformation of temperature yields similar results, suggesting that the effect is non-linear.
-
-- The evidence supports the theory of poor retrospective voters due to mood-induced attribution errors. 
-
-- The effect doubles when controlling for respondent characteristics, suggesting that weather is not fully random across individuals.
-
-- The CPC weather data could be subject to measurement error, which would downward bias my estimates.
-
-:::{.notes}
-
-- A negative mood induced by higher temperatures could first lead to a negative attitude to members in Congress, which could extend to a positive attitude towards the president.
-
-- In this case, I am not estimating the direct effect of weather on mood, but the indirect effect of weather on presidential approval through mood.
-
-:::
-
-# References {.smaller .scrollable}
-
-:::{#refs}
-
-:::
-
-# Appendices
-
-## Descriptive Statistics {.smaller .scrollable}
-
-{{< include /data/output/descriptive_statistics.md >}}
 
 ## Baseline logit coefficients {.smaller}
 

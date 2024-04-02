@@ -58,6 +58,8 @@ interview_dates_barchart <-
          !(interview_date %>% between(as.Date("2008-07-10"), as.Date("2008-12-12")))) %>% 
   group_by(interview_date, wave) %>% 
   summarise(count_of_responses = n()) %>%
+  ungroup() %>% 
+  mutate(wave = if_else(wave == 2018, 2019, wave)) %>%
   ggplot(aes(x = interview_date, y = count_of_responses)) +
   geom_col(fill = "forestgreen") +
   geom_vline(xintercept = as.Date("2008-01-01"), linetype = "dashed", color = "blue") +
