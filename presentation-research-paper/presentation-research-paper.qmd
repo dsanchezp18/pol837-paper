@@ -178,7 +178,7 @@ $$
 - Including a natural logarithm transformation is equivalent to consider percentage increases of temperature, meaning that the effect of temperature is non-linear: as temperature increases, the effect on presidential approval increases faster. Your mood might make you disapprove more of the president at 25°C than at 20°C, but even more at 30°C.
 
 :::
-n
+
 # Conclusion
 
 - Important to consider the implications of weather for retrospective voting, especially for developing countries. 
