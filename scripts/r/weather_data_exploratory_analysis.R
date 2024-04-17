@@ -111,6 +111,10 @@ ggplot(guayaquil_avg_precip, aes(x = year, y = avg_precip)) +
 
 ## National Data ------------------------------------------------
 
+# Get lowest minimum temperature in the dataset
+
+min_temp <- min(temperature_df$min_temperature, na.rm = T)
+
 # Get a yearly average of the avg temperature for Ecuador
 
 ecuador_avg_temp <- 

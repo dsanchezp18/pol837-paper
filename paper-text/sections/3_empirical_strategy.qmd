@@ -37,17 +37,12 @@ gf_map <- list(
 
 ## Data
 
-My data are composed of a pooled cross section of the AmericasBarometer (AB) merged with daily CPC Global Unified temperature, based on interview date and cantons in Ecuador^[Cantons are the second level of the political-administrative division of the country, akin to municipalities or counties.
-]. The AB is a public opinion survey conducted by the Latin American Public Opinion Project (LAPOP), which has conducted biennial survey waves in Ecuador and other countries from 2004 to 2023. I use the subscriber LAPOP datasets available through Universidad San Francisco de Quito's research affiliation with LAPOP, focusing on the eight survey waves carried out between 2008 to 2023^[The 2004 and 2006 waves did not record interview dates. The eight waves took place every two years between 2008 and 2016. The 2018/19 wave took place between late 2018 and 2019. The two most recent two survey waves were carried out in 2021 and 2023.]. The surveys are based on a multi-stage national probability design, representative at the national level, except for 2021, where the survey switched to a random-digit-dialing design due to the COVID-19 pandemic.
+My data are composed of a pooled cross section of the AmericasBarometer (AB) merged with daily CPC Global Unified temperature, based on interview date and cantons in Ecuador^[Cantons are the second level of the political-administrative division of the country, akin to municipalities or counties.]. The AB is a public opinion survey conducted by the Latin American Public Opinion Project (LAPOP), which has conducted biennial survey waves of 1,500 - 3,000 in Ecuador and other countries from 2004 to 2023. I use the subscriber LAPOP datasets available through Universidad San Francisco de Quito's research affiliation with LAPOP, focusing on the eight survey waves carried out between 2008 to 2023^[The 2004 and 2006 waves did not record interview dates. The eight waves took place every two years between 2008 and 2016. The 2018/19 wave took place between late 2018 and 2019 across Latin America, and exclusively in early 2019 for Ecuador. The two most recent two survey waves were carried out in 2021 and 2023.]. The surveys are based on a multi-stage national probability design, representative at the national level, except for 2021, where the survey switched to a random-digit-dialing design due to the COVID-19 pandemic.
 
-The explained variable of interest is presidential job approval, which the AmericasBarometer measures as in a 1-5 scale in the question: \textquote{Speaking in general of the current administration, how would you rate the job performance of President [NAME]} [@ABEcuadorMerged] (p.14), where 1 represents a very good performance and 5 terrible performance. This question is similarly similarly to the classic Gallup presidential approval question, which the literature has used extensively [@berlemanneconomicdeterminantspresidential2014] and has not been found to significantly deviate from other presidential popularity measures. I dichotomize the variable following LAPOP research reports [@laytonChapterCitizensecurity2016], where responses greater than 3 are considered as approval for the incumbent president. 
+The explained variable of interest is presidential job approval, which the AmericasBarometer measures as in a 1-5 scale in the question: \textquote{Speaking in general of the current administration, how would you rate the job performance of President [NAME]} [@ABEcuadorMerged] (p.14), where 1 represents a very good performance and 5 terrible performance. This question is worded similarly to the classic Gallup presidential approval question, which the literature has used extensively [@berlemann_enkelmann14a] and has not been found to significantly deviate from other presidential popularity measures. I dichotomize the variable following LAPOP research reports [@layton_etal16] where responses lower than 3 are considered as approval for the incumbent president. 
 
-Table 1 below displays descriptive statistics for the variables used in the empirical analysis. I collect opinion on personal economic situations and on country economic situation, also measured on a 1-5 scale, where 1 represents a very good situation and 5 a terrible situation. Political ideology is represent in a 0-10 scale, where 0 represents the "extreme left" and 10 the "extreme right". I include 1-7 scales for trust in police, local government, political pride, and support for democracy where 0 represents no trust or support and 7 complete the opposite. Corruption perceptions are collected by the AB as a 1-4 scale, where 1 represents "corruption not generalized" and 4 "very generalized" (p. 22). [@ABEcuadorMerged] I dichotomize this variable taking values greater than 1 as perceiving corruption. Corruption tolerance is measured as tolerance to paying a bribe, where 0 is not justified, and 1 is justified. The empirical analysis also includes socioeconomic controls, where labour market status includes three categories: employed, not in the labour force, and unemployed. Not being in the labour force includes retired, students, homemakers, and those not working. Education is a categorical variable for highest educational degree attained, including levels for no education, primary, secondary, and higher education (college, university or higher are lumped together). 
-
-\begin{landscape}
-\begin{footnotesize}
 ```{r}
-#| label: descriptive-stats
+#| label: descriptive-stats-numerical
 #| output: asis
 
 # Prepare relevant variables for all years
@@ -59,46 +54,75 @@ df_descriptive <-
             `Daily maximum temperature (C)` = max_temperature, 
             `Daily average temperature (C)` = avg_temperature, 
             `Daily precipitation (mm)` = precipitation,
-            `Female` = sex,
+            `Female` = if_else(sex == "Female", 1, 0),
             `Age (years)` = age,
-            `Rural status` = urban_rural,
+            `Ethnicity` =  ethnicity,
+            `Civil status` = civil_status,
+            `Rural status` = if_else(urban_rural == "Urban", 1,0),
             `Education` = education,
             `Labour market status` = labour_market,
-            `Worse perception of personal economy` = personal_econ_situation,
-            `Worse perception of country economy` = country_econ_situation,
+            `Worse perception of personal econ.` = if_else(personal_econ_situation == "Worse",1,0),
+            `Worse perception of country econ.` = if_else(country_econ_situation == "Worse",1,0),
+            `Religious` = if_else(non_religious == "Religious",1,0),
+            `Incumbent vote` = if_else(incumbent_vote == "Incumbent", 1, 0),
             `Ideology score (0-10)` = ideology,
-            `Support of democracy` = democracy_support,
-            `Perception of corruption` = corruption_perception,
-            `Tolerance to bribes` = corruption_tolerance,
+            `Support of democracy` = if_else(democracy_support == "Supports",1,0),
+            `Perception of corruption` = if_else(corruption_perception == "Corrupt",1,0),
+            `Tolerance to bribes` = if_else(corruption_tolerance == "Tolerant",1,0),
             `Political pride score` = political_pride,
             `Trust in police score (0-7)` = confidence_police,
-            `Trust in local government score (0-7)` = confidence_local_gov,
+            `Trust in local government (0-7)` = confidence_local_gov,
+            `External efficacy` = external_efficacy,
+            `Internal efficacy` = internal_efficacy,
   )
 
 # Notes
 
-notes_descriptive <- list(
+notes_descriptive_numerical <- list(
   "Note: Descriptive statistics for variables used in the empirical analysis. For categorical variables, the percent of observations in the category out of the total sample is presented. For numerical (either ordinal or continuous) variables, the mean, standard deviation, minimum and maximum are presented. For both, the number of observations and the percentage of missing values."
 )
 
 # Use datasummary() to create the table
 
-datasummary((Education + Female + `Labour market status` + `Worse perception of personal economy` + `Worse perception of country economy` + `Perception of corruption` + `Tolerance to bribes` + All(df_descriptive)) ~ ((N) + Percent() + (`Missing (%)` = PercentMissing) + Mean + (`Std. dev.` = SD) + Min + Median + Max + Percent()),
+datasummary((All(df_descriptive)) ~ ((N) +(`Missing (%)` = PercentMissing) + Mean + (`Std. dev.` = SD) + Min + Median + Max),
             data = df_descriptive,
-            fmt = 2,
+            fmt = "%.1f",
             output = 'latex',
             booktabs = TRUE,
             title = "Descriptive statistics for the matched AB data and weather variables",
             threeparttable = TRUE,
-            notes = notes_descriptive) %>% 
-kable_styling(latex_options = c("hold_position"), font_size = 8)
+            notes = notes_descriptive_numerical) %>% 
+kable_styling(latex_options = c("hold_position"), font_size = 11)
+
+#datasummary((Education + `Labour market status`) + (N) + Percent() + (`Missing (%)` = PercentMissing))
 ```
-\end{footnotesize}
-\end{landscape}
+
+Table 1 displays descriptive statistics for some of the variables used in the empirical analysis. I collect perceptions of personal and country economic situations, also measured on a 1-5 scale, where 1 represents a very good situation and 5 a terrible situation. I include a binary variable indicating if the respondent voted for the incumbent in the past election^[The AmericasBarometer only asks about retrospective vote of the first round of elections in Ecuador. In all elections except 2006 and 2013, Ecuador has had a runoff election.]. Political ideology is represented in a 0-10 scale, where 0 represents the "extreme left" and 10 the "extreme right". I include 1-7 scales for external and internal efficiency, trust in police, local government, political pride, and support for democracy where 0 represents no trust or support and 7 complete the opposite. Corruption perceptions are collected by the AB as a 1-4 scale, where 1 represents "corruption not generalized" and 4 "very generalized" (p. 22). [@ABEcuadorMerged] I dichotomize this variable taking values greater than 1 as perceiving corruption. Corruption tolerance is measured as tolerance to paying a bribe, where 0 is not justified, and 1 is justified. The empirical analysis also includes gender, age, religiousness, ethnicity, civil status, education and labour market status. These last four variables are summarized in Table 2. 
+
+```{r}
+#| label: descriptive-stats-cats
+#| output: asis
+
+notes_descriptive_cats <- list(
+  "Note: Descriptive statistics for categorical variables used in the empirical analysis. For each category, the percent of observations in the category out of the total sample is presented. The number of observations and the percentage of missing values are also presented."
+)
+
+datasummary(Ethnicity + `Civil status` + Education + `Labour market status`~ ((N) + (`Missing (%)` = PercentMissing) + Percent()),
+            data = df_descriptive,
+            fmt = "%.1f",
+            output = 'latex',
+            booktabs = TRUE,
+            title = "Descriptive statistics for socieconomic categories in the matched dataset",
+            threeparttable = TRUE) %>%
+kable_styling(latex_options = c("hold_position"), font_size = 11)
+
+```
+
+Civil status includes single, married (lumped with common law), and divorced, separated and widowed, which are lumped in one category. The reference level is single. Self-reported ethnicity includes white, mestizo, indigenous, mulato and other ethnic groups, where the reference level is mestizo (the most common in the Highlands region, where the capital is located). Education is a categorical variable for highest educational degree attained, including levels for primary (lumped with no education), secondary, and higher education (college, university or higher are lumped together). The reference level is primary education. Labour market status includes three categories: employed, not in the labour force, and unemployed. The reference level is not in the labour force, includes those retired, students, homemakers, and those not working. 
 
 I extract daily minimum and maximum temperature and precipitation data from the CPC Global Unified Temperature datasets [@NOAADatasets]. These data are prepared by the U.S. government National Oceanic and Atmospheric Administration (NOAA) and emerge from satellite imaging of the Earth surface. While daily weather data would typically be available from every country's meteorological authority^[In Ecuador, the relevant institution is the Instituto Nacional de Meteorología e Hidrología.], publicly available meteorological data from weather stations lacks the frequency and geospatial granularity required for this type of analysis. 
 
-The temperature data from NOAA is of lower quality than that of a typical meteorological authority, given that this data is global gridded GTS data (0.5\textdegree \texttimes 0.5\textdegree) for temperature and gauge-based for precipitation. However, I follow Quijano-Ruiz [-@quijano-ruizAssessingreliabilityselfrated2023] and compute weighted mean minimum and maximum temperatures for each canton and day, where the weights are the surface area of each canton. Replication code for this process is publicly available in a [GitHub repository](https://github.com/laboratoriolide/ecuador-temperature-noaa). The surface area of each canton is obtained the Ecuadorian statistics authority (INEC, for its initials in Spanish) geoportal, along with the map shapefiles and political administrative divisions to match the canton names and codes to the AB data [@INECGeoportal]. I then merge this data with the AB data using interview dates and canton codes as join identifiers. 
+I follow Quijano-Ruiz [-@quijano-ruiz23] and compute weighted mean minimum and maximum temperatures for each canton and day, weighting by the surface area of each canton. Replication code for this process is available in a [GitHub repository](https://github.com/laboratoriolide/ecuador-temperature-noaa). The surface area of each canton is obtained the Ecuadorian statistics authority (INEC, for its initials in Spanish) geoportal, along with the map shapefiles and political administrative divisions to match the canton names and codes to the AB data [@INECGeoportal]. I then merge this data with the AB data based on interview dates and canton codes.
 
 ![Survey dates of the Americas Barometer in Ecuador, 2008-2023](/figures/interview_dates_barchart.png){#fig-interviewdates}
 
@@ -120,7 +144,7 @@ The temperature data from NOAA is of lower quality than that of a typical meteor
 
 ![Mean monthly temperatures, 2008-2023](/figures/ecuador_monthly_mean_temps_fig.png){#fig-temperature}
 
-In @fig-temperature I show mean monthly minimum and maximum temperatures from 2008 to 2023. There are no notable upward or downward trends through time, with some periods showing higher temperatures. An important feature is that the spread between minimum and maximum temperatures is relatively stable, which will be important for the identification strategy, which I describe below. 
+In @fig-temperature I show mean monthly minimum and maximum temperatures from 2008 to 2023. The smallest average minimum temperature was 12.7, compared to the largest maximum temperature of 27.8. There are no notable upward or downward trends through time, with some periods showing higher temperatures. An important feature is that the spread between minimum and maximum temperatures is relatively stable, which will be important for the identification strategy, which I describe below. 
 
 ## Identification strategy
 
@@ -129,10 +153,10 @@ I exploit variation produced by a natural experiment: the transitory nature of d
 ```{=tex}
 \begin{equation}
 \label{eqn:baseline}
- \text{approval}_{it} = \alpha + \tau_d + \theta_j + \beta \text{temp}_{jd} + \mathbb{X'}_{it} \gamma + u_{it}
+ \text{approval}_{it} = \alpha + \tau_d + \theta_j + \beta \ \text{temp}_{jd} + \mathbb{X'}_{it} \gamma + u_{it}
 \end{equation}
 ```
-where $\text{approval}_{it}$ is presidential approval, $\tau_d$ and $\theta_j$ are vectors of interview date and canton fixed effects, $\text{temp}_{jd}$ is daily temperature, $\mathbb{X'}_{it}$ a vector of survey-wave and individual varying controls, $\gamma$ the vector of associated control coefficients and $u_{it}$ an error term. The parameter $\beta$ is the coefficient of interest, which measures the effect of temperature on presidential approval. The assumption of randomness in daily temperature changes implies that
+where $\text{approval}_{id}$ is presidential approval, $\tau_d$ and $\theta_j$ are vectors of interview date and canton fixed effects, $\text{temp}_{jd}$ is daily temperature for canton $j$ on day $d$, $\mathbb{X'}_{it}$ a vector of survey-wave and individual varying controls, $\gamma$ the vector of associated control coefficients and $u_{it}$ an error term. The parameter $\beta$ is the coefficient of interest, which measures the effect of temperature on presidential approval. The assumption of randomness in daily temperature changes implies that
 
 \begin{equation}
 \label{eqn:identification}
@@ -141,14 +165,6 @@ where $\text{approval}_{it}$ is presidential approval, $\tau_d$ and $\theta_j$ a
 
 which allows me to estimate $\beta$ consistently. 
 
-A potential wory is that temperature, as measured by the CPC Global Unified Temperature data, suffers from measurement error, $\hat{\beta}$ can suffer from attenuation bias, which leads to underestimation of the true effect of temperature on presidential approval. Attenuation bias will exist if measurement error is more likely to be present in days with higher or lower temperatures, or for certain cantons. There is no reason to assume this is the case, but I address this possibility in the conclusion. If measurement error is present but not correlated with the error term, then $\hat{\beta}$ will still be consistently estimated, but with less precision. 
+A potential worry is that temperature, as measured by the CPC Global Unified Temperature data, suffers from measurement error, $\hat{\beta}$ can suffer from attenuation bias, which leads to underestimation of the true effect of temperature on presidential approval. Attenuation bias will exist if measurement error is more likely to be present in days with higher or lower temperatures, or for certain cantons. There is no reason to assume this is the case, but I address this possibility in the conclusion. If measurement error is present but not correlated with the error term, then $\hat{\beta}$ will still be consistently estimated, but with less precision. 
 
-Further, given that I only observe presidential approval in an ordinal or binary scale, I cannot directly estimate Equation 1. While it is possible to use a linear probability model, I choose to follow the literature and use logistic regression to estimate a variant of Equation 1, as follows:
-
-```{=tex}
-\begin{equation}
-\label{eqn:logit}
-P(\text{approval}_{it} = 1) = G(\lambda \mathbf{R}') = G(\alpha + \tau_d + \theta_j + \beta \text{temp}_{jd} + \mathbb{X'}_{it} \gamma + u_{it})
-\end{equation}
-```
-where $P(\text{approval}_{it} = 1)$ is the probability of approving the incumbent president, $G$ is the link function, $\mathbf{R}$ is a vector of explanatory variables, which includes all variables in Equation 1, and $\lambda$ is the associated vector of coefficients. I estimate Equation 2 using the logistic function as $G$. I cluster all standard errors at the canton level, to allow for spatially clustered correlation in the error term.
+Further, given that I only observe presidential approval in an ordinal or binary scale, I cannot directly estimate Equation 1. While it is possible to use a linear probability model, I choose to follow the literature and use logistic regression as the link function to estimate the probability of observing approval of the incumbent president. I cluster all standard errors at the canton level, to allow for spatially clustered correlation in the error term.

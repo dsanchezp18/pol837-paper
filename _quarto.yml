@@ -52,7 +52,8 @@ knitr:
       warning: false
       
 bibliography: paper-text/references.bib
-csl: paper-text/apa7_normal.csl
+#csl: paper-text/apa7_normal.csl
+csl: paper-text/chicago-note-bibliography-with-ibid.csl
 
 fig-cap-location: top
 #fig-width: 6.7

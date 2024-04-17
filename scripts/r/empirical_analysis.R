@@ -21,6 +21,9 @@ library(forcats)
 library(kableExtra)
 library(marginaleffects)
 
+stars <- c("**" = 0.05,
+           "***" = 0.05)
+
 # Load the full dataset
 
 load("data/full_df.RData")

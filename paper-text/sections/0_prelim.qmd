@@ -8,7 +8,7 @@
 
 \vspace*{\fill}
 
-\Huge{Mood misattribution and external factors: The effect of short-term temperature changes on presidential approval in Ecuador}
+\Huge{Retrospectively sweaty? The effects of temperature changes on presidential approval}
 
 \Large{Daniel Sánchez Pazmiño}
 
@@ -20,11 +20,13 @@ Spring 2024
 
 Professor Eline de Rooij, Ph.D.
 
-\textbf{Word count}: 5142
+\textbf{Word count}: 4,670
 
 \vspace*{\fill}
 
 \end{center}
+
+AI Appendix made available here: 
 
 \clearpage
 

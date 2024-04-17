@@ -135,7 +135,7 @@ $$
 
 - Four specifications with no controls other than fixed effects.
 
-  - Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation. 
+- Minimum temperature only, maximum temperature only, average temperature (mean of min and max), and both temperatures with daily precipitation. 
 
 - Statistically significant and negative effect of **maximum temperature**.
 
